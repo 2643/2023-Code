@@ -24,7 +24,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   //initilize the subsystem
   
-  public static final ArmLift m_motor = new ArmLift();
+  public static final ArmLift m_armLift = new ArmLift();
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
