@@ -26,6 +26,7 @@ public class ResetPosition extends CommandBase {
     if (RobotContainer.m_armLift.getLimitSwitch()) {
       // We are going up and top limit is tripped so stop
       RobotContainer.m_armLift.setPos(0);
+      RobotContainer.m_armLift.movePos(0);
     }
   }
 

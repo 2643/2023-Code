@@ -95,6 +95,7 @@ double pos;
   public boolean getLimitSwitch(){
     return limitSwitchInput.get();
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
