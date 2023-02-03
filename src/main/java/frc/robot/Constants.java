@@ -19,4 +19,13 @@ public final class Constants {
   }
 public static final int ARM_LIFT_MOTOR_PORT = 5;   
 public static final int LIMIT_SWITCH_PORT = 0;
+//change when mech calculates it
+public static final int STABLE_ANGLE =0;
+//above origin
+public static final int MAX_ANGLE=170;
+//below origin
+public static final int MIN_ANGLE=-27;
+
+
+
 }
