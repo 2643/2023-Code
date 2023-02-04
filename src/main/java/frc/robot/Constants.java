@@ -65,6 +65,7 @@ public final class Constants {
     Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS);
 
     public static final double MAX_VOLTAGE = 12.5;
+    public static final int GRABBER_MOTOR_PORT = 1;
     
 
 
