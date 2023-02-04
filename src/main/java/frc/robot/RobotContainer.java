@@ -6,7 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,11 +22,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public static final Swerve m_swerve = new Swerve();
+  public static final Drivetrain drivetrain = new Drivetrain();
   //public static final JoystickButton m_recal = new JoystickButton(driveStick, 1);
-  public static final Joystick bigdriveStick = new Joystick(0);
-  public static final JoystickButton m_reset = new JoystickButton(bigdriveStick, 1);
-  public static final JoystickButton m_resetRobotPos = new JoystickButton(bigdriveStick, 2);
+  public static final Joystick swerveStick = new Joystick(0);
+  public static final JoystickButton m_reset = new JoystickButton(swerveStick, 1);
+  public static final JoystickButton m_resetRobotPos = new JoystickButton(swerveStick, 2);
 
   // Joystick
 

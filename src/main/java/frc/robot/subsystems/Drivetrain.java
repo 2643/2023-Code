@@ -41,7 +41,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-public class Swerve extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
 
   public static enum JoystickConfiguration{
     Controller,
@@ -124,7 +124,7 @@ public class Swerve extends SubsystemBase {
 
 
 
-  public Swerve() {
+  public Drivetrain() {
     //Shuffleboard.getTab("Joystick").add(imu);
     //imu.configMountPose(AxisDirection.PositiveZ, AxisDirection.PositiveY);
     imu.configMountPose(0, 0, 0);
@@ -158,7 +158,7 @@ public class Swerve extends SubsystemBase {
   }
 
   // public double zAxis(){
-  //     return ((RobotContainer.bigdriveStick.getRawAxis(3) * -1) + 1)/2 ;
+  //     return ((RobotContainer.swerveStick.getRawAxis(3) * -1) + 1)/2 ;
   // }
 
   SwerveModulePosition fl = new SwerveModulePosition();
@@ -173,8 +173,8 @@ public class Swerve extends SubsystemBase {
     SwerveModuleState[] moduleStates = m_kinematics.toSwerveModuleStates(speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.MAX_METERS_PER_SECOND);
     
-    joystick_x.setDouble(RobotContainer.bigdriveStick.getRawAxis(Constants.X_AXIS));
-    joystick_y.setDouble(RobotContainer.bigdriveStick.getRawAxis(Constants.Y_AXIS));
+    joystick_x.setDouble(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS));
+    joystick_y.setDouble(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS));
     //SwerveModuleState state = new SwerveModuleState(speedAxis, null);
     // frontLeftModPos = frontLeftDrivingMotor.getSelectedSensorPosition() / (SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI  * 2048) * SdsModuleConfigurations.MK4I_L1.getDriveReduction() / 3.2804;
     // frontRightModPos = frontRightDrivingMotor.getSelectedSensorPosition() / (SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI * 2048) * SdsModuleConfigurations.MK4I_L1.getDriveReduction() / 3.2804;
@@ -203,9 +203,9 @@ public class Swerve extends SubsystemBase {
     backLeftModule.set(moduleStates[2].speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND * Constants.MAX_VOLTAGE, moduleStates[2].angle.getRadians());
     backRightModule.set(moduleStates[3].speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND * Constants.MAX_VOLTAGE, moduleStates[3].angle.getRadians());
 
-    currentGyroAngle.setDouble(-RobotContainer.m_swerve.gyroAngle().getDegrees());
-    currentPitch.setDouble(RobotContainer.m_swerve.pitch().getDegrees());
-    currentRoll.setDouble(RobotContainer.m_swerve.roll().getDegrees());
+    currentGyroAngle.setDouble(-RobotContainer.drivetrain.gyroAngle().getDegrees());
+    currentPitch.setDouble(RobotContainer.drivetrain.pitch().getDegrees());
+    currentRoll.setDouble(RobotContainer.drivetrain.roll().getDegrees());
     
     SwerveModulePosition[] modulePositions = {new SwerveModulePosition(fl.distanceMeters , moduleStates[0].angle), 
                                 new SwerveModulePosition(fr.distanceMeters , moduleStates[1].angle),

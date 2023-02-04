@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import java.util.function.DoubleSupplier;
 
@@ -23,7 +23,7 @@ public class SwerveDriveOdometry extends CommandBase {
   /** Creates a new SwerveDriveOdometry. */
   public SwerveDriveOdometry(Pose2d m_targetPos) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_swerve);
+    addRequirements(RobotContainer.drivetrain);
     
     targetXPos = m_targetPos.getX();
     targetYPos = m_targetPos.getY();
@@ -34,7 +34,7 @@ public class SwerveDriveOdometry extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pos = RobotContainer.m_swerve.m_odometry.getPoseMeters();
+    pos = RobotContainer.drivetrain.m_odometry.getPoseMeters();
     //System.out.println("called");
   }
 
@@ -42,7 +42,7 @@ public class SwerveDriveOdometry extends CommandBase {
   @Override
   public void execute() {
     
-    pos = RobotContainer.m_swerve.m_odometry.getPoseMeters();
+    pos = RobotContainer.drivetrain.m_odometry.getPoseMeters();
 
     if(Math.round(pos.getX()*10) != Math.round(targetXPos*10)){
       if(pos.getX() < targetXPos) {
@@ -64,7 +64,7 @@ public class SwerveDriveOdometry extends CommandBase {
       y_vel = () -> 0;
     }
 
-    // if(Math.round(RobotContainer.m_swerve.gyroAngle().getDegrees()) != Math.round(targetTurnDegrees)){
+    // if(Math.round(RobotContainer.drivetrain.gyroAngle().getDegrees()) != Math.round(targetTurnDegrees)){
     //   if(pos.getRotation().getDegrees() < targetTurnDegrees) {
     //     turn_vel = Constants.AUTONOMOUS_RADIANS_PER_SECOND * 0.1;
     //   } else if(pos.getRotation().getDegrees() > targetTurnDegrees) {
@@ -75,22 +75,22 @@ public class SwerveDriveOdometry extends CommandBase {
     // }
 
     //CHANGE
-    if(Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.m_swerve.gyroAngle().getDegrees() / 5))
+    if(Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.drivetrain.gyroAngle().getDegrees() / 5))
       turn_vel = () -> 0;
     else
-      turn_vel = () -> 0.2 * Constants.MAX_RADIANS_PER_SECOND * Math.copySign(1, -targetTurnDegrees + RobotContainer.m_swerve.gyroAngle().getDegrees()) * -1;
+      turn_vel = () -> 0.2 * Constants.MAX_RADIANS_PER_SECOND * Math.copySign(1, -targetTurnDegrees + RobotContainer.drivetrain.gyroAngle().getDegrees()) * -1;
 
 
 
-    RobotContainer.m_swerve.setChasisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(x_vel.getAsDouble(), y_vel.getAsDouble(),
-        0, RobotContainer.m_swerve.gyroAngle()));
+    RobotContainer.drivetrain.setChasisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(x_vel.getAsDouble(), y_vel.getAsDouble(),
+        0, RobotContainer.drivetrain.gyroAngle()));
     
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_swerve.setChasisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
-        0, RobotContainer.m_swerve.gyroAngle()));
+    RobotContainer.drivetrain.setChasisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
+        0, RobotContainer.drivetrain.gyroAngle()));
   }
 
   // Returns true when the command should end.
