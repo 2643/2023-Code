@@ -10,36 +10,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.ControlType;
-import edu.wpi.first.wpilibj.DigitalInput;
-import com.revrobotics.SparkMaxPIDController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 public class BillGates extends SubsystemBase {
   /** Creates a new BillGates. */
   CANSparkMax WinchMotor = new CANSparkMax(Constants.GRABBER_MOTOR_PORT, MotorType.kBrushless);
    
-    //NetworkEntry pEntry = Shuffleboard.getTab("PID").add("Proportional", 0).getEntry();
-    //GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral", 0).getEntry();
-    //GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative", 0).getEntry();
-    //GenericEntry targetEntry = Shuffleboard.getTab("PID").add("Velocity", 0).getEntry();
-  
-
-    double kF;
-    double kP;
+    double kP = 0.0000;
+    double kF = 0.00049;
     double kI;
     double kD;
-    double targetPos;
-    double accel;
-    double vel;
-    double pos;
+    double rpm;
+    double currentVel;
+    double targetRPM = 1000;
+    boolean FirstCurrent = false;
+
+    GenericEntry pEntry = Shuffleboard.getTab("PID but better").add("Proportional", kP).getEntry();
+    GenericEntry iEntry = Shuffleboard.getTab("PID but better").add("Integral", kI).getEntry();
+    GenericEntry dEntry = Shuffleboard.getTab("PID but better").add("Derivative", kD).getEntry();
+    GenericEntry fEntry = Shuffleboard.getTab("PID but better").add("Feed Forward", kF).getEntry();
+    GenericEntry targetVelEntry = Shuffleboard.getTab("PID but better").add("Target", targetRPM).getEntry();
+    GenericEntry currentVelEntry = Shuffleboard.getTab("PID but better").add("Current velocity", currentVel).getEntry();
   public BillGates() {}
+
+  
 
 
   public void setRPM(double rpm){
@@ -50,11 +49,32 @@ public class BillGates extends SubsystemBase {
     return WinchMotor.getAppliedOutput();
   }
 
+  public void firstCurrentPass(){
+    if(!FirstCurrent){
+      Timer.delay(0.05);
+      FirstCurrent = true;
+    }
+  }
+
+
 
 
 
   @Override
-  public void periodic() {}
-  
+  public void periodic() {
+    targetRPM = targetVelEntry.getDouble(targetRPM);
+    setRPM(targetRPM);
+    System.out.println(getCurrentOutput());
+    kP = pEntry.getDouble(kP);
+    kI = iEntry.getDouble(kI);
+    kD = dEntry.getDouble(kD);
+    kF = fEntry.getDouble(kF);
+    currentVel = WinchMotor.getEncoder().getVelocity();
+    currentVelEntry.setDouble(currentVel);
+    WinchMotor.getPIDController().setP(kP);
+    WinchMotor.getPIDController().setFF(kF);
+
+
+  }
 
 }

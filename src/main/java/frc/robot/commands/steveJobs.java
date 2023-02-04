@@ -15,28 +15,39 @@ public class steveJobs extends CommandBase {
     addRequirements(RobotContainer.m_grabber);
   }
 
+  boolean HitCurrent = false;
+
+  public void finish(){
+    RobotContainer.m_grabber.setRPM(0);
+  }
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_grabber.setRPM(1000);
-    if(RobotContainer.m_grabber.getCurrentOutput() == 3.9){
-      
+    //RobotContainer.m_grabber.firstCurrentPass();
+    if(!HitCurrent){
+      if(RobotContainer.m_grabber.getCurrentOutput() >= 3.6 && RobotContainer.m_grabber.getCurrentOutput() <= 4){
+        finish();  
+        HitCurrent = true;
+      }
+      System.out.println(HitCurrent);
     }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    RobotContainer.m_grabber.setRPM(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return HitCurrent;
   }
 }

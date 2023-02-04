@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
-import frc.robot.subsystems.Swerve;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -65,13 +64,7 @@ public final class Constants {
     Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS);
 
     public static final double MAX_VOLTAGE = 12.5;
-    public static final int GRABBER_MOTOR_PORT = 1;
-    
-
-
-
-
-    public static final Swerve.JoystickConfiguration M_JOYSTICK = Swerve.JoystickConfiguration.RotationalJoystick;
+    public static final int GRABBER_MOTOR_PORT = 12;
 
 
 }

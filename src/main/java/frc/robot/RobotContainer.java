@@ -4,9 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.BillGates;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  public static final Swerve m_swerve = new Swerve();
+  
   public static final BillGates m_grabber = new BillGates();
   //public static final JoystickButton m_recal = new JoystickButton(driveStick, 1);
   public static final Joystick bigdriveStick = new Joystick(0);
@@ -60,8 +58,5 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
-  }
+  
 }

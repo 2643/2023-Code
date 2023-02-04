@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.SwerveDrive;
+import frc.robot.commands.steveJobs;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -57,12 +57,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -83,11 +77,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_swerve, new SwerveDrive());
-    if(RobotContainer.m_reset.getAsBoolean()){
-      RobotContainer.m_swerve.resetGyro();
-
-    }
+    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_grabber, new steveJobs());
+   
   }
 
   @Override
