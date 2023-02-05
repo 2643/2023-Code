@@ -21,28 +21,28 @@ public final class Constants {
     public static final int PIGEON_CAN = 2;
 
     //FRONT LEFT MODULE
-    public static final int FRONT_LEFT_CANCODER = 5;
-    public static final int FRONT_LEFT_DRIVE_MOTOR = 4;
-    public static final int FRONT_LEFT_TURN_MOTOR = 3;
-    public static final double FRONT_LEFT_TURN_OFFSET = -Math.toRadians(92.46);
+    public static final int FRONT_LEFT_CANCODER = 14;  //was 5
+    public static final int FRONT_LEFT_DRIVE_MOTOR = 6; // was 4
+    public static final int FRONT_LEFT_TURN_MOTOR = 7;  //was 3
+    public static final double FRONT_LEFT_TURN_OFFSET = -Math.toRadians(226.58);
 
     //FRONT RIGHT MODULE
-    public static final int FRONT_RIGHT_CANCODER = 14;
-    public static final int FRONT_RIGHT_DRIVE_MOTOR = 6;
-    public static final int FRONT_RIGHT_TURN_MOTOR = 7;
-    public static final double FRONT_RIGHT_TURN_OFFSET = -Math.toRadians(138.16);
+    public static final int FRONT_RIGHT_CANCODER = 5;  //was 14
+    public static final int FRONT_RIGHT_DRIVE_MOTOR = 4;  //was 6
+    public static final int FRONT_RIGHT_TURN_MOTOR = 3;  //was 7
+    public static final double FRONT_RIGHT_TURN_OFFSET = -Math.toRadians(358.07);  //was 138.16
 
     //REAR LEFT MODULE
     public static final int REAR_LEFT_CANCODER = 8;
     public static final int REAR_LEFT_DRIVE_MOTOR = 9;
     public static final int REAR_LEFT_TURN_MOTOR = 10;
-    public static final double REAR_LEFT_TURN_OFFSET = -Math.toRadians(349.53);
+    public static final double REAR_LEFT_TURN_OFFSET = -Math.toRadians(166.72);  //was 349.53
 
     //REAR RIGHT MODULE
     public static final int REAR_RIGHT_CANCODER = 11;
     public static final int REAR_RIGHT_DRIVE_MOTOR = 12;
     public static final int REAR_RIGHT_TURN_MOTOR = 13;
-    public static final double REAR_RIGHT_TURN_OFFSET = -Math.toRadians(274.82);
+    public static final double REAR_RIGHT_TURN_OFFSET = -Math.toRadians(91.5); //was 274.82
         
     //joystick ports
     public static final int X_AXIS = 0;
