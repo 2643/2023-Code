@@ -6,7 +6,7 @@ package frc.robot;
 
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Drivetrain;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -70,7 +70,7 @@ public final class Constants {
 
 
 
-    public static final Swerve.JoystickConfiguration M_JOYSTICK = Swerve.JoystickConfiguration.RotationalJoystick;
+    public static final Drivetrain.JoystickConfiguration M_JOYSTICK = Drivetrain.JoystickConfiguration.RotationalJoystick;
 
 
 }

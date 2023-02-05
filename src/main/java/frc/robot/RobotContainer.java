@@ -7,8 +7,8 @@ package frc.robot;
 //import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,12 +26,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   public static final Vision m_vision = new Vision();
-  public static final Swerve m_swerve = new Swerve();
+  public static final Drivetrain drivetrain = new Drivetrain();
 
-  public static final Joystick bigDriveStick = new Joystick(0);
+  public static final Joystick swerveStick = new Joystick(0);
   
-  public static final JoystickButton m_reset = new JoystickButton(bigDriveStick, 1);
-  public static final JoystickButton m_resetRobotPos = new JoystickButton(bigDriveStick, 2);
+  public static final JoystickButton m_reset = new JoystickButton(swerveStick, 1);
+  public static final JoystickButton m_resetRobotPos = new JoystickButton(swerveStick, 2);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
