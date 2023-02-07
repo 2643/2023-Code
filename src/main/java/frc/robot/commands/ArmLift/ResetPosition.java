@@ -1,9 +1,12 @@
 package frc.robot.commands.ArmLift;
-import edu.wpi.first.wpilibj.Timer;
+//import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 public class ResetPosition extends CommandBase {
   /** Creates a new ResetPosition. */
+  double resetPosition;
+  boolean reset = false;
+  double increment;
   public ResetPosition() {
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -12,18 +15,59 @@ public class ResetPosition extends CommandBase {
   }
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    RobotContainer.m_armLift.setPos(0);
+    RobotContainer.m_armLift.movePos(0);
+    RobotContainer.m_armLift.movePos(2048*100);
+    
+    
+    //   if(RobotContainer.m_armLift.getLimitSwitch()){
+    //     RobotContainer.m_armLift.movePos(resetPosition);
+    //     reset=true;
+    //   }
+    }
+    // RobotContainer.m_armLift.setPos(0);
+    // RobotContainer.m_armLift.movePos(0);
+ 
+
+    //RobotContainer.m_armLift.changeVelocity(100000);
+    //RobotContainer.m_armLift.setPos(0);
+    
+    // if(RobotContainer.m_armLift.getLimitSwitch()){
+    //   RobotContainer.m_armLift.setPos(0);
+    // }
+    
+  
   // Called every time the scheduler runs while the command is scheduled.
+  
   @Override
   public void execute() {
-    RobotContainer.m_armLift.movePos(2048*100*4.5);
+    
+    if(RobotContainer.m_armLift.getLimitSwitch()){
+      resetPosition=RobotContainer.m_armLift.getPos();
+      RobotContainer.m_armLift.movePos(resetPosition-10000);
+      RobotContainer.m_armLift.movePos(resetPosition);
+    }
+  }
 
+    //RobotContainer.m_armLift.speedControl(0.6);
+    //
+    // if(RobotContainer.m_armLift.getLimitSwitch())
+    //   RobotContainer.m_armLift.setPos(0);
+      
+  
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_armLift.setPos(0);
-    RobotContainer.m_armLift.movePos(0);
+    //RobotContainer.m_armLift.changeVelocity(100000);
+    //RobotContainer.m_armLift.speedControl(0);
+    
+    //RobotContainer.m_armLift.setPos(0);
+    //RobotContainer.m_armLift.movePos(RobotContainer.m_armLift.getPos());
+    
+
+    
   }
     
     
@@ -40,10 +84,6 @@ public class ResetPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  if(Robotcontainer.m_armLift.getLimitSwitch()){
-    return true;
-  }
-
-    return false;
+    return reset;
   }
 }

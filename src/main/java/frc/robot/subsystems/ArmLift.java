@@ -2,7 +2,9 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.subsystems;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -47,14 +49,17 @@ double pos;
    //CANSparkMax
   //CANSparkMax rightFrontmotor = new CANSparkMax(1, MotorType.kBrushless);
   public ArmLift() {
-    
+    m_motor.configFactoryDefault();
+    m_motor.selectProfileSlot(0, 0);
+    //m_motor.setSelectedSensorPosition(pos, 0, 0)
     m_motor.config_kF(0, 0, 1);
     m_motor.config_kP(0, 0.05, 1);
     m_motor.config_kI(0, 0.0000001, 1);
-    m_motor.config_kD(0 , 0.02, 1);
+    m_motor.config_kD(0 , 0, 1);
     m_motor.configMotionCruiseVelocity(100000, 1);
     m_motor.configMotionAcceleration(10000, 1);
     m_motor.configNeutralDeadband(0.04);
+    m_motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 1);
     
     //makes the wheels go the other direction 
     // rightFrontmotor.setInverted(true);
@@ -70,18 +75,32 @@ double pos;
   // }
 //Talon
 //public static final TalonFXControlMode MotionProfile = TalonFXControlMode.MotionMagic;
-   public void movePos(double pos) {
+  public void movePos(double pos) {
     m_motor.set(TalonFXControlMode.MotionMagic, pos);
   } 
-  public void setPos(double pos) {
-    m_motor.setSelectedSensorPosition(pos);
-  }
-  public boolean getLimitSwitch() {
-    return limitSwitchInput.get();
+  public void destroyObject(){
+    m_motor.DestroyObject();
+    m_motor.configFactoryDefault();
   }
   public double getPos() {
     return m_motor.getSelectedSensorPosition();
   }
+  public void afterRestMovePos(double movePos){
+        if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos()> Constants.BOTTOM_SOFT_LIMIT_MOVEPOS ) {
+          m_motor.set(TalonFXControlMode.Position, movePos);
+        }
+        else if (getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos()> Constants.BOTTOM_HARD_LIMIT_MOVEPOS ){
+          destroyObject();
+    }
+    }
+  
+  public void setPos(double pos) {
+    m_motor.setSelectedSensorPosition(pos, 0, 1);
+  }
+  public boolean getLimitSwitch() {
+    return limitSwitchInput.get();
+  }
+  
   public void changeAcceleration(double accel){
     m_motor.configMotionAcceleration(accel);
   }
@@ -89,6 +108,22 @@ double pos;
   public void changeVelocity(double vel){
     m_motor.configMotionCruiseVelocity(vel);
   }
+
+  public void speedControl(double percent){
+    m_motor.set(ControlMode.PercentOutput, percent);
+  }
+  public double getStatorCurrent(){
+    return m_motor.getStatorCurrent();
+  }
+
+  public void disablemotor(){
+    m_motor.set(ControlMode.Disabled,0);
+  }
+
+  
+
+  //int count = 0;
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -123,5 +158,6 @@ double pos;
     // CANSparkMax
     // setSpeed(0.1);
     // setSpeed2(0.1);
+      //System.out.println(limitSwitchInput.get());
   }
  }
