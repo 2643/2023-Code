@@ -55,7 +55,7 @@ public class ResetPosition extends CommandBase {
       }
       
     }
-    if(RobotContainer.m_armLift.getLimitSwitch()&&state==2){
+    if(state==2){
       increment=0;
       resetPosition=RobotContainer.m_armLift.getPos();
       RobotContainer.m_armLift.movePos(resetPosition-20000);
