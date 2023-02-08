@@ -83,10 +83,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.drivetrain, new SwerveDrive());
-    if(RobotContainer.m_reset.getAsBoolean()){
-      RobotContainer.drivetrain.resetGyro();
-
+    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_drivetrain, new SwerveDrive());
+    if(RobotContainer.m_reset.getAsBoolean()) {
+      RobotContainer.m_drivetrain.resetGyro();
     }
   }
 

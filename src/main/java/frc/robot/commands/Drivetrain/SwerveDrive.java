@@ -21,7 +21,7 @@ public class SwerveDrive extends CommandBase {
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.drivetrain);
+    addRequirements(RobotContainer.m_drivetrain);
   }
 
   private static double deadbandCalc(double joystickRawAxis, double deadband) {
@@ -41,6 +41,8 @@ public class SwerveDrive extends CommandBase {
     value = Math.copySign(value * value, value);
     return value;
   }
+
+
 
   private static double logAxis(double value) {
     value = Math.copySign(Math.log((Math.abs(value) + 1)) / Math.log(2), value);
@@ -66,34 +68,35 @@ public class SwerveDrive extends CommandBase {
 
     // } else if(Constants.M_JOYSTICK == Swerve.JoystickConfiguration.RotationalJoystick) {
 
-    xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS)), 0.02) * Constants.MAX_METERS_PER_SECOND;
-    yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS)), 0.02) * Constants.MAX_METERS_PER_SECOND;
-    rotationalXAxisValue = () -> -logAxis(squareAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS), 0.75)) * -Constants.MAX_RADIANS_PER_SECOND; //* Swerve.speedAxis / 2;
-    if(Math.round(Drivetrain.gyroTurn.getDouble(0)/5) == Math.round(RobotContainer.drivetrain.gyroAngle().getDegrees()/5))
-      rotationalXAxisValue = () -> 0;
-    else if(Math.abs(Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.drivetrain.gyroAngle().getDegrees())) < 15)
-      rotationalXAxisValue = () -> 0.1 * Constants.MAX_RADIANS_PER_SECOND * Math.copySign(1, Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.drivetrain.gyroAngle().getDegrees()));
-    else if(Math.abs(Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.drivetrain.gyroAngle().getDegrees())) < 50)
-      rotationalXAxisValue = () -> 0.3 * Constants.MAX_RADIANS_PER_SECOND * Math.copySign(1, Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.drivetrain.gyroAngle().getDegrees()));
-    else if(Drivetrain.gyroTurn.getDouble(0) > RobotContainer.drivetrain.gyroAngle().getDegrees())
-      rotationalXAxisValue = () -> 0.5 * Constants.MAX_RADIANS_PER_SECOND;
-    else if(Drivetrain.gyroTurn.getDouble(0) < RobotContainer.drivetrain.gyroAngle().getDegrees())
-      rotationalXAxisValue = () -> -0.5 * Constants.MAX_RADIANS_PER_SECOND;
+    xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
+    yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
+
+    if(Constants.ROTATIONAL_AXIS_MODE) {
+      rotationalXAxisValue = () -> -logAxis(squareAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS_PORT), 0.5)) * Constants.MAX_RADIANS_PER_SECOND;
+    } else {
+      if(Math.round(Drivetrain.gyroTurn.getDouble(0)/5) == Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees()/5))
+        rotationalXAxisValue = () -> 0;
+      else if(Math.abs(Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.m_drivetrain.gyroAngle().getDegrees())) < 15)
+        rotationalXAxisValue = () -> 0.1 * Constants.MAX_RADIANS_PER_SECOND * Math.copySign(1, Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.m_drivetrain.gyroAngle().getDegrees()));
+      else if(Math.abs(Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.m_drivetrain.gyroAngle().getDegrees())) < 50)
+        rotationalXAxisValue = () -> 0.3 * Constants.MAX_RADIANS_PER_SECOND * Math.copySign(1, Drivetrain.gyroTurn.getDouble(0) - (RobotContainer.m_drivetrain.gyroAngle().getDegrees()));
+      else if(Drivetrain.gyroTurn.getDouble(0) > RobotContainer.m_drivetrain.gyroAngle().getDegrees())
+        rotationalXAxisValue = () -> 0.5 * Constants.MAX_RADIANS_PER_SECOND;
+      else if(Drivetrain.gyroTurn.getDouble(0) < RobotContainer.m_drivetrain.gyroAngle().getDegrees())
+        rotationalXAxisValue = () -> -0.5 * Constants.MAX_RADIANS_PER_SECOND;
+    }
     
     
-    RobotContainer.drivetrain.setChasisSpeed(Constants.FIELD_RELATIVE_MODE ? ChassisSpeeds.fromFieldRelativeSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(),
-    -rotationalXAxisValue.getAsDouble(), RobotContainer.drivetrain.gyroAngle()) : new ChassisSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble()));
     
-    //RobotContainer.drivetrain.setChasisSpeed(new ChassisSpeeds(xAxisValue.getAsDouble(), yAxisValue.getAsDouble(), -rotationalXAxisValue.getAsDouble()));
+    RobotContainer.m_drivetrain.setChassisSpeed(Constants.FIELD_RELATIVE_MODE ? ChassisSpeeds.fromFieldRelativeSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(),
+    -rotationalXAxisValue.getAsDouble(), RobotContainer.m_drivetrain.gyroAngle()) : new ChassisSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble()));
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.drivetrain.setChasisSpeed(Constants.FIELD_RELATIVE_MODE ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
-    -0, RobotContainer.drivetrain.gyroAngle()) : new ChassisSpeeds(0, 0, 0));
-    RobotContainer.drivetrain.setChasisSpeed(new ChassisSpeeds(0, 0, -0));
-  
+    RobotContainer.m_drivetrain.setChassisSpeed(Constants.FIELD_RELATIVE_MODE ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, -0, RobotContainer.m_drivetrain.gyroAngle()) : new ChassisSpeeds(0, 0, 0));  
   }
 
   // Returns true when the command should end.
