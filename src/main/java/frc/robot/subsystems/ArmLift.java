@@ -86,6 +86,7 @@ public class ArmLift extends SubsystemBase {
   public void movePos(double pos) {
     m_motor.set(TalonFXControlMode.MotionMagic, pos);
   }
+  
   public void starttimer(){
     timer.reset();
     timer.start();

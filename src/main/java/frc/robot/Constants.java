@@ -22,7 +22,7 @@ public final class Constants {
 
   }
 
-  public static final int ARM_LIFT_MOTOR_PORT = 5;
+  public static final int ARM_LIFT_MOTOR_PORT = 6;
   public static final int LIMIT_SWITCH_PORT = 0;
   // change when mech calculates it
   public static final int STABLE_ANGLE = 0;

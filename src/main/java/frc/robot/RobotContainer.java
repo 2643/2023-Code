@@ -4,9 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 // import frc.robot.commands.ArmLift.downArmLIft;
 // import frc.robot.commands.ArmLift.upArmLIft;
 import frc.robot.subsystems.ExampleSubsystem;
