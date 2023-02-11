@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class resetPosition extends CommandBase {
+public class ResetPosition extends CommandBase {
   
   /** Creates a new ResetPosition. */
   double resetPosition;
@@ -15,7 +15,7 @@ public class resetPosition extends CommandBase {
   double increment;
   int state = 1;
   
-  public resetPosition() {
+  public ResetPosition() {
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_armLift);
