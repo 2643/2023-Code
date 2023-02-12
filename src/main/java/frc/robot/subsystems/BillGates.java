@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 
 public class BillGates extends SubsystemBase {
   /** Creates a new BillGates. */
+  Timer timer = new Timer();
   CANSparkMax WinchMotor = new CANSparkMax(Constants.GRABBER_MOTOR_PORT, MotorType.kBrushless);
    
     double kP = 0.0000;
@@ -27,8 +28,9 @@ public class BillGates extends SubsystemBase {
     double kD;
     double rpm;
     double currentVel;
+    double currentCURRENT = 0.0;
     double targetRPM = 1000;
-    boolean FirstCurrent = false;
+    boolean FirstCurrent = true;
 
     GenericEntry pEntry = Shuffleboard.getTab("PID but better").add("Proportional", kP).getEntry();
     GenericEntry iEntry = Shuffleboard.getTab("PID but better").add("Integral", kI).getEntry();
@@ -36,9 +38,8 @@ public class BillGates extends SubsystemBase {
     GenericEntry fEntry = Shuffleboard.getTab("PID but better").add("Feed Forward", kF).getEntry();
     GenericEntry targetVelEntry = Shuffleboard.getTab("PID but better").add("Target", targetRPM).getEntry();
     GenericEntry currentVelEntry = Shuffleboard.getTab("PID but better").add("Current velocity", currentVel).getEntry();
+    GenericEntry currentCURRENTEntry = Shuffleboard.getTab("PID but better").add("Current CURRENT", currentCURRENT).getEntry();
   public BillGates() {}
-
-  
 
 
   public void setRPM(double rpm){
@@ -50,31 +51,44 @@ public class BillGates extends SubsystemBase {
   }
 
   public void firstCurrentPass(){
-    if(!FirstCurrent){
-      Timer.delay(0.05);
-      FirstCurrent = true;
+    if(timer.hasElapsed(3)){
+      FirstCurrent = false;
+      timer.stop();
+      timer.reset();
     }
   }
 
-
-
-
-
   @Override
-  public void periodic() {
+  public void periodic(){
+    System.out.println(FirstCurrent);
+    System.out.println("timer" + timer.get());
     targetRPM = targetVelEntry.getDouble(targetRPM);
     setRPM(targetRPM);
-    System.out.println(getCurrentOutput());
-    kP = pEntry.getDouble(kP);
-    kI = iEntry.getDouble(kI);
-    kD = dEntry.getDouble(kD);
-    kF = fEntry.getDouble(kF);
-    currentVel = WinchMotor.getEncoder().getVelocity();
-    currentVelEntry.setDouble(currentVel);
-    WinchMotor.getPIDController().setP(kP);
-    WinchMotor.getPIDController().setFF(kF);
-
-
+    currentCURRENT = WinchMotor.getOutputCurrent();
+    System.out.print(currentCURRENT);
+    currentCURRENTEntry.setDouble(currentCURRENT);
+    if(currentVel>10){
+      if(FirstCurrent == true){
+        timer.start();
+      }
+    }
+    else{
+      FirstCurrent = true;
+    }
+    firstCurrentPass();
+      //kP = pEntry.getDouble(kP);
+      //kI = iEntry.getDouble(kI);
+      //kD = dEntry.getDouble(kD);
+      kF = fEntry.getDouble(kF);
+      WinchMotor.getPIDController().setFF(kF);
+      if(FirstCurrent == false){
+        if(currentCURRENT >= 3){
+          targetVelEntry.setDouble(0);
+        }
+      }
+      currentVel = WinchMotor.getEncoder().getVelocity();
+      currentVelEntry.setDouble(currentVel);
+      WinchMotor.getPIDController().setP(kP);
   }
 
 }

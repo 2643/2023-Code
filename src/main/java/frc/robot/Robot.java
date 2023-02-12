@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ElonMusk;
 import frc.robot.commands.steveJobs;
 
 /**
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_grabber, new steveJobs());
+    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_grabber, new ElonMusk());
    
   }
 
