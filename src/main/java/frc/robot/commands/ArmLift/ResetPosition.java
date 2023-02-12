@@ -42,7 +42,7 @@ public class ResetPosition extends CommandBase {
           increment = 0;
           resetPosition = RobotContainer.m_armLift.getPos();
           RobotContainer.m_armLift.movePos(resetPosition-10000);
-          RobotContainer.m_armLift.starttimer();
+           RobotContainer.m_armLift.starttimer();
           System.out.println("state2");
       }
     }

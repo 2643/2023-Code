@@ -17,6 +17,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmLift extends SubsystemBase {
+
+  public static enum moveArmJoystick{
+    Up,
+    Down
+  }
   /** Creates a new Motor. */
   // Talon motor contoroller
   // TalonFX motor = new TalonFX(3);

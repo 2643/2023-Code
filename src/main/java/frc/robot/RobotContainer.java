@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.ArmLift.MoveArm;
+//import frc.robot.commands.ArmLift.ArmLift;
 // import frc.robot.commands.ArmLift.downArmLIft;
 // import frc.robot.commands.ArmLift.upArmLIft;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -25,7 +27,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   //initilize the subsystem
-  
   public static final ArmLift m_armLift = new ArmLift();
   public static final Joystick m_joystick = new Joystick(0);
 
@@ -51,11 +52,13 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    upArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Up));
+    downArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Down));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
-    // upArmButton.whenPressed(new upArmLIft());
-    // downArmButton.whenPressed(new downArmLIft());
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+        //.onTrue(new ExampleCommand(m_exampleSubsystem));
+     //upArmButton.whenPressed(new ArmLift());
+     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
