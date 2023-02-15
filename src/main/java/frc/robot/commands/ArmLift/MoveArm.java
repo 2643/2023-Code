@@ -5,6 +5,7 @@
 package frc.robot.commands.ArmLift;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmLift;
 //mport frc.robot.subsystems.ArmLift.moveArmJoystick;
@@ -30,16 +31,40 @@ public class MoveArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Working");
+    
+    double encoderinput = RobotContainer.encoderButton.getRawAxis(1);
+
+    //System.out.println("Working");
     if(moveDirection == ArmLift.moveArmJoystick.Up) {
       targetPos = RobotContainer.m_armLift.getPos() + 10000;
       RobotContainer.m_armLift.movePos(targetPos);
-    } else {
+    } 
+    else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
+      RobotContainer.m_armLift.movePos(controlToMultiplier(encoderinput)*100*4.5);
+    }
+    else {
       targetPos = RobotContainer.m_armLift.getPos() - 10000;
       RobotContainer.m_armLift.movePos(targetPos);
     }
   }
 
+private int controlToMultiplier(double ctrlValue) {
+  if (ctrlValue > 0.6) {
+    return 0;
+  } else if (ctrlValue > 0.4) {
+    return Constants.RESTING_POSTION;
+  } else if (ctrlValue > 0) {
+    return Constants.BOTTOM_POSTION;
+  }
+    else if (ctrlValue > 0.1){
+      return -140;
+    }
+    else if (ctrlValue > 0.2){
+      return -135;
+    }
+    
+  return 0;
+}
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}

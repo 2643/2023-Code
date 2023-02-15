@@ -20,7 +20,8 @@ public class ArmLift extends SubsystemBase {
 
   public static enum moveArmJoystick{
     Up,
-    Down
+    Down, 
+    Encoder
   }
   /** Creates a new Motor. */
   // Talon motor contoroller
@@ -119,7 +120,7 @@ public class ArmLift extends SubsystemBase {
   }
   public void afterRestMovePos(double movePos) {
     if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
-      m_motor.set(TalonFXControlMode.Position, movePos);
+      movePos(movePos);
     } else if (getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
       destroyObject();
     }
@@ -127,6 +128,10 @@ public class ArmLift extends SubsystemBase {
 
   public void setPos(double pos) {
     m_motor.setSelectedSensorPosition(pos, 0, 1);
+  }
+
+  public double getvel(){
+    return m_motor.getSelectedSensorVelocity();
   }
 
   public boolean getLimitSwitch() {

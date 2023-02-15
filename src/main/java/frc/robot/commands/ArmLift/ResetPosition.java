@@ -28,13 +28,12 @@ public class ResetPosition extends CommandBase {
     RobotContainer.m_armLift.reset();
     RobotContainer.m_armLift.changeVelocity(7000);
     RobotContainer.m_armLift.movePos(2048*100*4.5);
-
+    
   }
 
   @Override
   public void execute() {
-    
-    increment += 1;
+ 
     if (state == 1) {
       System.out.println("state 1");
       if (RobotContainer.m_armLift.getLimitSwitch()) {
@@ -54,10 +53,8 @@ public class ResetPosition extends CommandBase {
           RobotContainer.m_armLift.changeVelocity(1000);
           RobotContainer.m_armLift.movePos(resetPosition+5000);
           state=3;
-        }
-           
+        }      
     }
-    // }
     if (state == 3) {
       RobotContainer.m_armLift.stoptimer();
       System.out.println("state 3 still");
@@ -67,6 +64,7 @@ public class ResetPosition extends CommandBase {
         state = 4;
       }
     }
+
   }
   @Override
   public void end(boolean interrupted) {
