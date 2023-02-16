@@ -35,6 +35,9 @@ public class RobotContainer {
   public static JoystickButton upArmButton = new JoystickButton(m_joystick,1 );
   public static JoystickButton downArmButton = new JoystickButton(m_joystick, 2);
   public static Joystick encoderButton = new Joystick(3);
+  public static Joystick bottomNodeButton = new Joystick(4);
+  public static Joystick middleNodeButton = new Joystick(5);
+
   
   // public static JoystickButton rotaryNob = new JoystickButton(m_joystick, 2);
 

@@ -21,7 +21,9 @@ public class ArmLift extends SubsystemBase {
   public static enum moveArmJoystick{
     Up,
     Down, 
-    Encoder
+    Encoder,
+    BottomNode,
+    MiddleNode,
   }
   /** Creates a new Motor. */
   // Talon motor contoroller

@@ -13,7 +13,7 @@ import frc.robot.subsystems.ArmLift;
 public class MoveArm extends CommandBase {
   ArmLift.moveArmJoystick moveDirection;
   static double targetPos;
-  
+
   //double targetPos;
   /** Creates a new ArmLift. */
   public MoveArm(ArmLift.moveArmJoystick moveDirection) {
@@ -21,6 +21,9 @@ public class MoveArm extends CommandBase {
     this.moveDirection = moveDirection;
 
   }
+  
+
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -35,35 +38,39 @@ public class MoveArm extends CommandBase {
     double encoderinput = RobotContainer.encoderButton.getRawAxis(1);
 
     //System.out.println("Working");
+        
     if(moveDirection == ArmLift.moveArmJoystick.Up) {
       targetPos = RobotContainer.m_armLift.getPos() + 10000;
       RobotContainer.m_armLift.movePos(targetPos);
     } 
     else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
-      RobotContainer.m_armLift.movePos(controlToMultiplier(encoderinput)*100*4.5);
+      RobotContainer.m_armLift.movePos(controlToMultiplier(encoderinput)*100*4.5*5.9);
     }
-    else {
+    else if((moveDirection == ArmLift.moveArmJoystick.Down))  {
+      
       targetPos = RobotContainer.m_armLift.getPos() - 10000;
       RobotContainer.m_armLift.movePos(targetPos);
+
     }
+    // else{
+    //  // RobotContainer.m_armLift.movePos(Constants.MIDDLE_ROW_HEIGHT);
+    // }
   }
 
 private int controlToMultiplier(double ctrlValue) {
   if (ctrlValue > 0.6) {
     return 0;
   } else if (ctrlValue > 0.4) {
-    return Constants.RESTING_POSTION;
-  } else if (ctrlValue > 0) {
-    return Constants.BOTTOM_POSTION;
-  }
-    else if (ctrlValue > 0.1){
-      return -140;
+    return -29;
+  } else if (ctrlValue > 0.2) {
+    return -58;
+  } else if (ctrlValue > 0){
+      return -87;
+  } else if (ctrlValue > -0.5){
+      return -116;
+  } else {
+      return -145;
     }
-    else if (ctrlValue > 0.2){
-      return -135;
-    }
-    
-  return 0;
 }
   // Called once the command ends or is interrupted.
   @Override

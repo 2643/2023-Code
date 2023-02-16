@@ -22,7 +22,7 @@ public final class Constants {
 
   }
 
-  public static final int ARM_LIFT_MOTOR_PORT = 15;//left
+  public static final int ARM_LIFT_MOTOR_PORT = 5;//left
   public static final int LIMIT_SWITCH_PORT = 0;
   // change when mech calculates it
   public static final int STABLE_ANGLE = 0;
@@ -30,6 +30,10 @@ public final class Constants {
   public static final int MAX_ANGLE = 170;
   // below origin
   public static final int MIN_ANGLE = -27;
+
+  //public static final double MIDDLE_ROW_HEIGHT = 217721.8519; //in encoder ticks
+
+  public static final int BOTTOM_ROW = 0;
 
   public static final int BOTTOM_POSTION = -145;
 
