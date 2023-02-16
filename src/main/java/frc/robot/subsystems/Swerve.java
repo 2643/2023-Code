@@ -149,6 +149,10 @@ public class Swerve extends SubsystemBase {
     return Rotation2d.fromDegrees(imu.getPitch());
   }
 
+  public double pitchFr(){
+    return imu.getPitch();
+  }
+
   public Rotation2d roll() {
     return Rotation2d.fromDegrees(imu.getRoll());
   }
@@ -230,7 +234,10 @@ public class Swerve extends SubsystemBase {
       m_odometry.resetPosition(new Rotation2d(0), resetModulePositions, new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
       fl.distanceMeters = 0;
       fr.distanceMeters = 0;
-      bl.distanceMeters = 0;
+   
+public int pitchFr() {
+    return 0;
+}   bl.distanceMeters = 0;
       br.distanceMeters = 0;
     }
     //System.out.println(SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI);
