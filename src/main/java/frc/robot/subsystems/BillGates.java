@@ -46,11 +46,20 @@ public class BillGates extends SubsystemBase {
     WinchMotor.getPIDController().setReference(rpm, ControlType.kVelocity);
   }
 
+  public void stopMotor(){
+    targetVelEntry.setDouble(0);
+  }
+
   public double getCurrentOutput(){
     return WinchMotor.getAppliedOutput();
   }
 
+  public double getMotorVelocity(){
+    return WinchMotor.getEncoder().getVelocity();
+  }
+
   public void firstCurrentPass(){
+    timer.start();
     if(timer.hasElapsed(3)){
       FirstCurrent = false;
       timer.stop();
@@ -67,25 +76,11 @@ public class BillGates extends SubsystemBase {
     currentCURRENT = WinchMotor.getOutputCurrent();
     System.out.print(currentCURRENT);
     currentCURRENTEntry.setDouble(currentCURRENT);
-    if(currentVel>10){
-      if(FirstCurrent == true){
-        timer.start();
-      }
-    }
-    else{
-      FirstCurrent = true;
-    }
-    firstCurrentPass();
       //kP = pEntry.getDouble(kP);
       //kI = iEntry.getDouble(kI);
       //kD = dEntry.getDouble(kD);
       kF = fEntry.getDouble(kF);
       WinchMotor.getPIDController().setFF(kF);
-      if(FirstCurrent == false){
-        if(currentCURRENT >= 3){
-          targetVelEntry.setDouble(0);
-        }
-      }
       currentVel = WinchMotor.getEncoder().getVelocity();
       currentVelEntry.setDouble(currentVel);
       WinchMotor.getPIDController().setP(kP);

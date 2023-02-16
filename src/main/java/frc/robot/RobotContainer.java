@@ -25,8 +25,8 @@ public class RobotContainer {
   public static final BillGates m_grabber = new BillGates();
   //public static final JoystickButton m_recal = new JoystickButton(driveStick, 1);
   public static final Joystick bigdriveStick = new Joystick(0);
-  public static final JoystickButton m_reset = new JoystickButton(bigdriveStick, 1);
-  public static final JoystickButton m_resetRobotPos = new JoystickButton(bigdriveStick, 2);
+  public static final JoystickButton m_reset = new JoystickButton(bigdriveStick, 11);
+  public static final JoystickButton m_resetRobotPos = new JoystickButton(bigdriveStick, 12);
 
   // Joystick
 

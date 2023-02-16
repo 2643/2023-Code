@@ -7,42 +7,26 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-import com.swervedrivespecialties.swervelib.ctre.Falcon500SteerConfiguration;
-
-import edu.wpi.first.wpilibj.Timer;
-
-public class ElonMusk extends CommandBase {
-  /** Creates a new ElonMusk. */
-  public ElonMusk() {
+public class AndrewTate extends CommandBase {
+  /** Creates a new AndrewTate. */
+  public AndrewTate() {
     addRequirements(RobotContainer.m_grabber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-  Timer timer = new Timer();
-  boolean FirstCurrent = true;
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.reset();
+    
   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if(RobotContainer.m_grabber.getMotorVelocity()>10){
-      RobotContainer.m_grabber.firstCurrentPass();
-    }
-    if(FirstCurrent == false){
-      if(RobotContainer.m_grabber.getCurrentOutput() >= 3){
-        RobotContainer.m_grabber.stopMotor();
-      }
-    }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    timer.reset();
-    FirstCurrent = false;
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
