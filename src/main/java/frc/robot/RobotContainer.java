@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.ElonMusk;
 import frc.robot.subsystems.BillGates;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,10 +25,10 @@ public class RobotContainer {
   
   public static final BillGates m_grabber = new BillGates();
   //public static final JoystickButton m_recal = new JoystickButton(driveStick, 1);
-  public static final Joystick bigdriveStick = new Joystick(0);
-  public static final JoystickButton m_reset = new JoystickButton(bigdriveStick, 11);
-  public static final JoystickButton m_resetRobotPos = new JoystickButton(bigdriveStick, 12);
-
+  public static final Joystick opboard = new Joystick(0);
+  public static final JoystickButton manualGrabClose = new JoystickButton(opboard, 11);
+  public static final JoystickButton manualGrabOpen = new JoystickButton(opboard, 12);
+  //for now, button manualGrabOpen suits both of the purposes 
   // Joystick
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -47,10 +48,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
+    
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-   
+    manualGrabOpen.whileTrue(new ElonMusk());
+    //manualGrabClose.whileTrue();
   }
 
   /**
