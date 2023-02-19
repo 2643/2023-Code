@@ -5,7 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.BillGates.States;
 
 import com.swervedrivespecialties.swervelib.ctre.Falcon500SteerConfiguration;
 
@@ -23,16 +25,21 @@ public class ElonMusk extends CommandBase {
   @Override
   public void initialize() {
     timer.reset();
+    RobotContainer.m_grabber.state = States.NOTINITIALIZED;
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(RobotContainer.m_grabber.getMotorVelocity()>10){
       RobotContainer.m_grabber.firstCurrentPass();
+      RobotContainer.m_grabber.state = States.CLOSINGCURRENT;
+      System.out.println("Closing Current");
     }
     if(FirstCurrent == false){
-      if(RobotContainer.m_grabber.getCurrentOutput() >= 3){
+      if(RobotContainer.m_grabber.getCurrentOutput() >= Constants.TARGET_CURRENT_VALUE){
         RobotContainer.m_grabber.stopMotor();
+        RobotContainer.m_grabber.state = States.CLOSED;
+        System.out.println("Closed");
       }
     }
   }
