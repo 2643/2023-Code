@@ -12,7 +12,7 @@ import frc.robot.subsystems.ArmLift;
 
 public class MoveArm extends CommandBase {
   ArmLift.moveArmJoystick moveDirection;
-  static double targetPos;
+  public static double targetPos;
 
   //double targetPos;
   /** Creates a new ArmLift. */
@@ -41,21 +41,37 @@ public class MoveArm extends CommandBase {
         
     if(moveDirection == ArmLift.moveArmJoystick.Up) {
       targetPos = RobotContainer.m_armLift.getPos() + 10000;
-      RobotContainer.m_armLift.movePos(targetPos);
+      RobotContainer.m_armLift.afterRestMovePos(targetPos);
     } 
     else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
-      RobotContainer.m_armLift.movePos(controlToMultiplier(encoderinput)*100*4.5*5.9);
+      RobotContainer.m_armLift.afterRestMovePos(controlToMultiplier(encoderinput)*100*4.5*5.9);
     }
     else if((moveDirection == ArmLift.moveArmJoystick.Down))  {
       
       targetPos = RobotContainer.m_armLift.getPos() - 10000;
-      RobotContainer.m_armLift.movePos(targetPos);
-
+      RobotContainer.m_armLift.afterRestMovePos(targetPos);
+    }
+    // if(RobotContainer.m_armLift.getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && RobotContainer.m_armLift.getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS){
+    //   targetPos = RobotContainer.m_armLift.getPos() + 10000;
+    //   System.out.println("BOTTOM");
+    //   if(moveDirection == ArmLift.moveArmJoystick.Down){
+    //     RobotContainer.m_armLift.afterRestMovePos(targetPos);
+    //   }
+    // }
+    // if(RobotContainer.m_armLift.getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && RobotContainer.m_armLift.getPos() < Constants.TOP_HARD_LIMIT_MOVEPOS){
+    //     targetPos = RobotContainer.m_armLift.getPos() - 10000;
+    //     System.out.println("TOP");
+    //     if(moveDirection == ArmLift.moveArmJoystick.Up){
+    //       RobotContainer.m_armLift.afterRestMovePos(targetPos);
+    //     }
+       
+    //}
+  
     }
     // else{
     //  // RobotContainer.m_armLift.movePos(Constants.MIDDLE_ROW_HEIGHT);
     // }
-  }
+  
 
 private int controlToMultiplier(double ctrlValue) {
   if (ctrlValue > 0.6) {
@@ -79,9 +95,6 @@ private int controlToMultiplier(double ctrlValue) {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(RobotContainer.m_armLift.getPos() == 0){
-      return true;
-    }
     return false;
   }
 }

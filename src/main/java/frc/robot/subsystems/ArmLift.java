@@ -9,12 +9,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 //import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 //import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ArmLift.MoveArm;
 
 public class ArmLift extends SubsystemBase {
 
@@ -28,9 +31,11 @@ public class ArmLift extends SubsystemBase {
   /** Creates a new Motor. */
   // Talon motor contoroller
   // TalonFX motor = new TalonFX(3);
+  AnalogPotentiometer pot = new AnalogPotentiometer(0, 360, 0);
   TalonFX m_motor = new TalonFX(Constants.ARM_LIFT_MOTOR_PORT);
   DigitalInput limitSwitchInput = new DigitalInput(Constants.LIMIT_SWITCH_PORT);
   Timer timer = new Timer();
+  DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_PORT_TWO); 
   // GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",
   // 0).getEntry();
   // GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",
@@ -58,6 +63,7 @@ public class ArmLift extends SubsystemBase {
   double accel;
   double vel;
   double pos;
+  double softToHardTarget;
 
   // CANSparkMax
   // CANSparkMax rightFrontmotor = new CANSparkMax(1, MotorType.kBrushless);
@@ -123,9 +129,20 @@ public class ArmLift extends SubsystemBase {
   public void afterRestMovePos(double movePos) {
     if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
       movePos(movePos);
-    } else if (getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-      destroyObject();
+    } else {
+      if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+        destroyObject();
+      } else if(getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > MoveArm.targetPos) {
+        movePos(movePos);
+      } else if(getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && getPos() < MoveArm.targetPos){
+        movePos(movePos);
+      }
     }
+
+    // } else if (getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+    //   destroyObject();
+    // } else if()
+  
   }
 
   public void setPos(double pos) {
@@ -160,6 +177,14 @@ public class ArmLift extends SubsystemBase {
     m_motor.set(ControlMode.Disabled, 0);
   }
 
+  public boolean getLimitSwitchTwo(){
+    return limitSwitch.get();
+    
+  }
+  
+  public double stringPotget(){
+    return pot.get();
+  }
   // int count = 0;
 
   @Override

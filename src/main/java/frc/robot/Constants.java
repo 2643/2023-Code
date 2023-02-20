@@ -24,6 +24,7 @@ public final class Constants {
 
   public static final int ARM_LIFT_MOTOR_PORT = 5;//left
   public static final int LIMIT_SWITCH_PORT = 0;
+  public static final int LIMIT_SWITCH_PORT_TWO = 1;
   // change when mech calculates it
   public static final int STABLE_ANGLE = 0;
   // above origin
@@ -35,16 +36,12 @@ public final class Constants {
 
   public static final int BOTTOM_ROW = 0;
 
-  public static final int BOTTOM_POSTION = -145;
+  public static final double TOP_SOFT_LIMIT_MOVEPOS = 114.55* 100 * 5.69;
 
-  public static final int RESTING_POSTION = -100 ;
+  public static final double TOP_HARD_LIMIT_MOVEPOS = 120 * 100 * 5.69;
 
-  public static final double TOP_SOFT_LIMIT_MOVEPOS = 100 * 2;
+  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -24 * 5.69 * 100;
 
-  public static final double TOP_HARD_LIMIT_MOVEPOS = 100 * 20;
-
-  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -145 * 5.69 * 100;
-
-  public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -150 * 5.69 * 100;
+  public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -30 * 5.69 * 100;
 
 }
