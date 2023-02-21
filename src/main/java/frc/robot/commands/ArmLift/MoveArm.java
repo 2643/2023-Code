@@ -40,14 +40,14 @@ public class MoveArm extends CommandBase {
     //System.out.println("Working");
         
     if(moveDirection == ArmLift.moveArmJoystick.Up) {
+      
       targetPos = RobotContainer.m_armLift.getPos() + 10000;
       RobotContainer.m_armLift.afterRestMovePos(targetPos);
     } 
     else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
-      RobotContainer.m_armLift.afterRestMovePos(controlToMultiplier(encoderinput)*100*4.5*5.9);
+      RobotContainer.m_armLift.afterRestMovePos(controlToMultiplier(encoderinput)*100*4.5*5.69);
     }
     else if((moveDirection == ArmLift.moveArmJoystick.Down))  {
-      
       targetPos = RobotContainer.m_armLift.getPos() - 10000;
       RobotContainer.m_armLift.afterRestMovePos(targetPos);
     }

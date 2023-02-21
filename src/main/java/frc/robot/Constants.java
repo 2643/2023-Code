@@ -40,8 +40,8 @@ public final class Constants {
 
   public static final double TOP_HARD_LIMIT_MOVEPOS = 120 * 100 * 5.69;
 
-  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -24 * 5.69 * 100;
+  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -114 * 5.69 * 100;
 
-  public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -30 * 5.69 * 100;
+  public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -120 * 5.69 * 100;
 
 }

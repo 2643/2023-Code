@@ -6,13 +6,16 @@ package frc.robot.subsystems;
 import java.util.TimerTask;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 //import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,24 +39,19 @@ public class ArmLift extends SubsystemBase {
   DigitalInput limitSwitchInput = new DigitalInput(Constants.LIMIT_SWITCH_PORT);
   Timer timer = new Timer();
   DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_PORT_TWO); 
-  // GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",
-  // 0).getEntry();
-  // GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",
-  // 0).getEntry();
-  // GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",
-  // 0).getEntry();
-  // GenericEntry fEntry = Shuffleboard.getTab("PID").add("Feed Forward",
-  // 0).getEntry();
-  // GenericEntry targetEntry = Shuffleboard.getTab("PID").add("Target",
-  // 0).getEntry();
-  // GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("Current
-  // Position", 0).getEntry();
-  // GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",
-  // 0).getEntry();
-  // GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity",
-  // 0).getEntry();
-  // SimpleWidget buttontarget = Shuffleboard.getTab("PID").add("Button",
-  // false).withWidget(BuiltInWidgets.kToggleButton);
+  GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",0).getEntry();
+  GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",0).getEntry();
+  GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",0).getEntry();
+  GenericEntry fEntry = Shuffleboard.getTab("PID").add("Feed Forward",0).getEntry();
+  GenericEntry targetEntry = Shuffleboard.getTab("PID").add("Target",0).getEntry();
+  GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("CurrentPosition", 0).getEntry();
+  GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",0).getEntry();
+  GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity",0).getEntry();
+  GenericEntry THL = Shuffleboard.getTab("PID").add("Top hard limit",Constants.TOP_HARD_LIMIT_MOVEPOS).getEntry();
+  GenericEntry TSL = Shuffleboard.getTab("PID").add("Top Soft Limit", Constants.TOP_SOFT_LIMIT_MOVEPOS).getEntry();
+  GenericEntry BHL = Shuffleboard.getTab("PID").add("Bottom Hard Limit",Constants.BOTTOM_HARD_LIMIT_MOVEPOS).getEntry();
+  GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
+  
 
   double kF;
   double kP;
@@ -73,7 +71,7 @@ public class ArmLift extends SubsystemBase {
     // m_motor.setSelectedSensorPosition(pos, 0, 0)
     m_motor.config_kF(0, 0, 1);
     m_motor.config_kP(0, 0.05, 1);
-    m_motor.config_kI(0, 0.0000001, 1);
+    m_motor.config_kI(0, 0, 1);
     m_motor.config_kD(0, 0, 1);
     m_motor.configMotionCruiseVelocity(100000, 1);
     m_motor.configMotionAcceleration(10000, 1);
@@ -115,6 +113,7 @@ public class ArmLift extends SubsystemBase {
   public void destroyObject() {
     m_motor.DestroyObject();
     m_motor.configFactoryDefault();
+   
   }
 
 
@@ -129,21 +128,31 @@ public class ArmLift extends SubsystemBase {
   public void afterRestMovePos(double movePos) {
     if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
       movePos(movePos);
-    } else {
-      if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-        destroyObject();
-      } else if(getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > MoveArm.targetPos) {
-        movePos(movePos);
-      } else if(getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && getPos() < MoveArm.targetPos){
-        movePos(movePos);
-      }
+      System.out.println(getPos());
+    } 
+   else {
+    System.out.println(getPos());
+    if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+      destroyObject();
+    } else if(getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > MoveArm.targetPos) {
+      movePos(movePos);
+    } else if(getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && getPos() < MoveArm.targetPos){
+      movePos(movePos);
     }
-
-    // } else if (getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-    //   destroyObject();
-    // } else if()
-  
+    
+    // if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+    //   disablemotor();
+    // } else if(getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS) {
+    //   MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
+    // } else if(getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS){
+    //   MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
+    // }
+    // movePos(movePos);
   }
+
+}
+
+
 
   public void setPos(double pos) {
     m_motor.setSelectedSensorPosition(pos, 0, 1);
@@ -194,7 +203,7 @@ public class ArmLift extends SubsystemBase {
     // motion magic position control
     // if(!buttontarget.getEntry().getBoolean(false)) {
     // targetPos = targetEntry.getDouble(0);
-    // movePos(targetPos);
+    // afterRestMovePos(targetPos);
     // currentPosEntry.setDouble(m_motor.getSelectedSensorPosition());
 
     // //m_motor.getPIDController().setReference(speed);

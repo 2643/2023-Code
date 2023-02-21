@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     
-    CommandScheduler.getInstance().schedule(new ResetPosition());
+   CommandScheduler.getInstance().schedule(new ResetPosition());
     
   }
 
