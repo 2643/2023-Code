@@ -2,6 +2,7 @@ package frc.robot.commands.ArmLift;
 
 import java.sql.Time;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -39,7 +40,7 @@ public class ResetPosition extends CommandBase {
     //   state = states.state4;
     // }
     state = states.state1;
-    RobotContainer.m_armLift.movePos(2048*100);
+    RobotContainer.m_armLift.movePos(-2048*100);
     
   }
 
@@ -51,7 +52,7 @@ public class ResetPosition extends CommandBase {
         if (RobotContainer.m_armLift.getLimitSwitch()) {
             state=states.state2;
             resetPosition = RobotContainer.m_armLift.getPos();
-            RobotContainer.m_armLift.movePos(resetPosition-5000);
+            RobotContainer.m_armLift.movePos(resetPosition+5000);
             RobotContainer.m_armLift.starttimer();
             System.out.println("state2");
           } 
@@ -61,7 +62,7 @@ public class ResetPosition extends CommandBase {
         if(RobotContainer.m_armLift.gettimer()>2){
           System.out.println("state3");
           RobotContainer.m_armLift.changeVelocity(1000);
-          RobotContainer.m_armLift.movePos(resetPosition+10000);
+          RobotContainer.m_armLift.movePos(resetPosition-10000);
           state=states.state3;
           break;
         }

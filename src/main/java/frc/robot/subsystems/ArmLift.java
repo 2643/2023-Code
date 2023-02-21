@@ -44,14 +44,16 @@ public class ArmLift extends SubsystemBase {
   GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",0).getEntry();
   GenericEntry fEntry = Shuffleboard.getTab("PID").add("Feed Forward",0).getEntry();
   GenericEntry targetEntry = Shuffleboard.getTab("PID").add("Target",0).getEntry();
-  GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("CurrentPosition", 0).getEntry();
+  //GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("CurrentPosition", 0).getEntry();
   GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",0).getEntry();
   GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity",0).getEntry();
   GenericEntry THL = Shuffleboard.getTab("PID").add("Top hard limit",Constants.TOP_HARD_LIMIT_MOVEPOS).getEntry();
   GenericEntry TSL = Shuffleboard.getTab("PID").add("Top Soft Limit", Constants.TOP_SOFT_LIMIT_MOVEPOS).getEntry();
   GenericEntry BHL = Shuffleboard.getTab("PID").add("Bottom Hard Limit",Constants.BOTTOM_HARD_LIMIT_MOVEPOS).getEntry();
   GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
-  
+  GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("Current Pos",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
+  GenericEntry targetPosEntry = Shuffleboard.getTab("PID").add("Target Pos",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
+
 
   double kF;
   double kP;
@@ -77,6 +79,7 @@ public class ArmLift extends SubsystemBase {
     m_motor.configMotionAcceleration(10000, 1);
     m_motor.configNeutralDeadband(0.04);
     m_motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 1);
+    m_motor.setInverted(true);
 
     // makes the wheels go the other direction
     // rightFrontmotor.setInverted(true);
@@ -125,32 +128,45 @@ public class ArmLift extends SubsystemBase {
     setPos(0);
     movePos(0);
   }
-  public void afterRestMovePos(double movePos) {
-    if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
-      movePos(movePos);
-      System.out.println(getPos());
-    } 
-   else {
-    System.out.println(getPos());
-    if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-      destroyObject();
-    } else if(getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > MoveArm.targetPos) {
-      movePos(movePos);
-    } else if(getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && getPos() < MoveArm.targetPos){
-      movePos(movePos);
-    }
-    
-    // if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-    //   disablemotor();
-    // } else if(getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS) {
-    //   MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
-    // } else if(getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS){
-    //   MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
-    // }
-    // movePos(movePos);
-  }
+  public void afterRestMovePos() {
+  //   if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
+  //     movePos(movePos);
+  //     System.out.println(getPos());
+  //   } else {
+  //     System.out.println(getPos());
+  //     if(getPos() > Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+  //       destroyObject();
+  //     } else if(getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > MoveArm.targetPos) {
+  //       movePos(movePos);
+  //     } else if(getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && getPos() < MoveArm.targetPos){
+  //       movePos(movePos);
+  //     }
+  // }
 
+  // if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
+  //   movePos(movePos);
+  //   System.out.println(getPos());
+  // } else {
+  //   System.out.println(getPos());
+  //   if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+  //     destroyObject();
+  //   } else if(MoveArm.targetPos > Constants.TOP_SOFT_LIMIT_MOVEPOS) {
+  //     MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
+  //     movePos(MoveArm.targetPos);
+  //   } else if(MoveArm.targetPos < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS){
+  //     MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
+  //     movePos(MoveArm.targetPos);
+  //   }
+  if(MoveArm.targetPos >= Constants.TOP_HARD_LIMIT_MOVEPOS || MoveArm.targetPos < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+    destroyObject();
+  } else if(MoveArm.targetPos > Constants.TOP_SOFT_LIMIT_MOVEPOS) {
+    MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
+  } else if(MoveArm.targetPos < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
+    MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
+  }
+  movePos(MoveArm.targetPos);
 }
+
 
 
 
@@ -194,42 +210,10 @@ public class ArmLift extends SubsystemBase {
   public double stringPotget(){
     return pot.get();
   }
-  // int count = 0;
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // Talon
-    // motion magic position control
-    // if(!buttontarget.getEntry().getBoolean(false)) {
-    // targetPos = targetEntry.getDouble(0);
-    // afterRestMovePos(targetPos);
-    // currentPosEntry.setDouble(m_motor.getSelectedSensorPosition());
-
-    // //m_motor.getPIDController().setReference(speed);
-    // kP = pEntry.getDouble(0);
-    // kI = iEntry.getDouble(0);
-    // kD = dEntry.getDouble(0);
-    // kF = fEntry.getDouble(0);
-
-    // accel = accelEntry.getDouble(0);
-    // vel = velEntry.getDouble(0);
-    // m_motor.configMotionAcceleration(accel, 1);
-    // m_motor.configMotionCruiseVelocity(vel, 1);
-    // m_motor.config_kP(0, kP, 1);
-    // m_motor.config_kI(0, kI, 1);
-    // m_motor.config_kD(0, kD, 1);
-    // m_motor.config_kF(0, kF, 1);
-
-    // }
-    // else{
-    // setPos(0);
-    // movePos(0);
-    // //targetPos = targetEntry.getDouble(0);
-    // }
-    // CANSparkMax
-    // setSpeed(0.1);
-    // setSpeed2(0.1);
-    // System.out.println(limitSwitchInput.get());
+    currentPosEntry.setDouble(getPos());
+    targetPosEntry.setDouble(MoveArm.targetPos);
   }
 }

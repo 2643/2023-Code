@@ -41,15 +41,16 @@ public class MoveArm extends CommandBase {
         
     if(moveDirection == ArmLift.moveArmJoystick.Up) {
       
-      targetPos = RobotContainer.m_armLift.getPos() + 10000;
-      RobotContainer.m_armLift.afterRestMovePos(targetPos);
+      targetPos = RobotContainer.m_armLift.getPos() + 5000;
+      RobotContainer.m_armLift.afterRestMovePos();
     } 
     else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
-      RobotContainer.m_armLift.afterRestMovePos(controlToMultiplier(encoderinput)*100*4.5*5.69);
+      targetPos = controlToMultiplier(encoderinput)*100*4.5*5.69;
+      RobotContainer.m_armLift.afterRestMovePos();
     }
     else if((moveDirection == ArmLift.moveArmJoystick.Down))  {
-      targetPos = RobotContainer.m_armLift.getPos() - 10000;
-      RobotContainer.m_armLift.afterRestMovePos(targetPos);
+      targetPos = RobotContainer.m_armLift.getPos() - 5000;
+      RobotContainer.m_armLift.afterRestMovePos();
     }
     // if(RobotContainer.m_armLift.getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && RobotContainer.m_armLift.getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS){
     //   targetPos = RobotContainer.m_armLift.getPos() + 10000;

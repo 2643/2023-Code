@@ -36,11 +36,11 @@ public final class Constants {
 
   public static final int BOTTOM_ROW = 0;
 
-  public static final double TOP_SOFT_LIMIT_MOVEPOS = 114.55* 100 * 5.69;
+  public static final double TOP_SOFT_LIMIT_MOVEPOS = 105* 100 * 5.69;
 
   public static final double TOP_HARD_LIMIT_MOVEPOS = 120 * 100 * 5.69;
 
-  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -114 * 5.69 * 100;
+  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -105 * 5.69 * 100;
 
   public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -120 * 5.69 * 100;
 
