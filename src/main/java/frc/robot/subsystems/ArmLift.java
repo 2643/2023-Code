@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.commands.ArmLift.MoveArm;
 
 public class ArmLift extends SubsystemBase {
@@ -36,9 +37,11 @@ public class ArmLift extends SubsystemBase {
   // TalonFX motor = new TalonFX(3);
   AnalogPotentiometer pot = new AnalogPotentiometer(0, 360, 0);
   TalonFX m_motor = new TalonFX(Constants.ARM_LIFT_MOTOR_PORT);
-  DigitalInput limitSwitchInput = new DigitalInput(Constants.LIMIT_SWITCH_PORT);
+  DigitalInput limitSwitchInput = new DigitalInput(Constants.LIMIT_SWITCH_PORT_ONE);
   Timer timer = new Timer();
-  DigitalInput limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_PORT_TWO); 
+
+
+  DigitalInput limitSwitchTwo = new DigitalInput(Constants.LIMIT_SWITCH_PORT_TWO); 
   GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",0).getEntry();
   GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",0).getEntry();
   GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",0).getEntry();
@@ -203,8 +206,7 @@ public class ArmLift extends SubsystemBase {
   }
 
   public boolean getLimitSwitchTwo(){
-    return limitSwitch.get();
-    
+    return limitSwitchTwo.get();
   }
   
   public double stringPotget(){
@@ -215,5 +217,6 @@ public class ArmLift extends SubsystemBase {
   public void periodic() {
     currentPosEntry.setDouble(getPos());
     targetPosEntry.setDouble(MoveArm.targetPos);
+    System.out.println(limitSwitchTwo.get());
   }
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class ResetPosition extends CommandBase {
@@ -74,10 +75,12 @@ public class ResetPosition extends CommandBase {
           RobotContainer.m_armLift.reset();
           System.out.println("state 4");
           state = states.state4;
+          Constants.armInitialized = true;
+          System.out.println("arm has initialized");
           finish = true;
         }
         break;
-        default: System.out.print("Rayirth's code is trash");
+        default: System.out.print("Rayirth's & Kaushik's code is trash");
       }
     }
       

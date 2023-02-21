@@ -81,13 +81,17 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     
-   CommandScheduler.getInstance().schedule(new ResetPosition());
+   
     
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    if(RobotContainer.m_armLift.getLimitSwitchTwo() && !Constants.armInitialized && !Constants.armCalled) {
+      Constants.armCalled = true;
+      CommandScheduler.getInstance().schedule(new ResetPosition());
+    }
   }
 
   @Override

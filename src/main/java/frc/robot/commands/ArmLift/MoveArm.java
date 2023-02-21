@@ -38,20 +38,22 @@ public class MoveArm extends CommandBase {
     double encoderinput = RobotContainer.encoderButton.getRawAxis(1);
 
     //System.out.println("Working");
-        
-    if(moveDirection == ArmLift.moveArmJoystick.Up) {
+    if(!RobotContainer.m_armLift.getLimitSwitchTwo()) {
+      if(moveDirection == ArmLift.moveArmJoystick.Up) {
       
-      targetPos = RobotContainer.m_armLift.getPos() + 5000;
-      RobotContainer.m_armLift.afterRestMovePos();
-    } 
-    else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
-      targetPos = controlToMultiplier(encoderinput)*100*4.5*5.69;
-      RobotContainer.m_armLift.afterRestMovePos();
+        targetPos = RobotContainer.m_armLift.getPos() + 5000;
+        RobotContainer.m_armLift.afterRestMovePos();
+      } 
+      else if(moveDirection == ArmLift.moveArmJoystick.Encoder){
+        targetPos = controlToMultiplier(encoderinput)*100*4.5*5.69;
+        RobotContainer.m_armLift.afterRestMovePos();
+      }
+      else if((moveDirection == ArmLift.moveArmJoystick.Down))  {
+        targetPos = RobotContainer.m_armLift.getPos() - 5000;
+        RobotContainer.m_armLift.afterRestMovePos();
+      }
     }
-    else if((moveDirection == ArmLift.moveArmJoystick.Down))  {
-      targetPos = RobotContainer.m_armLift.getPos() - 5000;
-      RobotContainer.m_armLift.afterRestMovePos();
-    }
+    
     // if(RobotContainer.m_armLift.getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && RobotContainer.m_armLift.getPos() > Constants.BOTTOM_HARD_LIMIT_MOVEPOS){
     //   targetPos = RobotContainer.m_armLift.getPos() + 10000;
     //   System.out.println("BOTTOM");
