@@ -4,8 +4,9 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autonomous.Autos;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.Autonomous.Routine1;
+import frc.robot.subsystems.*;
+//import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,9 +22,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static final Drivetrain m_drivetrain = new Drivetrain();
+  public static final Vision m_vision = new Vision();
+
   public static final Joystick swerveStick = new Joystick(0);
   public static final JoystickButton m_reset = new JoystickButton(swerveStick, 1);
   public static final JoystickButton m_resetRobotPos = new JoystickButton(swerveStick, 2);
+
+  public static final Joystick operatorBoard = new Joystick(1);
+  static JoystickButton m_test = new JoystickButton(operatorBoard, 0);
+
+
 
   // Joystick
 
@@ -57,6 +65,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto();
+    return new Routine1(m_drivetrain);
   }
 }

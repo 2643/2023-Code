@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Drivetrain.SwerveDrive;
+import frc.robot.commands.Drivetrain.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +19,10 @@ import frc.robot.commands.Drivetrain.SwerveDrive;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  GenericEntry targetRobotX = Shuffleboard.getTab("Odometry").add("Robot-X", 0).getEntry();
+  GenericEntry targetRobotY = Shuffleboard.getTab("Odometry").add("Robot-Y", 0).getEntry();
+  GenericEntry targetRobotTurn = Shuffleboard.getTab("Odometry").add("Turn Angle", 0).getEntry();
+
 
   private RobotContainer m_robotContainer;
 
@@ -84,6 +90,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_drivetrain, new SwerveDrive());
+    //CommandScheduler.getInstance().schedule(new TestOdometry(new Pose2d(new Translation2d(targetRobotX.getDouble(0), targetRobotY.getDouble(0)), new Rotation2d(targetRobotTurn.getDouble(0)))));
     if(RobotContainer.m_reset.getAsBoolean()) {
       RobotContainer.m_drivetrain.resetGyro();
     }
