@@ -66,7 +66,7 @@ public final class Constants {
     public static final double MAX_VOLTAGE = 12.5;
     public static final int GRABBER_MOTOR_PORT = 10;
     public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
-    public static final int GRABBER_MAX_OPEN_POS = 100;
+    public static final int GRABBER_MAX_OPEN_POS = 0;
     public static final int TARGET_CURRENT_VALUE = 11; //change
 
 

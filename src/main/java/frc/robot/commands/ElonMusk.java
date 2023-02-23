@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.BillGates;
 import frc.robot.subsystems.BillGates.States;
 
 import com.swervedrivespecialties.swervelib.ctre.Falcon500SteerConfiguration;
@@ -25,20 +26,27 @@ public class ElonMusk extends CommandBase {
   @Override
   public void initialize() {
     timer.reset();
-    RobotContainer.m_grabber.state = States.NOTINITIALIZED;
+    //RobotContainer.m_grabber.WinchMotor.setInverted(true);
+    //RobotContainer.m_grabber.
+    BillGates.state = States.CLOSINGSTART;
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.m_grabber.getMotorVelocity()>10){
-      RobotContainer.m_grabber.firstCurrentPass();
-      RobotContainer.m_grabber.state = States.CLOSINGCURRENT;
-      System.out.println("Closing Current");
+    if(BillGates.state == States.CLOSINGSTART){
+      System.out.println("Bob's a big boy");
+      if(RobotContainer.m_grabber.getMotorVelocity()>10){
+        RobotContainer.m_grabber.firstCurrentPass();
+        System.out.println("Closing Current");
+      }
     }
-    if(FirstCurrent == false){
+    if(BillGates.state == States.CLOSINGCURRENT){
+      System.out.println("pls help");
+      System.out.println("Test: " + RobotContainer.m_grabber.getCurrentOutput());
       if(RobotContainer.m_grabber.getCurrentOutput() >= Constants.TARGET_CURRENT_VALUE){
+        System.out.println("ReachedLimit");
         RobotContainer.m_grabber.stopMotor();
-        RobotContainer.m_grabber.state = States.CLOSED;
+        BillGates.state = States.CLOSED;
         System.out.println("Closed");
       }
     }

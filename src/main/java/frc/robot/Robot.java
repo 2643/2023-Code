@@ -72,12 +72,12 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    CommandScheduler.getInstance().schedule(new ElonMusk());
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_grabber, new ElonMusk());
    
   }
 
