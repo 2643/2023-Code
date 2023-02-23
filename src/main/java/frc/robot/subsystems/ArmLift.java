@@ -171,8 +171,6 @@ public class ArmLift extends SubsystemBase {
 }
 
 
-
-
   public void setPos(double pos) {
     m_motor.setSelectedSensorPosition(pos, 0, 1);
   }
