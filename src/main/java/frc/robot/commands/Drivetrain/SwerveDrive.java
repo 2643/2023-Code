@@ -66,7 +66,7 @@ public class SwerveDrive extends CommandBase {
     yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
 
     if(Constants.ROTATIONAL_AXIS_MODE) {
-      rotationalXAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS_PORT)), 0.5) * Constants.MAX_RADIANS_PER_SECOND;
+      rotationalXAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS_PORT)), 0.3) * Constants.MAX_RADIANS_PER_SECOND;
     } else {
       //making the speed of the swerve equal that of encoder
 
