@@ -59,7 +59,7 @@ public final class Constants {
     // FIXME: Make sure to take other factors into account such as radius from the center of the robot
     public static double MAX_RADIANS_PER_SECOND = MAX_METERS_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS); //12.773732
     
-    public static final double AUTONOMOUS_VELOCITY_PER_SECOND = MAX_METERS_PER_SECOND;
+    public static final double AUTONOMOUS_VELOCITY_PER_SECOND = MAX_METERS_PER_SECOND * 0.2;
     public static final double AUTONOMOUS_RADIANS_PER_SECOND = AUTONOMOUS_VELOCITY_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS);
     public static final double AUTONOMOUS_SLOW_MODE_MULTIPLIER = 0.2;
 

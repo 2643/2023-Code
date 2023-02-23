@@ -50,8 +50,8 @@ public class Vision extends SubsystemBase {
       //   System.out.print(targetInfo[i] + " ");
       // }
       //System.out.println();
-      visionPos = new Pose2d(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5])));
-      field.setRobotPose(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5])));
+      visionPos = new Pose2d(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5] - 90)));
+      field.setRobotPose(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5] - 90)));
       visionLatency = cl.getDouble(0) + tl.getDouble(0);
       RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp());
       targetXEntry.setDouble(targetInfo[0]);

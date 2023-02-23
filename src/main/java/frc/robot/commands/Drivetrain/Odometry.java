@@ -43,7 +43,7 @@ public class Odometry extends CommandBase {
   @Override
   public void execute() {
     
-    pos = RobotContainer.m_drivetrain.poseVision.getEstimatedPosition();
+    pos = RobotContainer.m_drivetrain.m_odometry.getPoseMeters();
     System.out.println(pos);
 
     if(Math.round(pos.getX()*5) != Math.round(targetXPos*5)){

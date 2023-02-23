@@ -27,6 +27,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
@@ -115,6 +116,7 @@ public class Drivetrain extends SubsystemBase {
     imu.configFactoryDefault();
     imu.setYaw(0);
     m_odometry.resetPosition(new Rotation2d(0), pos, robotPosition);
+    //Timer.delay(1.0);
    
   }
   public void setChassisSpeed(ChassisSpeeds speed){
@@ -143,7 +145,7 @@ public class Drivetrain extends SubsystemBase {
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
       SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.MAX_METERS_PER_SECOND);
-      
+      //desiredStates[0].
       frontLeftModule.set(desiredStates[0].speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND * Constants.MAX_VOLTAGE, moduleStates[0].angle.getRadians());
       frontRightModule.set(desiredStates[1].speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND * Constants.MAX_VOLTAGE, moduleStates[1].angle.getRadians());
       backLeftModule.set(desiredStates[2].speedMetersPerSecond / Constants.MAX_METERS_PER_SECOND * Constants.MAX_VOLTAGE, moduleStates[2].angle.getRadians());
