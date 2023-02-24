@@ -37,14 +37,12 @@ public class BillGates extends SubsystemBase {
     double targetRPM = 1000;
     boolean FirstCurrent = true;
 
-    //GenericEntry pEntry = Shuffleboard.getTab("PID but better").add("Proportional", kP).getEntry();
-    //GenericEntry iEntry = Shuffleboard.getTab("PID but better").add("Integral", kI).getEntry();
-    //GenericEntry dEntry = Shuffleboard.getTab("PID but better").add("Derivative", kD).getEntry();
+    GenericEntry pEntry = Shuffleboard.getTab("PID but better").add("Proportional", kP).getEntry();
+    GenericEntry iEntry = Shuffleboard.getTab("PID but better").add("Integral", kI).getEntry();
+    GenericEntry dEntry = Shuffleboard.getTab("PID but better").add("Derivative", kD).getEntry();
     GenericEntry fEntry = Shuffleboard.getTab("PID but better").add("Feed Forward", kF).getEntry();
     GenericEntry targetVelEntry = Shuffleboard.getTab("PID but better").add("Target", targetRPM).getEntry();
     GenericEntry currentVelEntry = Shuffleboard.getTab("PID but better").add("Current velocity", currentVel).getEntry();
-    GenericEntry currentPosEntry = Shuffleboard.getTab("PID but better").add("Current Position", currentPos).getEntry();
-    GenericEntry limitSwitchDetectEntry = Shuffleboard.getTab("PID but better").add("Limit Switch Detect", GlimitSwitchInput.get()).getEntry();
     GenericEntry currentCURRENTEntry = Shuffleboard.getTab("PID but better").add("Current CURRENT", currentCURRENT).getEntry();
 
   public BillGates() {
@@ -93,25 +91,24 @@ public static States state = States.CLOSINGSTART;
   }
 
   public void firstCurrentPass(){
-    //timer.start();
-    //System.out.println();
-    if(currentVel >= targetRPM*0.8){
+    timer.start();
+    System.out.println(timer.get());
+    if(timer.hasElapsed(1)){
       FirstCurrent = false;
       timer.stop();
       timer.reset();
       state = States.CLOSINGCURRENT;
-      System.out.println(state);
     } 
   }
 
   @Override
   public void periodic(){
     getCurrentPosition();
-    currentPosEntry.setDouble(getCurrentPosition());
+    System.out.println(getCurrentPosition());
     //setCurrentLimit(Constants.TARGET_CURRENT_VALUE);
     //System.out.println("Crashing");
-    //System.out.println(state);
-    limitSwitchDetectEntry.setBoolean((GlimitSwitchInput.get()));
+    System.out.println(state);
+    System.out.println(GlimitSwitchInput.get());
     currentCURRENT = WinchMotor.getOutputCurrent();
     currentCURRENTEntry.setDouble(currentCURRENT);
     currentVel = WinchMotor.getEncoder().getVelocity();
@@ -126,17 +123,15 @@ public static States state = States.CLOSINGSTART;
           resetPosition();
           targetRPM = -1000;
           //targetVelEntry.setDouble(targetRPM);
-          //System.out.println("Not Initialized");
+          System.out.println("Not Initialized");
           state = States.INITIALIZINGOPENING;
-          System.out.print(state);
           break;
         case INITIALIZINGOPENING:
           setRPM(targetRPM);
           if(GlimitSwitchInput.get() == true){
             state = States.INITIALIZINGSTOPPING;
-            System.out.println(state);
           }
-          //System.out.println("Initializing-- Opening");
+          System.out.println("Initializing-- Opening");
           break;
         case INITIALIZINGSTOPPING:
           targetRPM = 0;
@@ -144,13 +139,11 @@ public static States state = States.CLOSINGSTART;
           setRPM(targetRPM);
           resetPosition();
           state = States.INITIALIZED;
-          System.out.println(state);
-          //System.out.println("Initializing-- Stopping");
+          System.out.println("Initializing-- Stopping");
           break;
         case INITIALIZED:
-          //System.out.println("Initialized");
+          System.out.println("Initialized");
           state = States.OPENING;
-          System.out.println(state);
           break;
         case OPENING:
           targetRPM = -1000;
@@ -170,7 +163,7 @@ public static States state = States.CLOSINGSTART;
         case CLOSINGSTART:
           WinchMotor.setInverted(true);
           System.out.println(FirstCurrent);
-          //System.out.println("timer" + timer.get());
+          System.out.println("timer" + timer.get());
           // currentCURRENTEntry.setDouble(currentCURRENT);
           // currentVelEntry.setDouble(currentVel);
           //targetRPM = targetVelEntry.getDouble(targetRPM);
@@ -190,7 +183,7 @@ public static States state = States.CLOSINGSTART;
           targetVelEntry.setDouble(targetRPM);
           setRPM(0);
           setCurrentLimit(Constants.TARGET_CURRENT_VALUE);
-          //System.out.println("Closed");
+          System.out.println("Closed");
           break;
         default:
           System.out.println("Why are you in default");
@@ -198,7 +191,6 @@ public static States state = States.CLOSINGSTART;
     }
     currentCURRENT = 0;
     }
-    //System.out.println(state);
     // System.out.println(FirstCurrent);
     // System.out.println("timer" + timer.get());
     // targetRPM = targetVelEntry.getDouble(targetRPM);

@@ -25,7 +25,7 @@ public class ElonMusk extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //timer.reset();
+    timer.reset();
     //RobotContainer.m_grabber.WinchMotor.setInverted(true);
     //RobotContainer.m_grabber.
     BillGates.state = States.CLOSINGSTART;
@@ -41,14 +41,13 @@ public class ElonMusk extends CommandBase {
       }
     }
     if(BillGates.state == States.CLOSINGCURRENT){
-      //System.out.println("pls help");
+      System.out.println("pls help");
       System.out.println("Test: " + RobotContainer.m_grabber.getCurrentOutput());
       if(RobotContainer.m_grabber.getCurrentOutput() >= Constants.TARGET_CURRENT_VALUE){
-        //System.out.println("ReachedLimit");
+        System.out.println("ReachedLimit");
         RobotContainer.m_grabber.stopMotor();
         BillGates.state = States.CLOSED;
-        System.out.println(RobotContainer.m_grabber.state);
-        //System.out.println("Closed");
+        System.out.println("Closed");
       }
     }
   }
