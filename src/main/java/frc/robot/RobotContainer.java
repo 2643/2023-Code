@@ -5,18 +5,12 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
-import frc.robot.commands.ArmLift.MoveArm;
-import frc.robot.commands.ArmLift.ResetPosition;
-//import frc.robot.commands.ArmLift.ArmLift;
-// import frc.robot.commands.ArmLift.downArmLIft;
-// import frc.robot.commands.ArmLift.upArmLIft;
+import frc.robot.commands.ArmLift.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ArmLift;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,21 +21,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  //initilize the subsystem
+  //initialize the subsystem
   public static final ArmLift m_armLift = new ArmLift();
   public static final Joystick m_joystick = new Joystick(0);
-  // public static final Joystick m_opboard = new Joystick(1);
+  public static final Joystick m_opBoard = new Joystick(1);
 
   public static JoystickButton upArmButton = new JoystickButton(m_joystick,1 );
   public static JoystickButton downArmButton = new JoystickButton(m_joystick, 2);
-  public static Joystick encoderButton = new Joystick(3);
   // public static Joystick bottomNodeButton = new Joystick(4);
   // public static Joystick middleNodeButton = new Joystick(5);
-
-  
-  // public static JoystickButton rotaryNob = new JoystickButton(m_joystick, 2);
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,30 +37,10 @@ public class RobotContainer {
     configureBindings();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
-
     upArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Up));
-    
     downArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Down));
     
-    //downArmButton.whenReleased(new ResetPosition());
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(m_exampleSubsystem::exampleCondition)
-        //.onTrue(new ExampleCommand(m_exampleSubsystem));
-     //upArmButton.whenPressed(new ArmLift());
-     
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
   }
 
   /**

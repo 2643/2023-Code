@@ -17,14 +17,12 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
 
-  }
+  public static final int ARM_LIFT_LEFT_MOTOR_PORT = 15;
+  public static final int ARM_LIFT_RIGHT_MOTOR_PORT = 16;
 
-  public static final int ARM_LIFT_MOTOR_PORT = 15;//left
-  public static final int LIMIT_SWITCH_PORT_ONE = 0;
-  public static final int LIMIT_SWITCH_PORT_TWO = 1;
+  public static final int LIMIT_SWITCH_PORT_ONE = 1;
+  public static final int LIMIT_SWITCH_PORT_TWO = 2;
   // change when mech calculates it
   public static final int STABLE_ANGLE = 0;
   // above origin
@@ -36,12 +34,12 @@ public final class Constants {
 
   public static final int BOTTOM_ROW = 0;
 
+  public static final double GEAR_RATIO = 153.6;
+  public static final double COUNT_PER_DEGREES = 2048 * GEAR_RATIO / 360;
+
   public static final double TOP_SOFT_LIMIT_MOVEPOS = 135* 100 * 5.69 ;
-
   public static final double TOP_HARD_LIMIT_MOVEPOS = 150 * 100 * 5.69;
-
   public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -135 * 5.69 * 100;
-
   public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -150 * 5.69 * 100;
 
   public static boolean armInitialized = false;

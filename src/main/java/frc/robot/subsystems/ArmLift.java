@@ -3,16 +3,15 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.subsystems;
 
-import java.util.TimerTask;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.commands.ArmLift.MoveArm;
 
 public class ArmLift extends SubsystemBase {
@@ -33,10 +31,10 @@ public class ArmLift extends SubsystemBase {
     MiddleNode,
   }
   /** Creates a new Motor. */
-  // Talon motor contoroller
-  // TalonFX motor = new TalonFX(3);
-  AnalogPotentiometer pot = new AnalogPotentiometer(0, 360, 0);
-  TalonFX m_motor = new TalonFX(Constants.ARM_LIFT_MOTOR_PORT);
+
+  TalonFX leftArmMotor = new TalonFX(Constants.ARM_LIFT_LEFT_MOTOR_PORT);
+  TalonFX rightArmMotor = new TalonFX(Constants.ARM_LIFT_RIGHT_MOTOR_PORT);
+
   DigitalInput limitSwitchInput = new DigitalInput(Constants.LIMIT_SWITCH_PORT_ONE);
   Timer timer = new Timer();
 
@@ -56,6 +54,7 @@ public class ArmLift extends SubsystemBase {
   GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
   GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("Current Pos",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
   GenericEntry targetPosEntry = Shuffleboard.getTab("PID").add("Target Pos",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
+  GenericEntry FFPosEntry = Shuffleboard.getTab("PID").add("FF",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
 
 
   double kF;
@@ -68,63 +67,58 @@ public class ArmLift extends SubsystemBase {
   double pos;
   double softToHardTarget;
 
-  // CANSparkMax
-  // CANSparkMax rightFrontmotor = new CANSparkMax(1, MotorType.kBrushless);
+
+  double AuxiliaryFF = 0;
+
   public ArmLift() {
-    m_motor.configFactoryDefault();
-    m_motor.selectProfileSlot(0, 0);
-    // m_motor.setSelectedSensorPosition(pos, 0, 0)
-    m_motor.config_kF(0, 0, 1);
-    m_motor.config_kP(0, 0.05, 1);
-    m_motor.config_kI(0, 0, 1);
-    m_motor.config_kD(0, 0, 1);
-    m_motor.configMotionCruiseVelocity(100000, 1);
-    m_motor.configMotionAcceleration(10000, 1);
-    m_motor.configNeutralDeadband(0.04);
-    m_motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 1);
-    m_motor.setInverted(true);
+    leftArmMotor.configFactoryDefault();
+    leftArmMotor.selectProfileSlot(0, 0);
 
-    // makes the wheels go the other direction
-    // rightFrontmotor.setInverted(true);
+    leftArmMotor.config_kF(0, 0, 1);
+    leftArmMotor.config_kP(0, 0.06, 1);
+    leftArmMotor.config_kI(0, 0, 1);
+    leftArmMotor.config_kD(0, 0, 1);
+    leftArmMotor.configPeakOutputForward(0.7);
+    leftArmMotor.configPeakOutputReverse(-0.7);
+
+    leftArmMotor.configMotionCruiseVelocity(100000, 1);
+    leftArmMotor.configMotionAcceleration(1200, 1);
+    leftArmMotor.configNeutralDeadband(0.04);
+    leftArmMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 1);
+    leftArmMotor.setInverted(true);
+    rightArmMotor.follow(leftArmMotor);
+    rightArmMotor.setInverted(InvertType.OpposeMaster);
   }
-  // public void setSpeed(double speed) {
-  // rightFrontmotor.getPIDController().setReference(speed,
-  // ControlType.kDutyCycle);
-  // }
 
-  // CANSparkMax leftFrontmotor = new CANSparkMax(3, MotorType.kBrushless);
-  // public void setSpeed2(double speed) {
-  // leftFrontmotor.getPIDController().setReference(speed,
-  // ControlType.kDutyCycle);
+  //ArmFeedforward test = new ArmFeedforward(0, 0, 0);
 
-  // }
-  // Talon
-  // public static final TalonFXControlMode MotionProfile =
-  // TalonFXControlMode.MotionMagic;
   public void movePos(double pos) {
-    m_motor.set(TalonFXControlMode.MotionMagic, pos);
+    leftArmMotor.set(TalonFXControlMode.MotionMagic, pos);
   }
   
-  public void starttimer(){
+  public void movePosFF(double pos) {
+    leftArmMotor.set(TalonFXControlMode.MotionMagic, pos, DemandType.ArbitraryFeedForward, AuxiliaryFF);
+  }
+
+  public void startTimer(){
     timer.reset();
     timer.start();
   }
-  public void stoptimer(){
+  public void stopTimer(){
     timer.stop();
   }
-  public double gettimer(){
+  public double getTimer(){
     return timer.get();
   }
 
-  public void destroyObject() {
-    m_motor.DestroyObject();
-    m_motor.configFactoryDefault();
-   
+  public void destroyMotor() {
+    leftArmMotor.DestroyObject();
+    leftArmMotor.configFactoryDefault();
   }
 
 
   public double getPos() {
-    return m_motor.getSelectedSensorPosition();
+    return leftArmMotor.getSelectedSensorPosition();
   }
 
   public void reset(){
@@ -132,36 +126,8 @@ public class ArmLift extends SubsystemBase {
     movePos(0);
   }
   public void afterRestMovePos() {
-  //   if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
-  //     movePos(movePos);
-  //     System.out.println(getPos());
-  //   } else {
-  //     System.out.println(getPos());
-  //     if(getPos() > Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-  //       destroyObject();
-  //     } else if(getPos() > Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > MoveArm.targetPos) {
-  //       movePos(movePos);
-  //     } else if(getPos() < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS && getPos() < MoveArm.targetPos){
-  //       movePos(movePos);
-  //     }
-  // }
-
-  // if (getPos() < Constants.TOP_SOFT_LIMIT_MOVEPOS && getPos() > Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
-  //   movePos(movePos);
-  //   System.out.println(getPos());
-  // } else {
-  //   System.out.println(getPos());
-  //   if(getPos() >= Constants.TOP_HARD_LIMIT_MOVEPOS || getPos() < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-  //     destroyObject();
-  //   } else if(MoveArm.targetPos > Constants.TOP_SOFT_LIMIT_MOVEPOS) {
-  //     MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
-  //     movePos(MoveArm.targetPos);
-  //   } else if(MoveArm.targetPos < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS){
-  //     MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
-  //     movePos(MoveArm.targetPos);
-  //   }
   if(MoveArm.targetPos >= Constants.TOP_HARD_LIMIT_MOVEPOS || MoveArm.targetPos < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-    destroyObject();
+    destroyMotor();
   } else if(MoveArm.targetPos > Constants.TOP_SOFT_LIMIT_MOVEPOS) {
     MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
   } else if(MoveArm.targetPos < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
@@ -172,11 +138,11 @@ public class ArmLift extends SubsystemBase {
 
 
   public void setPos(double pos) {
-    m_motor.setSelectedSensorPosition(pos, 0, 1);
+    leftArmMotor.setSelectedSensorPosition(pos, 0, 1);
   }
 
-  public double getvel(){
-    return m_motor.getSelectedSensorVelocity();
+  public double getVel(){
+    return leftArmMotor.getSelectedSensorVelocity();
   }
 
   public boolean getLimitSwitch() {
@@ -184,37 +150,36 @@ public class ArmLift extends SubsystemBase {
   }
 
   public void changeAcceleration(double accel) {
-    m_motor.configMotionAcceleration(accel);
+    leftArmMotor.configMotionAcceleration(accel);
   }
 
   public void changeVelocity(double vel) {
-    m_motor.configMotionCruiseVelocity(vel);
+    leftArmMotor.configMotionCruiseVelocity(vel);
   }
 
   public void speedControl(double percent) {
-    m_motor.set(ControlMode.PercentOutput, percent);
+    leftArmMotor.set(ControlMode.PercentOutput, percent);
   }
 
   public double getStatorCurrent() {
-    return m_motor.getStatorCurrent();
+    return leftArmMotor.getStatorCurrent();
   }
 
-  public void disablemotor() {
-    m_motor.set(ControlMode.Disabled, 0);
+  public void disableMotor() {
+    leftArmMotor.set(ControlMode.Disabled, 0);
   }
 
   public boolean getLimitSwitchTwo(){
     return limitSwitchTwo.get();
   }
   
-  public double stringPotget(){
-    return pot.get();
-  }
-
   @Override
   public void periodic() {
+    double AuxiliaryFF = 0.04 * Math.sin(Math.toRadians((getPos()/Constants.COUNT_PER_DEGREES) + 47));
+    //System.out.println(FF + " Pos: " + getPos());
     currentPosEntry.setDouble(getPos());
+    FFPosEntry.setDouble(AuxiliaryFF);
     targetPosEntry.setDouble(MoveArm.targetPos);
-    System.out.println(limitSwitchTwo.get());
+    //System.out.println(limitSwitchTwo.get());
   }
 }
