@@ -28,26 +28,27 @@ public class ElonMusk extends CommandBase {
     timer.reset();
     //RobotContainer.m_grabber.WinchMotor.setInverted(true);
     //RobotContainer.m_grabber.
-    BillGates.state = States.CLOSINGSTART;
+    BillGates.state = States.CLOSINGSTARTINGVELOCITY;
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(BillGates.state == States.CLOSINGSTART){
-      System.out.println("Bob's a big boy");
-      if(RobotContainer.m_grabber.getMotorVelocity()>10){
-        RobotContainer.m_grabber.firstCurrentPass();
-        System.out.println("Closing Current");
-      }
+    if(BillGates.state == States.CLOSINGSTARTINGVELOCITY){
+      //System.out.println("Bob's a big boy");
+      RobotContainer.m_grabber.firstVelocityPass();
+    }
+    if(BillGates.state == States.CLOSINGTIMEELAPSING){
+      RobotContainer.m_grabber.firstCurrentPass();
     }
     if(BillGates.state == States.CLOSINGCURRENT){
-      System.out.println("pls help");
-      System.out.println("Test: " + RobotContainer.m_grabber.getCurrentOutput());
+      //System.out.println("pls help");
+      //System.out.println("Test: " + RobotContainer.m_grabber.getCurrentOutput());
       if(RobotContainer.m_grabber.getCurrentOutput() >= Constants.TARGET_CURRENT_VALUE){
-        System.out.println("ReachedLimit");
+        //System.out.println("ReachedLimit");
         RobotContainer.m_grabber.stopMotor();
+        RobotContainer.m_grabber.setPercentOutput(Constants.GRABBER_PERCENT_OUTPUT);
         BillGates.state = States.CLOSED;
-        System.out.println("Closed");
+        //System.out.println("Closed");
       }
     }
   }

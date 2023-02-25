@@ -44,6 +44,7 @@ public class BillGates extends SubsystemBase {
     GenericEntry targetVelEntry = Shuffleboard.getTab("PID but better").add("Target", targetRPM).getEntry();
     GenericEntry currentVelEntry = Shuffleboard.getTab("PID but better").add("Current velocity", currentVel).getEntry();
     GenericEntry currentCURRENTEntry = Shuffleboard.getTab("PID but better").add("Current CURRENT", currentCURRENT).getEntry();
+    GenericEntry stateEntry = Shuffleboard.getTab("PID but better").add("Current stae", "NOTINITIALIZED").getEntry();
 
   public BillGates() {
   }
@@ -54,19 +55,21 @@ public class BillGates extends SubsystemBase {
     INITIALIZED,
     OPENING,
     OPENED,
-    CLOSINGSTART,
+    CLOSINGSTARTINGVELOCITY,
+    CLOSINGTIMEELAPSING,
     CLOSINGCURRENT,
     CLOSED;
 
   }
-public static States state = States.CLOSINGSTART;
+public static States state = States.CLOSINGSTARTINGVELOCITY;
 
   public void setRPM(double rpm){
     WinchMotor.getPIDController().setReference(rpm, ControlType.kVelocity);
   }
 
-  public void setCurrentLimit(double amps){
-    WinchMotor.getPIDController().setReference(amps, ControlType.kCurrent);
+  public void setPercentOutput(double percent){
+    WinchMotor.getPIDController().setReference(percent, ControlType.kDutyCycle);
+    //WinchMotor.set(11);
   }
 
 
@@ -90,10 +93,16 @@ public static States state = States.CLOSINGSTART;
     return WinchMotor.getEncoder().getVelocity();
   }
 
+  public void firstVelocityPass(){
+    if(currentVel >= targetRPM*0.8){
+      state = States.CLOSINGTIMEELAPSING;
+    }
+  }
+
   public void firstCurrentPass(){
     timer.start();
-    System.out.println(timer.get());
-    if(timer.hasElapsed(1)){
+    //System.out.println(timer.get());
+    if(timer.hasElapsed(0.5)){
       FirstCurrent = false;
       timer.stop();
       timer.reset();
@@ -104,10 +113,10 @@ public static States state = States.CLOSINGSTART;
   @Override
   public void periodic(){
     getCurrentPosition();
-    System.out.println(getCurrentPosition());
+    //System.out.println(getCurrentPosition());
     //setCurrentLimit(Constants.TARGET_CURRENT_VALUE);
     //System.out.println("Crashing");
-    System.out.println(state);
+    //System.out.println(state);
     System.out.println(GlimitSwitchInput.get());
     currentCURRENT = WinchMotor.getOutputCurrent();
     currentCURRENTEntry.setDouble(currentCURRENT);
@@ -123,7 +132,7 @@ public static States state = States.CLOSINGSTART;
           resetPosition();
           targetRPM = -1000;
           //targetVelEntry.setDouble(targetRPM);
-          System.out.println("Not Initialized");
+          stateEntry.setString("Not Initialized");
           state = States.INITIALIZINGOPENING;
           break;
         case INITIALIZINGOPENING:
@@ -131,7 +140,7 @@ public static States state = States.CLOSINGSTART;
           if(GlimitSwitchInput.get() == true){
             state = States.INITIALIZINGSTOPPING;
           }
-          System.out.println("Initializing-- Opening");
+          stateEntry.setString("Initializing-- Opening");
           break;
         case INITIALIZINGSTOPPING:
           targetRPM = 0;
@@ -139,10 +148,10 @@ public static States state = States.CLOSINGSTART;
           setRPM(targetRPM);
           resetPosition();
           state = States.INITIALIZED;
-          System.out.println("Initializing-- Stopping");
+          stateEntry.setString("Initializing-- Stopping");
           break;
         case INITIALIZED:
-          System.out.println("Initialized");
+        stateEntry.setString("Initialized");
           state = States.OPENING;
           break;
         case OPENING:
@@ -158,18 +167,22 @@ public static States state = States.CLOSINGSTART;
          //System.out.println("Opening");
           break;
         case OPENED:
-          //System.out.println("Opened");
+          stateEntry.setString("Opened");
           break;
-        case CLOSINGSTART:
+        case CLOSINGSTARTINGVELOCITY:
           WinchMotor.setInverted(true);
-          System.out.println(FirstCurrent);
-          System.out.println("timer" + timer.get());
+          //System.out.println(FirstCurrent);
+          //System.out.println("timer" + timer.get());
+          stateEntry.setString("Waiting for Velocity spike");
           // currentCURRENTEntry.setDouble(currentCURRENT);
           // currentVelEntry.setDouble(currentVel);
           //targetRPM = targetVelEntry.getDouble(targetRPM);
           setRPM(2000);
           break;
+        case CLOSINGTIMEELAPSING:
+          stateEntry.setString("Waiting for time lapse");
         case CLOSINGCURRENT:
+          stateEntry.setString("Closing current");
           // currentCURRENT = WinchMotor.getOutputCurrent();
           // //System.out.println("Current" + currentCURRENT);
           // currentCURRENTEntry.setDouble(currentCURRENT);
@@ -177,19 +190,18 @@ public static States state = States.CLOSINGSTART;
           // currentVelEntry.setDouble(currentVel);
           break;
         case CLOSED:
-          targetRPM = 0;
+          //targetRPM = 0;
           currentCURRENT = WinchMotor.getOutputCurrent();
           currentCURRENTEntry.setDouble(currentCURRENT);
           targetVelEntry.setDouble(targetRPM);
-          setRPM(0);
-          setCurrentLimit(Constants.TARGET_CURRENT_VALUE);
-          System.out.println("Closed");
+          //setRPM(0);
+          stateEntry.setString("Closed");
           break;
         default:
-          System.out.println("Why are you in default");
+        stateEntry.setString("Why are you in default");
           break;
     }
-    currentCURRENT = 0;
+    //currentCURRENT = 0;
     }
     // System.out.println(FirstCurrent);
     // System.out.println("timer" + timer.get());
