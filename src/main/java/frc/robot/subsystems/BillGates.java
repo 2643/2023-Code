@@ -47,6 +47,7 @@ public class BillGates extends SubsystemBase {
     GenericEntry stateEntry = Shuffleboard.getTab("PID but better").add("Current stae", "NOTINITIALIZED").getEntry();
 
   public BillGates() {
+    
   }
   public enum States{
     NOTINITIALIZED,

@@ -67,8 +67,8 @@ public final class Constants {
     public static final int GRABBER_MOTOR_PORT = 17;
     public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
     public static final int GRABBER_MAX_OPEN_POS = 0;
-    public static final int TARGET_CURRENT_VALUE = 11;
-    public static final double GRABBER_PERCENT_OUTPUT = 0.043; //change
+    public static final double TARGET_CURRENT_VALUE = 10;
+    public static final double GRABBER_PERCENT_OUTPUT = 0.143; //change
 
 
 }
