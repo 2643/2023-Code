@@ -37,11 +37,11 @@ public final class Constants {
   public static final double GEAR_RATIO = 153.6;
   public static final double COUNT_PER_DEGREES = 2048 * GEAR_RATIO / 360;
 
-  public static final double TOP_SOFT_LIMIT_MOVEPOS = 135* 100 * 5.69 ;
-  public static final double TOP_HARD_LIMIT_MOVEPOS = 150 * 100 * 5.69;
-  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -135 * 5.69 * 100;
-  public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -150 * 5.69 * 100;
-
+  public static final double TOP_SOFT_LIMIT_MOVEPOS = 135 * COUNT_PER_DEGREES;
+  public static final double TOP_HARD_LIMIT_MOVEPOS = 150 * COUNT_PER_DEGREES;
+  public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -135 * COUNT_PER_DEGREES;
+  public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -150 * COUNT_PER_DEGREES;
+  
   public static boolean armInitialized = false;
   public static boolean armCalled = false;
 

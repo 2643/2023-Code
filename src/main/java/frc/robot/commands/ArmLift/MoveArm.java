@@ -33,28 +33,26 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
     encoderInput = RobotContainer.m_opBoard.getRawAxis(1);
-    if (Constants.armInitialized) {
+    if (!Constants.armCalled && !RobotContainer.m_armLift.getLimitSwitchTwo()) {
       if (moveDirection == ArmLift.moveArmJoystick.Up) {
-        targetPos = RobotContainer.m_armLift.getPos() + 5000;
-        RobotContainer.m_armLift.movePosFF(targetPos);
+        targetPos = RobotContainer.m_armLift.getPos() + 2000;
+      }
       // } else if (moveDirection == ArmLift.moveArmJoystick.Encoder) {
       //   targetPos = controlToMultiplier(encoderInput) * 100 * 4.5 * 5.69;
       //   RobotContainer.m_armLift.movePosFF(targetPos);
-      } else if (moveDirection == ArmLift.moveArmJoystick.Down) {
-        targetPos = RobotContainer.m_armLift.getPos() - 5000;
-        RobotContainer.m_armLift.movePosFF(targetPos);
+      else if (moveDirection == ArmLift.moveArmJoystick.Down) {
+        targetPos = RobotContainer.m_armLift.getPos() - 2000;
       }
-    } else {
+      else {
         if (moveDirection == ArmLift.moveArmJoystick.Up) {
-          targetPos = RobotContainer.m_armLift.getPos() + 1000;
+          targetPos = RobotContainer.m_armLift.getPos() + 500;
           RobotContainer.m_armLift.movePosFF(targetPos);
         } else if (moveDirection == ArmLift.moveArmJoystick.Down)  {
-          targetPos = RobotContainer.m_armLift.getPos() - 1000;
-          RobotContainer.m_armLift.movePosFF(targetPos);
+          targetPos = RobotContainer.m_armLift.getPos() - 500;
         }
     }
   }
-
+  }
   // private int controlToMultiplier(double ctrlValue) {
   //   if (ctrlValue > 0.6) {
   //     return 0;

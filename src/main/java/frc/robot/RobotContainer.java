@@ -26,7 +26,7 @@ public class RobotContainer {
   public static final Joystick m_joystick = new Joystick(0);
   public static final Joystick m_opBoard = new Joystick(1);
 
-  public static JoystickButton upArmButton = new JoystickButton(m_joystick,1 );
+  public static JoystickButton upArmButton = new JoystickButton(m_joystick,1);
   public static JoystickButton downArmButton = new JoystickButton(m_joystick, 2);
   // public static Joystick bottomNodeButton = new Joystick(4);
   // public static Joystick middleNodeButton = new Joystick(5);
@@ -38,8 +38,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    upArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Up));
-    downArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Down));
+      upArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Up));
+      downArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Down));
     
   }
 

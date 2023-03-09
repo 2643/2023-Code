@@ -5,18 +5,19 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class ResetPosition extends CommandBase {
+  //public int target;
+  public double resetPosition;
   
   /** Creates a new ResetPosition. */
-  double resetPosition;
   boolean finish = false;
-  public static enum states{
-    state1,
-    state2,
-    state3,
-    state4
-   }
+  // public static enum states{
+  //   state1,
+  //   state2,
+  //   state3,
+  //   state4
+  //  }
 
-  states state = states.state1;
+  // states state = states.state1;
 
 
   
@@ -30,66 +31,50 @@ public class ResetPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Constants.armCalled = true;
     RobotContainer.m_armLift.reset();
-    RobotContainer.m_armLift.changeVelocity(7000);
+    RobotContainer.m_armLift.changeVelocity(1000);//4000
+    RobotContainer.m_armLift.movePos(Constants.COUNT_PER_DEGREES * 75);
+    System.out.println("state1");
     // if(!RobotContainer.m_armLift.getLimitSwitchTwo()){
     //   state = states.state4;
     // }
-    state = states.state1;
-    RobotContainer.m_armLift.movePos(-2048*100);
+    // state = states.state1;
+    // RobotContainer.m_armLift.movePos(-2048*100);
     
   }
 
+
   @Override
   public void execute() {
-    switch(state) {
-      case state1:
-        System.out.println("state 1");
-        if (RobotContainer.m_armLift.getLimitSwitch()) {
-            state=states.state2;
-            resetPosition = RobotContainer.m_armLift.getPos();
-            RobotContainer.m_armLift.movePos(resetPosition + 5000);
-            RobotContainer.m_armLift.startTimer();
-            System.out.println("state2");
-          } 
-          break;
-      case state2:
-        System.out.println(RobotContainer.m_armLift.getTimer());
-        if(RobotContainer.m_armLift.getTimer() > 2){
-          System.out.println("state3");
-          RobotContainer.m_armLift.changeVelocity(1000);
-          RobotContainer.m_armLift.movePos(resetPosition - 10000);
-          state=states.state3;
-          break;
-        }
-        break;
-      case state3:
-        RobotContainer.m_armLift.stopTimer();
-        System.out.println("state 3 still");
-        if(RobotContainer.m_armLift.getLimitSwitch()) {
-          RobotContainer.m_armLift.reset();
-          System.out.println("state 4");
-          state = states.state4;
-          Constants.armInitialized = true;
-          System.out.println("arm has initialized");
-          finish = true;
-        }
-        break;
-        default: System.out.print("Rayirth's & Kaushik's code is trash");
+    if(Constants.armCalled){
+      if(RobotContainer.m_armLift.getPos() >= Constants.COUNT_PER_DEGREES * 70) {
+        System.out.println("state2");
+        RobotContainer.m_armLift.changeVelocity(500);//1000
+        RobotContainer.m_armLift.movePos(Constants.COUNT_PER_DEGREES * 75);
+        
+      }
+      
+      if (RobotContainer.m_armLift.getLimitSwitch()) {
+        resetPosition = RobotContainer.m_armLift.getPos();
+        System.out.println("state3");
+        finish = true; 
+        RobotContainer.m_armLift.movePos(resetPosition);
       }
     }
+  }
       
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_armLift.changeVelocity(100000);
+    RobotContainer.m_armLift.changeVelocity(2000);//10000
+    RobotContainer.m_armLift.reset();
+    Constants.armCalled = false;
+    Constants.armInitialized = true;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(state==states.state4){
-      return true;
-    }
-    return false;
+    return finish;
   }
 }
