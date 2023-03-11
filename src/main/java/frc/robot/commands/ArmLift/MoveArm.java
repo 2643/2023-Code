@@ -33,7 +33,7 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
     encoderInput = RobotContainer.m_opBoard.getRawAxis(1);
-    if (!Constants.armCalled && !RobotContainer.m_armLift.getLimitSwitchTwo()) {
+    if (!Constants.armCalled) {
       if (moveDirection == ArmLift.moveArmJoystick.Up) {
         targetPos = RobotContainer.m_armLift.getPos() + 2000;
       }
@@ -43,14 +43,6 @@ public class MoveArm extends CommandBase {
       else if (moveDirection == ArmLift.moveArmJoystick.Down) {
         targetPos = RobotContainer.m_armLift.getPos() - 2000;
       }
-      else {
-        if (moveDirection == ArmLift.moveArmJoystick.Up) {
-          targetPos = RobotContainer.m_armLift.getPos() + 500;
-          RobotContainer.m_armLift.movePosFF(targetPos);
-        } else if (moveDirection == ArmLift.moveArmJoystick.Down)  {
-          targetPos = RobotContainer.m_armLift.getPos() - 500;
-        }
-    }
   }
   }
   // private int controlToMultiplier(double ctrlValue) {

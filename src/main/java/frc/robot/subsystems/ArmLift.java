@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 //import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 //import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -58,10 +59,15 @@ public class ArmLift extends SubsystemBase {
   GenericEntry PosErrEntry = Shuffleboard.getTab("PID").add("PosErr",0).getEntry();
   GenericEntry targetPosEntry = Shuffleboard.getTab("PID").add("Target Pos",0).getEntry();
   GenericEntry FFPosEntry = Shuffleboard.getTab("PID").add("FF",0).getEntry();
-  GenericEntry FFValEntry = Shuffleboard.getTab("PID").add("FFVal",0.04).getEntry();
-  GenericEntry deadBandEntry = Shuffleboard.getTab("PID").add("deadBand",0.04).getEntry();
+  GenericEntry FFValEntry = Shuffleboard.getTab("PID").add("FFVal",0.02).getEntry();
+  GenericEntry deadBandEntry = Shuffleboard.getTab("PID").add("deadBand",0.02).getEntry();
   GenericEntry percentMaxEntry = Shuffleboard.getTab("PID").add("percentMax",0.7).getEntry();
-  //GenericEntry coastModeButton = Shuffleboard.getTab("PID").add("coast button",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  GenericEntry percentMinEntry = Shuffleboard.getTab("PID").add("percentMin",0.7).getEntry();
+  // SimpleWidget secondPosButton = Shuffleboard.getTab("PID").add("second button position",0);
+  // SimpleWidget firstPosButton = Shuffleboard.getTab("PID").add("first button position",0);
+  // GenericEntry firstPosEntry = Shuffleboard.getTab("PID").add("first position",0).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  // GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position",0).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
 
 
   double kF;
@@ -90,7 +96,7 @@ public class ArmLift extends SubsystemBase {
 
     leftArmMotor.configMotionCruiseVelocity(1000, 1);
     leftArmMotor.configMotionAcceleration(1200, 1);
-    leftArmMotor.configNeutralDeadband(0.04);
+    leftArmMotor.configNeutralDeadband(0.02);
     leftArmMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 1);
     leftArmMotor.setInverted(false);
     rightArmMotor.follow(leftArmMotor);
@@ -183,7 +189,7 @@ public class ArmLift extends SubsystemBase {
   @Override
   public void periodic() {
     if(Constants.armInitialized){
-      AuxiliaryFF = -FFValEntry.getDouble(0.04) * Math.sin(Math.toRadians((MoveArm.targetPos/Constants.COUNT_PER_DEGREES) + 47));
+      AuxiliaryFF = -FFValEntry.getDouble(0.019) * Math.sin(Math.toRadians((getPos()/Constants.COUNT_PER_DEGREES) + 47));
       movePosFF(MoveArm.targetPos);
 
       
@@ -192,17 +198,16 @@ public class ArmLift extends SubsystemBase {
       targetPosEntry.setDouble(MoveArm.targetPos);
       PosErrEntry.setDouble(MoveArm.targetPos-getPos());
 
-      leftArmMotor.config_kP(0, pEntry.getDouble(0.06));
+      leftArmMotor.config_kP(0, pEntry.getDouble(0.12));
       leftArmMotor.config_kI(0, iEntry.getDouble(0));
       leftArmMotor.config_kD(0, dEntry.getDouble(0));
-      leftArmMotor.configNeutralDeadband(deadBandEntry.getDouble(0.04));
-      leftArmMotor.configMotionCruiseVelocity(velEntry.getDouble(10000), 1);
-      leftArmMotor.configMotionAcceleration(accelEntry.getDouble(1200), 1);
+      leftArmMotor.configNeutralDeadband(deadBandEntry.getDouble(0.005));
+      leftArmMotor.configMotionCruiseVelocity(velEntry.getDouble(8533.333333), 1);
+      leftArmMotor.configMotionAcceleration(accelEntry.getDouble(17793.57816), 1);
       leftArmMotor.configPeakOutputForward(percentMaxEntry.getDouble(0.7));
       leftArmMotor.configPeakOutputReverse(-percentMaxEntry.getDouble(0.7));
-
-
-
+   
+  
     
       leftArmMotor.setNeutralMode(NeutralMode.Brake);
       rightArmMotor.setNeutralMode(NeutralMode.Brake);
