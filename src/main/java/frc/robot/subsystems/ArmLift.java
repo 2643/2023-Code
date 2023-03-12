@@ -33,44 +33,55 @@ public class ArmLift extends SubsystemBase {
     BottomNode,
     MiddleNode,
   }
-  /** Creates a new Motor. */
 
+  //motors
   TalonFX leftArmMotor = new TalonFX(Constants.ARM_LIFT_LEFT_MOTOR_PORT);
   TalonFX rightArmMotor = new TalonFX(Constants.ARM_LIFT_RIGHT_MOTOR_PORT);
 
+  //limit switches
   DigitalInput limitSwitchInput = new DigitalInput(Constants.LIMIT_SWITCH_PORT_ONE);
   DigitalInput limitSwitchTwo = new DigitalInput(Constants.LIMIT_SWITCH_PORT_TWO);
   
   Timer timer = new Timer();
 
-  GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",0.06).getEntry();
+  //Shuffleboard
+
+  //PID
+  GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",0.12).getEntry();
   GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",0).getEntry();
   GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",0).getEntry();
-  GenericEntry fEntry = Shuffleboard.getTab("PID").add("Feed Forward",0).getEntry();
-  GenericEntry targetEntry = Shuffleboard.getTab("PID").add("Target",0).getEntry();
-  //GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("CurrentPosition", 0).getEntry();
-  GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",1200).getEntry();
-  GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity",10000).getEntry();
+
+  //motion magic velocity and acceleration
+  GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",17000).getEntry();
+  GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity", 8533).getEntry();
+
+  //limits
   GenericEntry THL = Shuffleboard.getTab("PID").add("Top hard limit",Constants.TOP_HARD_LIMIT_MOVEPOS).getEntry();
   GenericEntry TSL = Shuffleboard.getTab("PID").add("Top Soft Limit", Constants.TOP_SOFT_LIMIT_MOVEPOS).getEntry();
   GenericEntry BHL = Shuffleboard.getTab("PID").add("Bottom Hard Limit",Constants.BOTTOM_HARD_LIMIT_MOVEPOS).getEntry();
   GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
+
+  //position values
   GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("Current Pos",0).getEntry();
   GenericEntry PosErrEntry = Shuffleboard.getTab("PID").add("PosErr",0).getEntry();
   GenericEntry targetPosEntry = Shuffleboard.getTab("PID").add("Target Pos",0).getEntry();
+
+  //auxiliary feed forward
   GenericEntry FFPosEntry = Shuffleboard.getTab("PID").add("FF",0).getEntry();
-  GenericEntry FFValEntry = Shuffleboard.getTab("PID").add("FFVal",0.02).getEntry();
-  GenericEntry deadBandEntry = Shuffleboard.getTab("PID").add("deadBand",0.02).getEntry();
+  GenericEntry FFValEntry = Shuffleboard.getTab("PID").add("FFVal",0.019).getEntry();
+
+  //deadband and percent max and min
+  GenericEntry deadBandEntry = Shuffleboard.getTab("PID").add("deadBand",0.005).getEntry();
   GenericEntry percentMaxEntry = Shuffleboard.getTab("PID").add("percentMax",0.7).getEntry();
   GenericEntry percentMinEntry = Shuffleboard.getTab("PID").add("percentMin",0.7).getEntry();
-  // SimpleWidget secondPosButton = Shuffleboard.getTab("PID").add("second button position",0);
-  // SimpleWidget firstPosButton = Shuffleboard.getTab("PID").add("first button position",0);
-  // GenericEntry firstPosEntry = Shuffleboard.getTab("PID").add("first position",0).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-  // GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position",0).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
+  //buttons positional movements
+  SimpleWidget secondTargetButtonWidget = Shuffleboard.getTab("PID").add("Second Button",false).withWidget(BuiltInWidgets.kToggleButton);
+  SimpleWidget firstTargetButtonWidget = Shuffleboard.getTab("PID").add("First Button",false).withWidget(BuiltInWidgets.kToggleButton);
+  GenericEntry firstPosEntry = Shuffleboard.getTab("PID").add("first position", 0).getEntry();
+  GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position", 0).getEntry();
+  GenericEntry percentOutputEntry = Shuffleboard.getTab("PID").add("Percent Output current", 0).getEntry();
 
-
-  double kF;
   double kP;
   double kI;
   double kD;
@@ -79,31 +90,26 @@ public class ArmLift extends SubsystemBase {
   double vel;
   double pos;
   double softToHardTarget;
-
-
   double AuxiliaryFF = 0;
 
   public ArmLift() {
     leftArmMotor.configFactoryDefault();
     leftArmMotor.selectProfileSlot(0, 0);
 
-    leftArmMotor.config_kF(0, 0, 1);
-    leftArmMotor.config_kP(0, 0.06, 1);
+    leftArmMotor.config_kP(0, 0.12, 1);
     leftArmMotor.config_kI(0, 0, 1);
     leftArmMotor.config_kD(0, 0, 1);
     leftArmMotor.configPeakOutputForward(0.7);
     leftArmMotor.configPeakOutputReverse(-0.7);
 
-    leftArmMotor.configMotionCruiseVelocity(1000, 1);
-    leftArmMotor.configMotionAcceleration(1200, 1);
-    leftArmMotor.configNeutralDeadband(0.02);
+    leftArmMotor.configMotionCruiseVelocity(8533, 1);
+    leftArmMotor.configMotionAcceleration(17000, 1);
+    leftArmMotor.configNeutralDeadband(0.005);
     leftArmMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 1);
     leftArmMotor.setInverted(false);
     rightArmMotor.follow(leftArmMotor);
     rightArmMotor.setInverted(InvertType.OpposeMaster);
   }
-
-  //ArmFeedforward test = new ArmFeedforward(0, 0, 0);
 
   public void movePos(double pos) {
     leftArmMotor.set(TalonFXControlMode.MotionMagic, pos);
@@ -193,27 +199,32 @@ public class ArmLift extends SubsystemBase {
       movePosFF(MoveArm.targetPos);
 
       
-      currentPosEntry.setDouble(getPos());
-      FFPosEntry.setDouble(AuxiliaryFF);
-      targetPosEntry.setDouble(MoveArm.targetPos);
-      PosErrEntry.setDouble(MoveArm.targetPos-getPos());
+    //   currentPosEntry.setDouble(getPos());
+    //   FFPosEntry.setDouble(AuxiliaryFF);
+    //   targetPosEntry.setDouble(MoveArm.targetPos);
+    //   PosErrEntry.setDouble(MoveArm.targetPos-getPos());
+    //   percentOutputEntry.setDouble(leftArmMotor.getMotorOutputPercent());
 
-      leftArmMotor.config_kP(0, pEntry.getDouble(0.12));
-      leftArmMotor.config_kI(0, iEntry.getDouble(0));
-      leftArmMotor.config_kD(0, dEntry.getDouble(0));
-      leftArmMotor.configNeutralDeadband(deadBandEntry.getDouble(0.005));
-      leftArmMotor.configMotionCruiseVelocity(velEntry.getDouble(8533.333333), 1);
-      leftArmMotor.configMotionAcceleration(accelEntry.getDouble(17793.57816), 1);
-      leftArmMotor.configPeakOutputForward(percentMaxEntry.getDouble(0.7));
-      leftArmMotor.configPeakOutputReverse(-percentMaxEntry.getDouble(0.7));
+    //   leftArmMotor.config_kP(0, pEntry.getDouble(0.12));
+    //   leftArmMotor.config_kI(0, iEntry.getDouble(0));
+    //   leftArmMotor.config_kD(0, dEntry.getDouble(0));
+    //   leftArmMotor.configNeutralDeadband(deadBandEntry.getDouble(0.005));
+    //   leftArmMotor.configMotionCruiseVelocity(velEntry.getDouble(8533.333333), 1);
+    //   leftArmMotor.configMotionAcceleration(accelEntry.getDouble( 17793.57816), 1);
+    //   leftArmMotor.configPeakOutputForward(percentMaxEntry.getDouble(0.7));
+    //   leftArmMotor.configPeakOutputReverse(-percentMaxEntry.getDouble(0.7));
    
-  
+    // if(firstTargetButtonWidget.getEntry().getBoolean(false)) {
+    //   MoveArm.targetPos = firstPosEntry.getDouble(0);
+    // } else if(secondTargetButtonWidget.getEntry().getBoolean(false)) {
+    //   MoveArm.targetPos = secondPosEntry.getDouble(0);
+    // }
+    
     
       leftArmMotor.setNeutralMode(NeutralMode.Brake);
       rightArmMotor.setNeutralMode(NeutralMode.Brake);
       
     }
-
 
     
   }

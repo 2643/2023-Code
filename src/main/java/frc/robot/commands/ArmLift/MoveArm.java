@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmLift;
-//mport frc.robot.subsystems.ArmLift.moveArmJoystick;
+import frc.robot.subsystems.ArmLift.moveArmJoystick;
 
 public class MoveArm extends CommandBase {
   ArmLift.moveArmJoystick moveDirection;
