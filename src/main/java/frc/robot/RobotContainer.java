@@ -38,8 +38,8 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-      upArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Up));
-      downArmButton.whenHeld(new MoveArm(ArmLift.moveArmJoystick.Down));
+
+      
     
   }
 

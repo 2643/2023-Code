@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ArmLift.MoveArm;
 import frc.robot.commands.ArmLift.ResetPosition;
 // import frc.robot.commands.ArmLift.upArmLIft;
+import frc.robot.subsystems.ArmLift;
+import frc.robot.subsystems.ArmLift.ArmLiftStates;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -86,10 +89,25 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(RobotContainer.m_armLift.getLimitSwitchTwo() && !Constants.armInitialized && !Constants.armCalled) {
+    if(ArmLift.ArmLiftState == ArmLiftStates.INITIALIZING_CALLED) {
       CommandScheduler.getInstance().schedule(new ResetPosition());
     }
-  }
+
+    if(ArmLift.ArmLiftState == ArmLiftStates.NOT_INITIALIZED || ArmLift.ArmLiftState == ArmLiftStates.INITIALIZED) {
+      System.out.println("Can use Joystick");
+      System.out.println("Up Arm " + RobotContainer.upArmButton.getAsBoolean() + " Down Arm " + RobotContainer.downArmButton.getAsBoolean());
+      if(RobotContainer.upArmButton.getAsBoolean()) {
+        CommandScheduler.getInstance().schedule(new MoveArm(ArmLift.moveArmJoystick.Up));
+      } else if (RobotContainer.downArmButton.getAsBoolean()) {
+        CommandScheduler.getInstance().schedule(new MoveArm(ArmLift.moveArmJoystick.Down));
+      } else {
+        // if(ArmLift.ArmLiftState == ArmLiftStates.NOT_INITIALIZED) {
+        //   new MoveArm(ArmLift.moveArmJoystick.Encoder);
+        // }
+        System.out.println("Nothing so far");
+      }
+    }
+  } 
 
   @Override
   public void testInit() {

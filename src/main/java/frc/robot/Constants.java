@@ -23,14 +23,6 @@ public final class Constants {
 
   public static final int LIMIT_SWITCH_PORT_ONE = 1;
   public static final int LIMIT_SWITCH_PORT_TWO = 2;
-  // change when mech calculates it
-  public static final int STABLE_ANGLE = 0;
-  // above origin
-  public static final int MAX_ANGLE = 170;
-  // below origin
-  public static final int MIN_ANGLE = -27;
-
-  //public static final double MIDDLE_ROW_HEIGHT = 217721.8519; //in encoder ticks
 
   public static final int BOTTOM_ROW = 0;
 
@@ -41,8 +33,14 @@ public final class Constants {
   public static final double TOP_HARD_LIMIT_MOVEPOS = 150 * COUNT_PER_DEGREES;
   public static final double BOTTOM_SOFT_LIMIT_MOVEPOS = -135 * COUNT_PER_DEGREES;
   public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -150 * COUNT_PER_DEGREES;
-  
-  public static boolean armInitialized = false;
-  public static boolean armCalled = false;
+
+  //6 pot switch encoder values
+  public static final double rest = 10000;
+  public static final double pickup = -10000;
+  public static final double cone = -15000;
+  public static final double cube = -20000;
+  public static final double chargingStation = -25000;
+  public static final double floor = -30000;
+
 
 }

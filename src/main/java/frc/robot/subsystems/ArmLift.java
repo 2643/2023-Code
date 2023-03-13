@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -34,6 +35,15 @@ public class ArmLift extends SubsystemBase {
     MiddleNode,
   }
 
+  public static enum ArmLiftStates {
+    NOT_INITIALIZED,
+    INITIALIZING_CALLED,
+    INITIALIZING,
+    INITIALIZED
+  }
+
+
+  public static ArmLiftStates ArmLiftState = ArmLiftStates.NOT_INITIALIZED;
   //motors
   TalonFX leftArmMotor = new TalonFX(Constants.ARM_LIFT_LEFT_MOTOR_PORT);
   TalonFX rightArmMotor = new TalonFX(Constants.ARM_LIFT_RIGHT_MOTOR_PORT);
@@ -94,6 +104,10 @@ public class ArmLift extends SubsystemBase {
 
   public ArmLift() {
     leftArmMotor.configFactoryDefault();
+    rightArmMotor.configFactoryDefault();
+
+    leftArmMotor.setNeutralMode(NeutralMode.Brake);
+    rightArmMotor.setNeutralMode(NeutralMode.Brake);
     leftArmMotor.selectProfileSlot(0, 0);
 
     leftArmMotor.config_kP(0, 0.12, 1);
@@ -194,36 +208,47 @@ public class ArmLift extends SubsystemBase {
   
   @Override
   public void periodic() {
-    if(Constants.armInitialized){
-      AuxiliaryFF = -FFValEntry.getDouble(0.019) * Math.sin(Math.toRadians((getPos()/Constants.COUNT_PER_DEGREES) + 47));
-      movePosFF(MoveArm.targetPos);
+    if(DriverStation.isEnabled()) {
+      switch(ArmLiftState) {
+        case NOT_INITIALIZED:
+          movePosFF(MoveArm.targetPos);
+          if(getLimitSwitchTwo()) {
+            ArmLiftState = ArmLiftStates.INITIALIZING_CALLED;
+          }
+          break;
+        case INITIALIZING_CALLED:
+          break;
+        case INITIALIZING:
+          break;
+        case INITIALIZED:
+          AuxiliaryFF = -FFValEntry.getDouble(0.019) * Math.sin(Math.toRadians((getPos()/Constants.COUNT_PER_DEGREES) + 47));
+          movePosFF(MoveArm.targetPos);
+          currentPosEntry.setDouble(getPos());
+          FFPosEntry.setDouble(AuxiliaryFF);
+          targetPosEntry.setDouble(MoveArm.targetPos);
+          PosErrEntry.setDouble(MoveArm.targetPos-getPos());
+          percentOutputEntry.setDouble(leftArmMotor.getMotorOutputPercent());
+          leftArmMotor.setNeutralMode(NeutralMode.Brake);
+          rightArmMotor.setNeutralMode(NeutralMode.Brake);
+          break;
 
+          // leftArmMotor.config_kP(0, pEntry.getDouble(0.12));
+          // leftArmMotor.config_kI(0, iEntry.getDouble(0));
+          // leftArmMotor.config_kD(0, dEntry.getDouble(0));
+          // leftArmMotor.configNeutralDeadband(deadBandEntry.getDouble(0.005));
+          // leftArmMotor.configMotionCruiseVelocity(velEntry.getDouble(8533.333333), 1);
+          // leftArmMotor.configMotionAcceleration(accelEntry.getDouble(17793.57816), 1);
+          // leftArmMotor.configPeakOutputForward(percentMaxEntry.getDouble(0.7));
+          // leftArmMotor.configPeakOutputReverse(-percentMaxEntry.getDouble(0.7));
       
-    //   currentPosEntry.setDouble(getPos());
-    //   FFPosEntry.setDouble(AuxiliaryFF);
-    //   targetPosEntry.setDouble(MoveArm.targetPos);
-    //   PosErrEntry.setDouble(MoveArm.targetPos-getPos());
-    //   percentOutputEntry.setDouble(leftArmMotor.getMotorOutputPercent());
-
-    //   leftArmMotor.config_kP(0, pEntry.getDouble(0.12));
-    //   leftArmMotor.config_kI(0, iEntry.getDouble(0));
-    //   leftArmMotor.config_kD(0, dEntry.getDouble(0));
-    //   leftArmMotor.configNeutralDeadband(deadBandEntry.getDouble(0.005));
-    //   leftArmMotor.configMotionCruiseVelocity(velEntry.getDouble(8533.333333), 1);
-    //   leftArmMotor.configMotionAcceleration(accelEntry.getDouble( 17793.57816), 1);
-    //   leftArmMotor.configPeakOutputForward(percentMaxEntry.getDouble(0.7));
-    //   leftArmMotor.configPeakOutputReverse(-percentMaxEntry.getDouble(0.7));
-   
-    // if(firstTargetButtonWidget.getEntry().getBoolean(false)) {
-    //   MoveArm.targetPos = firstPosEntry.getDouble(0);
-    // } else if(secondTargetButtonWidget.getEntry().getBoolean(false)) {
-    //   MoveArm.targetPos = secondPosEntry.getDouble(0);
-    // }
-    
-    
-      leftArmMotor.setNeutralMode(NeutralMode.Brake);
-      rightArmMotor.setNeutralMode(NeutralMode.Brake);
-      
+          // if(firstTargetButtonWidget.getEntry().getBoolean(false)) {
+          //   MoveArm.targetPos = firstPosEntry.getDouble(0);
+          // } else if(secondTargetButtonWidget.getEntry().getBoolean(false)) {
+          //   MoveArm.targetPos = secondPosEntry.getDouble(0);
+          // }
+        
+        
+      }
     }
 
     
