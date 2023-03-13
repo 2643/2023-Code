@@ -94,19 +94,21 @@ public class Robot extends TimedRobot {
     }
 
     if(ArmLift.ArmLiftState == ArmLiftStates.NOT_INITIALIZED || ArmLift.ArmLiftState == ArmLiftStates.INITIALIZED) {
-      System.out.println("Can use Joystick");
-      System.out.println("Up Arm " + RobotContainer.upArmButton.getAsBoolean() + " Down Arm " + RobotContainer.downArmButton.getAsBoolean());
       if(RobotContainer.upArmButton.getAsBoolean()) {
         CommandScheduler.getInstance().schedule(new MoveArm(ArmLift.moveArmJoystick.Up));
       } else if (RobotContainer.downArmButton.getAsBoolean()) {
         CommandScheduler.getInstance().schedule(new MoveArm(ArmLift.moveArmJoystick.Down));
       } else {
-        // if(ArmLift.ArmLiftState == ArmLiftStates.NOT_INITIALIZED) {
-        //   new MoveArm(ArmLift.moveArmJoystick.Encoder);
-        // }
-        System.out.println("Nothing so far");
+        if(ArmLift.ArmLiftState == ArmLiftStates.INITIALIZED) {
+          if(ArmLift.changedEncoderPlacement) {
+            ArmLift.changedEncoderPlacement = false;
+            CommandScheduler.getInstance().schedule(new MoveArm(ArmLift.moveArmJoystick.Encoder));
+          }
+        }
       }
     }
+
+
   } 
 
   @Override

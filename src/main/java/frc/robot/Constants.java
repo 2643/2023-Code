@@ -35,12 +35,13 @@ public final class Constants {
   public static final double BOTTOM_HARD_LIMIT_MOVEPOS = -150 * COUNT_PER_DEGREES;
 
   //6 pot switch encoder values
-  public static final double rest = 10000;
-  public static final double pickup = -10000;
-  public static final double cone = -15000;
-  public static final double cube = -20000;
-  public static final double chargingStation = -25000;
-  public static final double floor = -30000;
+  public static final int ENCODER_PORT = 2;
+  public static final double REST = -10000;
+  public static final double PICKUP = 10000;
+  public static final double CONE = 15000;
+  public static final double CUBE = 20000;
+  public static final double CHARGING_STATION = 25000;
+  public static final double FLOOR = 30000;
 
 
 }

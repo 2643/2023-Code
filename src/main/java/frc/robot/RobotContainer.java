@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
-import frc.robot.commands.ArmLift.*;
+//import frc.robot.commands.ArmLift.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ArmLift;
 import edu.wpi.first.wpilibj.Joystick;

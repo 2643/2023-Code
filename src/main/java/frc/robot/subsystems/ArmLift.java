@@ -12,17 +12,18 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.networktables.GenericEntry;
+//import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+// import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+// import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 //import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 //import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.commands.ArmLift.MoveArm;
 
 public class ArmLift extends SubsystemBase {
@@ -31,8 +32,6 @@ public class ArmLift extends SubsystemBase {
     Up,
     Down, 
     Encoder,
-    BottomNode,
-    MiddleNode,
   }
 
   public static enum ArmLiftStates {
@@ -42,7 +41,7 @@ public class ArmLift extends SubsystemBase {
     INITIALIZED
   }
 
-
+  //public static EncoderState encoderState = EncoderState.REST;
   public static ArmLiftStates ArmLiftState = ArmLiftStates.NOT_INITIALIZED;
   //motors
   TalonFX leftArmMotor = new TalonFX(Constants.ARM_LIFT_LEFT_MOTOR_PORT);
@@ -57,40 +56,40 @@ public class ArmLift extends SubsystemBase {
   //Shuffleboard
 
   //PID
-  GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",0.12).getEntry();
-  GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",0).getEntry();
-  GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",0).getEntry();
+  // GenericEntry pEntry = Shuffleboard.getTab("PID").add("Proportional",0.12).getEntry();
+  // GenericEntry iEntry = Shuffleboard.getTab("PID").add("Integral",0).getEntry();
+  // GenericEntry dEntry = Shuffleboard.getTab("PID").add("Derivative",0).getEntry();
 
   //motion magic velocity and acceleration
-  GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",17000).getEntry();
-  GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity", 8533).getEntry();
+  // GenericEntry accelEntry = Shuffleboard.getTab("PID").add("Acceleration",17000).getEntry();
+  // GenericEntry velEntry = Shuffleboard.getTab("PID").add("Velocity", 8533).getEntry();
 
   //limits
-  GenericEntry THL = Shuffleboard.getTab("PID").add("Top hard limit",Constants.TOP_HARD_LIMIT_MOVEPOS).getEntry();
-  GenericEntry TSL = Shuffleboard.getTab("PID").add("Top Soft Limit", Constants.TOP_SOFT_LIMIT_MOVEPOS).getEntry();
-  GenericEntry BHL = Shuffleboard.getTab("PID").add("Bottom Hard Limit",Constants.BOTTOM_HARD_LIMIT_MOVEPOS).getEntry();
-  GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
+  // GenericEntry THL = Shuffleboard.getTab("PID").add("Top hard limit",Constants.TOP_HARD_LIMIT_MOVEPOS).getEntry();
+  // GenericEntry TSL = Shuffleboard.getTab("PID").add("Top Soft Limit", Constants.TOP_SOFT_LIMIT_MOVEPOS).getEntry();
+  // GenericEntry BHL = Shuffleboard.getTab("PID").add("Bottom Hard Limit",Constants.BOTTOM_HARD_LIMIT_MOVEPOS).getEntry();
+  // GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
 
   //position values
-  GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("Current Pos",0).getEntry();
-  GenericEntry PosErrEntry = Shuffleboard.getTab("PID").add("PosErr",0).getEntry();
-  GenericEntry targetPosEntry = Shuffleboard.getTab("PID").add("Target Pos",0).getEntry();
+  // GenericEntry currentPosEntry = Shuffleboard.getTab("PID").add("Current Pos",0).getEntry();
+  // GenericEntry PosErrEntry = Shuffleboard.getTab("PID").add("PosErr",0).getEntry();
+  // GenericEntry targetPosEntry = Shuffleboard.getTab("PID").add("Target Pos",0).getEntry();
 
   //auxiliary feed forward
-  GenericEntry FFPosEntry = Shuffleboard.getTab("PID").add("FF",0).getEntry();
-  GenericEntry FFValEntry = Shuffleboard.getTab("PID").add("FFVal",0.019).getEntry();
+  // GenericEntry FFPosEntry = Shuffleboard.getTab("PID").add("FF",0).getEntry();
+  // GenericEntry FFValEntry = Shuffleboard.getTab("PID").add("FFVal",0.019).getEntry();
 
   //deadband and percent max and min
-  GenericEntry deadBandEntry = Shuffleboard.getTab("PID").add("deadBand",0.005).getEntry();
-  GenericEntry percentMaxEntry = Shuffleboard.getTab("PID").add("percentMax",0.7).getEntry();
-  GenericEntry percentMinEntry = Shuffleboard.getTab("PID").add("percentMin",0.7).getEntry();
+  // GenericEntry deadBandEntry = Shuffleboard.getTab("PID").add("deadBand",0.005).getEntry();
+  // GenericEntry percentMaxEntry = Shuffleboard.getTab("PID").add("percentMax",0.7).getEntry();
+  // GenericEntry percentMinEntry = Shuffleboard.getTab("PID").add("percentMin",0.7).getEntry();
 
   //buttons positional movements
-  SimpleWidget secondTargetButtonWidget = Shuffleboard.getTab("PID").add("Second Button",false).withWidget(BuiltInWidgets.kToggleButton);
-  SimpleWidget firstTargetButtonWidget = Shuffleboard.getTab("PID").add("First Button",false).withWidget(BuiltInWidgets.kToggleButton);
-  GenericEntry firstPosEntry = Shuffleboard.getTab("PID").add("first position", 0).getEntry();
-  GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position", 0).getEntry();
-  GenericEntry percentOutputEntry = Shuffleboard.getTab("PID").add("Percent Output current", 0).getEntry();
+  // SimpleWidget secondTargetButtonWidget = Shuffleboard.getTab("PID").add("Second Button",false).withWidget(BuiltInWidgets.kToggleButton);
+  // SimpleWidget firstTargetButtonWidget = Shuffleboard.getTab("PID").add("First Button",false).withWidget(BuiltInWidgets.kToggleButton);
+  // GenericEntry firstPosEntry = Shuffleboard.getTab("PID").add("first position", 0).getEntry();
+  // GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position", 0).getEntry();
+  // GenericEntry percentOutputEntry = Shuffleboard.getTab("PID").add("Percent Output current", 0).getEntry();
 
   double kP;
   double kI;
@@ -101,6 +100,8 @@ public class ArmLift extends SubsystemBase {
   double pos;
   double softToHardTarget;
   double AuxiliaryFF = 0;
+  public static double currentArmEncoderPos = 0;
+  public static boolean changedEncoderPlacement = false;
 
   public ArmLift() {
     leftArmMotor.configFactoryDefault();
@@ -130,6 +131,13 @@ public class ArmLift extends SubsystemBase {
   }
   
   public void movePosFF(double pos) {
+    if(MoveArm.targetPos >= Constants.TOP_HARD_LIMIT_MOVEPOS || MoveArm.targetPos < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
+      destroyMotor();
+    } else if(MoveArm.targetPos > Constants.TOP_SOFT_LIMIT_MOVEPOS) {
+      MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
+    } else if(MoveArm.targetPos < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
+      MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
+    }
     leftArmMotor.set(TalonFXControlMode.MotionMagic, pos, DemandType.ArbitraryFeedForward, AuxiliaryFF);
   }
 
@@ -205,13 +213,33 @@ public class ArmLift extends SubsystemBase {
   public boolean getLimitSwitchTwo(){
     return limitSwitchTwo.get();
   }
+
+  public double armPlacement(double ctrlValue) {
+    if (ctrlValue >= 0.8) {
+      return Constants.REST;
+    } else if (ctrlValue >= 0.6) {
+      return Constants.FLOOR;
+    } else if (ctrlValue >= 0.35) {
+      return Constants.CHARGING_STATION;
+    } else if (ctrlValue >= 0.1){
+      return Constants.CUBE;
+    } else if (ctrlValue >= 0){
+      return Constants.CONE;
+    } else if(ctrlValue > -0.5){
+      return Constants.PICKUP;
+    } else{
+      return Constants.REST;
+    }
+  }
   
   @Override
   public void periodic() {
+    AuxiliaryFF = -0.019 * Math.sin(Math.toRadians((getPos()/Constants.COUNT_PER_DEGREES) + 47));
+
     if(DriverStation.isEnabled()) {
       switch(ArmLiftState) {
         case NOT_INITIALIZED:
-          movePosFF(MoveArm.targetPos);
+          //movePosFF(MoveArm.targetPos);
           if(getLimitSwitchTwo()) {
             ArmLiftState = ArmLiftStates.INITIALIZING_CALLED;
           }
@@ -221,13 +249,16 @@ public class ArmLift extends SubsystemBase {
         case INITIALIZING:
           break;
         case INITIALIZED:
-          AuxiliaryFF = -FFValEntry.getDouble(0.019) * Math.sin(Math.toRadians((getPos()/Constants.COUNT_PER_DEGREES) + 47));
           movePosFF(MoveArm.targetPos);
-          currentPosEntry.setDouble(getPos());
-          FFPosEntry.setDouble(AuxiliaryFF);
-          targetPosEntry.setDouble(MoveArm.targetPos);
-          PosErrEntry.setDouble(MoveArm.targetPos-getPos());
-          percentOutputEntry.setDouble(leftArmMotor.getMotorOutputPercent());
+          if(armPlacement(RobotContainer.m_opBoard.getRawAxis(Constants.ENCODER_PORT)) != currentArmEncoderPos) {
+            currentArmEncoderPos = armPlacement(RobotContainer.m_opBoard.getRawAxis(Constants.ENCODER_PORT));
+            changedEncoderPlacement = true;
+          }
+          // currentPosEntry.setDouble(getPos());
+          // FFPosEntry.setDouble(AuxiliaryFF);
+          // targetPosEntry.setDouble(MoveArm.targetPos);
+          // PosErrEntry.setDouble(MoveArm.targetPos-getPos());
+          // percentOutputEntry.setDouble(leftArmMotor.getMotorOutputPercent());
           leftArmMotor.setNeutralMode(NeutralMode.Brake);
           rightArmMotor.setNeutralMode(NeutralMode.Brake);
           break;

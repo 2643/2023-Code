@@ -67,7 +67,7 @@ public class ResetPosition extends CommandBase {
       
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_armLift.changeVelocity(2000);//10000
+    RobotContainer.m_armLift.changeVelocity(8533);//10000
     RobotContainer.m_armLift.reset();
   }
 
