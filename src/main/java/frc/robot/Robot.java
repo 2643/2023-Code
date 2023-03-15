@@ -71,7 +71,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    if(ArmLift.ArmLiftState == ArmLiftStates.INITIALIZING_CALLED) {
+      CommandScheduler.getInstance().schedule(new ResetPosition());
+    }
+  }
 
   @Override 
   public void teleopInit() {
@@ -89,10 +93,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(ArmLift.ArmLiftState == ArmLiftStates.INITIALIZING_CALLED) {
-      CommandScheduler.getInstance().schedule(new ResetPosition());
-    }
-
     if(ArmLift.ArmLiftState == ArmLiftStates.NOT_INITIALIZED || ArmLift.ArmLiftState == ArmLiftStates.INITIALIZED) {
       if(RobotContainer.upArmButton.getAsBoolean()) {
         CommandScheduler.getInstance().schedule(new MoveArm(ArmLift.moveArmJoystick.Up));

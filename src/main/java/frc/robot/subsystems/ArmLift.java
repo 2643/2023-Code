@@ -41,6 +41,15 @@ public class ArmLift extends SubsystemBase {
     INITIALIZED
   }
 
+  public static enum positionStates{
+    REST,
+    PICKUP,
+    CONE,
+    CUBE,
+    CHARGING_STATION,
+    FLOOR
+  }
+
   //public static EncoderState encoderState = EncoderState.REST;
   public static ArmLiftStates ArmLiftState = ArmLiftStates.NOT_INITIALIZED;
   //motors
@@ -166,17 +175,6 @@ public class ArmLift extends SubsystemBase {
     setPos(0);
     movePos(0);
   }
-  public void afterRestMovePos() {
-  if(MoveArm.targetPos >= Constants.TOP_HARD_LIMIT_MOVEPOS || MoveArm.targetPos < Constants.BOTTOM_HARD_LIMIT_MOVEPOS) {
-    destroyMotor();
-  } else if(MoveArm.targetPos > Constants.TOP_SOFT_LIMIT_MOVEPOS) {
-    MoveArm.targetPos = Constants.TOP_SOFT_LIMIT_MOVEPOS;
-  } else if(MoveArm.targetPos < Constants.BOTTOM_SOFT_LIMIT_MOVEPOS) {
-    MoveArm.targetPos = Constants.BOTTOM_SOFT_LIMIT_MOVEPOS;
-  }
-  movePos(MoveArm.targetPos);
-}
-
 
   public void setPos(double pos) {
     leftArmMotor.setSelectedSensorPosition(pos);

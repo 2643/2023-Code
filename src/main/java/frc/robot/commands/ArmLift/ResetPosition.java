@@ -38,12 +38,6 @@ public class ResetPosition extends CommandBase {
     RobotContainer.m_armLift.changeVelocity(1000);//4000
     RobotContainer.m_armLift.movePos(Constants.COUNT_PER_DEGREES * 75);
     System.out.println("state1");
-    // if(!RobotContainer.m_armLift.getLimitSwitchTwo()){
-    //   state = states.state4;
-    // }
-    // state = states.state1;
-    // RobotContainer.m_armLift.movePos(-2048*100);
-    
   }
 
 
