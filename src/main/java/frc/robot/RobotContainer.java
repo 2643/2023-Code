@@ -4,14 +4,21 @@
 
 package frc.robot;
 
+import frc.robot.commands.ArmGrab.*;
 import frc.robot.commands.Autonomous.Routine1;
 import frc.robot.subsystems.*;
 //import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,15 +28,38 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  // public static SendableChooser<Command> m_chooser = new SendableChooser<>();
+  // ComplexWidget ShuffleBoardAutonomousRoutines = Shuffleboard.getTab("Driver").add("Autonoumous Routines Selector", m_chooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 2).withPosition(0, 2);
+  
+
+
   public static final Drivetrain m_drivetrain = new Drivetrain();
   public static final Vision m_vision = new Vision();
+  public static final ArmGrab m_grabber = new ArmGrab();
+  public static final ArmLift m_armLift = new ArmLift();
+
+
 
   public static final Joystick swerveStick = new Joystick(0);
   public static final JoystickButton m_reset = new JoystickButton(swerveStick, 1);
-  public static final JoystickButton m_resetRobotPos = new JoystickButton(swerveStick, 2);
+  //public static final JoystickButton m_resetRobotPos = new JoystickButton(swerveStick, 2);
 
   public static final Joystick operatorBoard = new Joystick(1);
-  static JoystickButton m_test = new JoystickButton(operatorBoard, 0);
+
+  //public static JoystickButton m_test = new JoystickButton(operatorBoard, 0);
+  public static JoystickButton downArmButton = new JoystickButton(operatorBoard, 9);
+  public static JoystickButton upArmButton = new JoystickButton(operatorBoard, 10);
+
+  public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 11);
+
+  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 12);
+  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 14);
+
+  public static JoystickButton turningMode = new JoystickButton(operatorBoard, 15);
+
+  // public static JoystickButton middleAuto = new JoystickButton(operatorBoard, 1);
+  // public static JoystickButton lowerAuto = new JoystickButton(operatorBoard, 2);
+
 
 
 
@@ -55,6 +85,9 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+    manualGrabOpen.whenPressed(new GrabberOpen());
+    manualGrabClose.whenPressed(new GrabberClose());
+
    
   }
 

@@ -4,12 +4,21 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import frc.robot.commands.Drivetrain.*;
+import frc.robot.commands.ArmLift.*;
+
+import frc.robot.commands.ArmLift.MoveArm;
+import frc.robot.subsystems.ArmLift.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,6 +31,21 @@ public class Robot extends TimedRobot {
   GenericEntry targetRobotX = Shuffleboard.getTab("Odometry").add("Robot-X", 0).getEntry();
   GenericEntry targetRobotY = Shuffleboard.getTab("Odometry").add("Robot-Y", 0).getEntry();
   GenericEntry targetRobotTurn = Shuffleboard.getTab("Odometry").add("Turn Angle", 0).getEntry();
+
+  // UsbCamera camera = CameraServer.startAutomaticCapture(0);
+  // ComplexWidget CameraShuffleboard = Shuffleboard.getTab("2022Robot").add("Camera", camera).withWidget(BuiltInWidgets.kCameraStream).withPosition(4, 0).withSize(4, 3);
+  // GenericEntry targetRobotX = Shuffleboard.getTab("Odometry").add("Robot-X", 0).getEntry();
+  // GenericEntry targetRobotY = Shuffleboard.getTab("Odometry").add("Robot-Y", 0).getEntry();
+  // GenericEntry targetRobotTurn = Shuffleboard.getTab("Odometry").add("Turn Angle", 0).getEntry();
+
+  GenericEntry time = Shuffleboard.getTab("Driver").add("Time", 0).getEntry();
+  GenericEntry dock = Shuffleboard.getTab("Driver").add("dock", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  GenericEntry chargeStation = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
+  
+  GenericEntry aprilTagsDetection = Shuffleboard.getTab("Driver").add("Detects Apriltags", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+
+  GenericEntry pickup_place = Shuffleboard.getTab("Driver").add("Pickup or Place", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
 
   private RobotContainer m_robotContainer;
@@ -89,10 +113,30 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    //CommandScheduler.getInstance().schedule(new Automation());
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_drivetrain, new SwerveDrive());
-    //CommandScheduler.getInstance().schedule(new TestOdometry(new Pose2d(new Translation2d(targetRobotX.getDouble(0), targetRobotY.getDouble(0)), new Rotation2d(targetRobotTurn.getDouble(0)))));
+    //CommandScheduler.getInstance().schedule(new Testetry(new Pose2d(new Translation2d(targetRobotX.getDouble(0), targetRobotY.getDouble(0)), new Rotation2d(targetRobotTurn.getDouble(0)))));
     if(RobotContainer.m_reset.getAsBoolean()) {
       RobotContainer.m_drivetrain.resetGyro();
+    }
+
+    if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZING_CALLED) {
+      CommandScheduler.getInstance().schedule(new ResetPosition());
+    }
+
+    if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.NOT_INITIALIZED || RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZED) {
+      if(RobotContainer.upArmButton.getAsBoolean()) {
+        CommandScheduler.getInstance().schedule(new MoveArm(moveArmJoystick.Up));
+      } else if (RobotContainer.downArmButton.getAsBoolean()) {
+        CommandScheduler.getInstance().schedule(new MoveArm(moveArmJoystick.Down));
+      } else {
+        if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZED) {
+          if(RobotContainer.m_armLift.changedEncoderPlacement()) {
+            RobotContainer.m_armLift.setChangedEncoderPlacement(false);
+            CommandScheduler.getInstance().schedule(new MoveArm(moveArmJoystick.Encoder));
+          }
+        }
+      }
     }
   }
 

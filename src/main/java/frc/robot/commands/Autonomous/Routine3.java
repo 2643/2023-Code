@@ -19,8 +19,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
-public class Routine1 extends SequentialCommandGroup {
-    public Routine1(Drivetrain s_Swerve) {
+public class Routine3 extends SequentialCommandGroup {
+    public Routine3(Drivetrain s_Swerve) {
     //     PathPlannerTrajectory trajectory1 = PathPlanner.generatePath(new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond,
     //                       AutoConstants.kMaxAccelerationMetersPerSecondSquaRED), 
     //   new PathPoint(new Translation2d(0,0), Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(0)),
@@ -29,7 +29,7 @@ public class Routine1 extends SequentialCommandGroup {
         TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(Math.PI, Math.PI/2);
         TrajectoryConfig config = new TrajectoryConfig(Constants.AUTONOMOUS_VELOCITY_PER_SECOND, Constants.AUTONOMOUS_VELOCITY_PER_SECOND/2).setKinematics(Drivetrain.m_kinematics);
 
-        // An example trajectory to follow.  All units in metcers.
+        // An example trajectory to follow.  All units in meters.
         //Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(RobotContainer.m_drivetrain.getPose(), List.of(new Translation2d(12, 1), new Translation2d(13, 2), new Translation2d(14, 2.5), new Translation2d(14.5, 2.75)), new Pose2d(new Translation2d(14.667, 3), new Rotation2d(0)), config);
         Trajectory trajectoryOne = TrajectoryGenerator.generateTrajectory(RobotContainer.m_drivetrain.getPose(), List.of(new Translation2d(12, 1)), new Pose2d(new Translation2d(14, 3), new Rotation2d(0)), config);
 
