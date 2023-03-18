@@ -81,7 +81,7 @@ public final class Constants {
         public static final int GRABBER_MOTOR_PORT = 17;
         public static final double GRABBER_TARGET_RPM = 4000;
         public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
-        public static final double GRABBER_PERCENT_OUTPUT = 0.1;//0.143 //0.12
+        public static final double GRABBER_PERCENT_OUTPUT = 0.125;//0.143 //0.12
         public static final double TARGET_CUBE_CURRENT_VALUE = 8;
         //TODO: Find the actual values
         public static final double TARGET_CONE_CURRENT_VALUE = 10;
@@ -110,7 +110,7 @@ public final class Constants {
         //6 pot switch encoder values
         public static final int ENCODER_PORT = 2;
         public static final double REST = -57000;
-        public static final double PICKUP = -20000;
+        public static final double PICKUP = -7000;
         public static final double CONE = -2000;
         public static final double CUBE = 14586;
         public static final double CHARGING_STATION = 25000;
