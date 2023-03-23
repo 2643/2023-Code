@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 public class Routine1 extends SequentialCommandGroup {
     public Routine1(Drivetrain s_Swerve) {
     //     PathPlannerTrajectory trajectory1 = PathPlanner.generatePath(new PathConstraints(AutoConstants.kMaxSpeedMetersPerSecond,
-    //                       AutoConstants.kMaxAccelerationMetersPerSecondSquaRED), 
+    //                       AutoConstants.kMaxAccelerationMetersPerSecondSquared), 
     //   new PathPoint(new Translation2d(0,0), Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(0)),
     //   new PathPoint(new Translation2d(-1,0), Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(0))
     // );
@@ -40,5 +40,8 @@ public class Routine1 extends SequentialCommandGroup {
         
 
         addCommands(swerveControllerCommand);
+    }
+
+    public Routine1(Pose2d autonomousEndingLocationOne) {
     }
 }
