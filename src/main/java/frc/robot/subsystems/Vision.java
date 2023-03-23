@@ -32,6 +32,7 @@ public class Vision extends SubsystemBase {
   GenericEntry targetXEntry = Shuffleboard.getTab("Debug").add("Vision-X", 0).getEntry();
   GenericEntry targetYEntry = Shuffleboard.getTab("Debug").add("Vision-Y", 0).getEntry();
   GenericEntry usingVision = Shuffleboard.getTab("Debug").add("Using Vision", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  boolean firstAutoCorrect = false;
 
 
 
@@ -43,11 +44,18 @@ public class Vision extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     if (hasTarget.getDouble(0) == 1) {
+      
       targetInfo = targetInfoEntry.getDoubleArray(new double[6]);
-      visionPos = new Pose2d(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5] - 90)));
+      if(!firstAutoCorrect) {
+        RobotContainer.m_drivetrain.setYaw(targetInfo[5]+180);
+        firstAutoCorrect = true;
+      }
+      visionPos = new Pose2d(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5])));
       //field.setRobotPose(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5] - 90)));
       visionLatency = cl.getDouble(0) + tl.getDouble(0);
       RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp() - (tl.getDouble(0)/1000.0) - (cl.getDouble(0)/1000.0));
+      //RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp() - (tl.getDouble(0)/1000.0) - (cl.getDouble(0)/1000.0), null);
+
       targetXEntry.setDouble(targetInfo[0]);
       targetYEntry.setDouble(targetInfo[1]);
       usingVision.setBoolean(true);

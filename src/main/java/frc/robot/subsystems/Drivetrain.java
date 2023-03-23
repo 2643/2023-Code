@@ -173,6 +173,10 @@ public class Drivetrain extends SubsystemBase {
     imu.setYaw(0);
   }
 
+  public void setYaw(double yaw) {
+    imu.setYaw(yaw);
+  }
+
   SwerveModulePosition[] resetModulePosition = { new SwerveModulePosition(0, new Rotation2d(0)),
       new SwerveModulePosition(0, new Rotation2d(0)),
       new SwerveModulePosition(0, new Rotation2d(0)),
@@ -198,8 +202,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetOdometry() {
-    m_odometry.resetPosition(gyroAngle(), new SwerveModulePosition[] { new SwerveModulePosition(),
-        new SwerveModulePosition(), new SwerveModulePosition(), new SwerveModulePosition() }, new Pose2d());
+    // frontLeftModule.resetToAbsolute();
+    // frontRightModule.resetToAbsolute();
+    // backLeftModule.resetToAbsolute();
+    // backRightModule.resetToAbsolute();
+
   }
 
   @Override

@@ -110,7 +110,7 @@ public final class Constants {
         //6 pot switch encoder values
         public static final int ENCODER_PORT = 2;
         public static final double REST = -57000;
-        public static final double PICKUP = -20000;
+        public static final double PICKUP = -6630;
         public static final double CONE = -2000;
         public static final double CUBE = 14586;
         public static final double CHARGING_STATION = 25000;
@@ -120,8 +120,8 @@ public final class Constants {
 
     public class Position2d{
         //RED _PICKUP 
-        public static final double RED_TEAM_PICKUP_X_VALUE = 0;
-        public static final double RED_TEAM_PICKUP_Y_VALUE = 0;
+        public static final double RED_TEAM_PICKUP_X_VALUE = 2.483;
+        public static final double RED_TEAM_PICKUP_Y_VALUE = 7.991;
         public final Rotation2d RED_TEAM_PICKUP_ROTATION = Rotation2d.fromDegrees(0);
 
         //__CUBE RED
