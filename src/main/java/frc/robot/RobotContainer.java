@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.ArmGrab.*;
-import frc.robot.commands.Autonomous.Autos;
+import frc.robot.commands.Autonomous.Testing;
 import frc.robot.subsystems.*;
 //import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Joystick;
@@ -43,6 +43,8 @@ public class RobotContainer {
   public static final Joystick operatorBoard = new Joystick(1);
 
   //public static JoystickButton m_test = new JoystickButton(operatorBoard, 0);
+  public static JoystickButton autoBottom = new JoystickButton(operatorBoard, 1);
+  public static JoystickButton autoMiddle = new JoystickButton(operatorBoard, 5);
   public static JoystickButton downArmButton = new JoystickButton(operatorBoard, 9);
   public static JoystickButton upArmButton = new JoystickButton(operatorBoard, 10);
 
@@ -94,6 +96,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.Routine1();
+    return Testing.Routine2();
   }
 }

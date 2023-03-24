@@ -17,8 +17,10 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 // import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -86,9 +88,10 @@ public class ArmLift extends SubsystemBase {
   // GenericEntry BSL = Shuffleboard.getTab("PID").add("Bottom Soft Limit",Constants.BOTTOM_SOFT_LIMIT_MOVEPOS).getEntry();
 
   //position values
-  GenericEntry currentPosEntry = Shuffleboard.getTab("Debug").add("ArmLift-Current Pos",0).getEntry();
+  ShuffleboardLayout armLiftLayout = Shuffleboard.getTab("Debug").getLayout("ArmLift", BuiltInLayouts.kGrid).withSize(4, 2).withPosition(0, 3);
+  GenericEntry currentPosEntry = armLiftLayout.add("Current Pos",0).withPosition(0, 0).getEntry();
   // GenericEntry PosErrEntry = Shuffleboard.getTab("PID").add("PosErr",0).getEntry();
-  GenericEntry targetPosEntry = Shuffleboard.getTab("Debug").add("ArmLift-Target Pos",0).getEntry();
+  GenericEntry targetPosEntry = armLiftLayout.add("Target Pos",0).withPosition(0, 1).getEntry();
 
   //auxiliary feed forward
   // GenericEntry FFPosEntry = Shuffleboard.getTab("PID").add("FF",0).getEntry();
@@ -102,11 +105,11 @@ public class ArmLift extends SubsystemBase {
   //buttons positional movements
   // SimpleWidget secondTargetButtonWidget = Shuffleboard.getTab("PID").add("Second Button",false).withWidget(BuiltInWidgets.kToggleButton);
   // SimpleWidget firstTargetButtonWidget = Shuffleboard.getTab("PID").add("First Button",false).withWidget(BuiltInWidgets.kToggleButton);
-  SimpleWidget coastMode = Shuffleboard.getTab("Debug").add("Remove Brake Mode",false).withWidget(BuiltInWidgets.kToggleButton);
+  SimpleWidget coastMode = armLiftLayout.add("Remove Brake Mode",false).withWidget(BuiltInWidgets.kToggleButton).withPosition(1, 0).withSize(1, 1);
 
   // GenericEntry firstPosEntry = Shuffleboard.getTab("PID").add("first position", 0).getEntry();
   // GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position", 0).getEntry();
-  GenericEntry percentOutputEntry = Shuffleboard.getTab("Debug").add("ArmLift-Percent Output current", 0).getEntry();
+  GenericEntry percentOutputEntry = armLiftLayout.add("Percent Output current", 0).withPosition(1, 1).withSize(1, 1).getEntry();
 
   double kP = 0.12;
   double kI = 0;

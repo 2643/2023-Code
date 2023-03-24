@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public class ArmGrab extends SubsystemBase {
   static boolean armGrabInitialized = false;
@@ -36,10 +38,11 @@ public class ArmGrab extends SubsystemBase {
   // GenericEntry iEntry = Shuffleboard.getTab("PID but better").add("Integral", kI).getEntry();
   // GenericEntry dEntry = Shuffleboard.getTab("PID but better").add("Derivative", kD).getEntry();
   // GenericEntry fEntry = Shuffleboard.getTab("PID but better").add("Feed Forward", kF).getEntry();
-  GenericEntry targetVelEntry = Shuffleboard.getTab("Debug").add("ArmGrab-Target", targetRPM).getEntry();
-  GenericEntry currentVelEntry = Shuffleboard.getTab("Debug").add("ArmGrab-Current velocity", currentVel).getEntry();
-  GenericEntry currentCURRENTEntry = Shuffleboard.getTab("Debug").add("ArmGrab-Current CURRENT", currentCURRENT).getEntry();
-  GenericEntry stateEntry = Shuffleboard.getTab("Debug").add("ArmGrab-Current state", "NOT_INITIALIZED").getEntry();
+  ShuffleboardLayout armGrabLayout = Shuffleboard.getTab("Debug").getLayout("ArmGrab", BuiltInLayouts.kGrid).withSize(4, 2).withPosition(4, 3);
+  GenericEntry targetVelEntry = armGrabLayout.add("Target", targetRPM).withPosition(0, 0).getEntry();
+  GenericEntry currentVelEntry = armGrabLayout.add("Current velocity", currentVel).withPosition(1, 0).getEntry();
+  GenericEntry currentCURRENTEntry = armGrabLayout.add("Current CURRENT", currentCURRENT).withPosition(0, 1).getEntry();
+  GenericEntry stateEntry = armGrabLayout.add("Current state", "NOT_INITIALIZED").withPosition(1, 1).getEntry();
 
   public ArmGrab() {
     WinchMotor.setInverted(true);
@@ -203,7 +206,6 @@ public class ArmGrab extends SubsystemBase {
           break;
       }
     }
-    //System.out.println(getCurrentPosition());
   }
 
 }

@@ -30,22 +30,22 @@ public class armMove extends CommandBase {
   public void end(boolean interrupted) {
 
     if(state == ArmLift.positionStates.REST){
-      RobotContainer.m_armLift.movePosFF(Constants.ArmLift.REST);
+      MoveArm.targetPos = Constants.ArmLift.REST;
     }
     else if(state == ArmLift.positionStates.FLOOR){
-      RobotContainer.m_armLift.movePosFF(Constants.ArmLift.FLOOR);
+      MoveArm.targetPos = Constants.ArmLift.FLOOR;
     }
     else if(state == ArmLift.positionStates.CUBE){
-      RobotContainer.m_armLift.movePosFF(Constants.ArmLift.CUBE);
+      MoveArm.targetPos = Constants.ArmLift.CUBE;
     }
     else if(state == ArmLift.positionStates.CONE){
-      RobotContainer.m_armLift.movePosFF(Constants.ArmLift.CONE);
+      MoveArm.targetPos = Constants.ArmLift.CONE;
     }
     else if(state == ArmLift.positionStates.PICKUP){
-      RobotContainer.m_armLift.movePosFF(Constants.ArmLift.PICKUP);
+      MoveArm.targetPos = Constants.ArmLift.PICKUP;
     }
     else if(state == ArmLift.positionStates.CHARGING_STATION){
-      RobotContainer.m_armLift.movePosFF(Constants.ArmLift.CHARGING_STATION);
+      MoveArm.targetPos = Constants.ArmLift.CHARGING_STATION;
     }
   }
 

@@ -14,9 +14,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 //import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 //import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase {
@@ -29,9 +29,9 @@ public class Vision extends SubsystemBase {
   NetworkTableEntry tl = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tl");
   public double visionLatency;
   //ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Field-New").add("2023-Field", field).withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 20));
-  GenericEntry targetXEntry = Shuffleboard.getTab("Debug").add("Vision-X", 0).getEntry();
-  GenericEntry targetYEntry = Shuffleboard.getTab("Debug").add("Vision-Y", 0).getEntry();
-  GenericEntry usingVision = Shuffleboard.getTab("Debug").add("Using Vision", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  GenericEntry targetXEntry = RobotContainer.m_drivetrain.drivetrainLayout.add("Vision-X", 0).withPosition(0, 1).getEntry();
+  GenericEntry targetYEntry = RobotContainer.m_drivetrain.drivetrainLayout.add("Vision-Y", 0).withPosition(1, 1).getEntry();
+  GenericEntry usingVision = RobotContainer.m_drivetrain.drivetrainLayout.add("Using Vision", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 1).getEntry();
   boolean firstAutoCorrect = false;
 
 
@@ -59,7 +59,9 @@ public class Vision extends SubsystemBase {
       targetXEntry.setDouble(targetInfo[0]);
       targetYEntry.setDouble(targetInfo[1]);
       usingVision.setBoolean(true);
+      Robot.aprilTagsDetection.setBoolean(true);
     } else {
+      Robot.aprilTagsDetection.setBoolean(false);
       usingVision.setBoolean(false);
       targetXEntry.setDouble(-1);
       targetYEntry.setDouble(-1);

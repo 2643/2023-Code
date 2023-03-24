@@ -2,7 +2,9 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/Shuffleboard/Field/2022-Field": "Field2d"
+      "/Shuffleboard/Driver/2023-Field": "Field2d",
+      "/Shuffleboard/Field/2022-Field": "Field2d",
+      "/Shuffleboard/Field/2023-Field": "Field2d"
     }
   }
 }

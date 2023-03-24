@@ -8,7 +8,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 //import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -27,16 +26,18 @@ public class Odometry extends CommandBase {
     DoubleSupplier turn_vel;
     double targetTurnDegrees;
 
-    double kP = 0.8;
-    double kI = 0;
+    double kP = 1;
+    double kI = 0.5;
     double kD = 0;
 
-    double rotational_kP = 0.02/10;
+    double rotational_kP = 0.03;
     double rotational_kI = 0;
     double rotational_kD = 0;
 
     TrapezoidProfile.Constraints constraints = new Constraints(3/10, 2/10);
-    TrapezoidProfile.Constraints rotation_constraints = new Constraints(10/100, 10/10);
+    TrapezoidProfile.Constraints rotation_constraints = new TrapezoidProfile.Constraints(500, 1000000000);
+
+    //TrapezoidProfile.Constraints rotation_constraints = new Constraints(10/100, 10/10);
 
     ProfiledPIDController xPIDController = new ProfiledPIDController(kP, kI, kD, constraints);
     ProfiledPIDController yPIDController = new ProfiledPIDController(kP, kI, kD, constraints);
@@ -55,16 +56,16 @@ public class Odometry extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xPIDController.setTolerance(0.2);
-    yPIDController.setTolerance(0.2);
-    rotationPIDController.setTolerance(2);
+    xPIDController.setTolerance(0.03);
+    yPIDController.setTolerance(0.03);
+    rotationPIDController.enableContinuousInput(0, 360);
+    //rotationPIDController.setTolerance(2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     pos = RobotContainer.m_drivetrain.getPose();
-    //xPIDController.r
     //targetPos = new Pose2d(Drivetrain.targetX.getDouble(0), Drivetrain.targetY.getDouble(0), new Rotation2d());
 
     // xPIDController.setPID(Drivetrain.kPE.getDouble(0), Drivetrain.kIE.getDouble(0), Drivetrain.kDE.getDouble(0));
@@ -78,14 +79,14 @@ public class Odometry extends CommandBase {
     if(yPIDController.atGoal()) {
       y_vel = () -> 0;
     }
-    turn_vel = () -> rotationPIDController.calculate(pos.getRotation().getDegrees(), targetPos.getRotation().getDegrees());
+    turn_vel = () -> rotationPIDController.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees(), targetPos.getRotation().getDegrees());
     if(rotationPIDController.atGoal()) {
       turn_vel = () -> 0;
     }
 
     //TODO: CHANGE TO OMEGA RADIANS PER SECOND AFTER MOVING WORKS
-    RobotContainer.m_drivetrain.setChassisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(-x_vel.getAsDouble(), y_vel.getAsDouble(),
-        0, RobotContainer.m_drivetrain.gyroAngle()));
+    RobotContainer.m_drivetrain.setChassisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(-x_vel.getAsDouble(), -y_vel.getAsDouble(),
+        -turn_vel.getAsDouble(), RobotContainer.m_drivetrain.gyroAngle()));
     
   }
   // Called once the command ends or is interrupted.

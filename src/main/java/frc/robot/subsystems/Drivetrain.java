@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.swervedrivespecialties.swervelib.MkSwerveModuleBuilder;
 import com.swervedrivespecialties.swervelib.MotorType;
@@ -22,8 +20,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -38,9 +34,7 @@ public class Drivetrain extends SubsystemBase {
   public Pose2d robotPosition = new Pose2d(new Translation2d(0, 0), new Rotation2d(Math.toRadians(0)));
   // GenericEntry joystick_x = Shuffleboard.getTab("Joystick").add("Joystick X-Axis", 0).getEntry();
   // GenericEntry joystick_y = Shuffleboard.getTab("Joystick").add("Joystick Y-Axis", 0).getEntry();
-  GenericEntry robot_x = Shuffleboard.getTab("Debug").add("Swerve-X-Axis", 0).getEntry();
-  GenericEntry robot_y = Shuffleboard.getTab("Debug").add("Swerve-Y-Axis", 0).getEntry();
-
+  
   // public static double speedAxis;
   SwerveModulePosition[] currentPos;
 
@@ -58,20 +52,26 @@ public class Drivetrain extends SubsystemBase {
   Field2d field = new Field2d();
 
   // Show status of each module(velocity, offset, etc)
-  ShuffleboardTab moduleStateTab = Shuffleboard.getTab("Modulestates");
-  ShuffleboardLayout frontLeftModuleStateShuffleboard = moduleStateTab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(0, 0);
-  ShuffleboardLayout frontRightModuleStateShuffleboard = moduleStateTab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(2, 0);
-  ShuffleboardLayout backLeftModuleStateShuffleboard = moduleStateTab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(4, 0);
-  ShuffleboardLayout backRightModuleStateShuffleboard = moduleStateTab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(6, 0);
+  ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+  ShuffleboardLayout frontLeftModuleStateShuffleboard = debugTab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(0, 0);
+  ShuffleboardLayout frontRightModuleStateShuffleboard = debugTab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(2, 0);
+  ShuffleboardLayout backLeftModuleStateShuffleboard = debugTab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(4, 0);
+  ShuffleboardLayout backRightModuleStateShuffleboard = debugTab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2, 3).withPosition(6, 0);
+  //GenericEntry robot_x = Shuffleboard.getTab("Debug").add("Swerve-X-Axis", 0).getEntry();
 
-  static ShuffleboardTab infoTab = Shuffleboard.getTab("Debug");
-  public static GenericEntry gyroTurn = infoTab.add("Target Gyro Yaw", 0).getEntry();
-  GenericEntry currentGyroAngle = infoTab.add("Current Yaw", 0).getEntry();
-  GenericEntry currentPitch = infoTab.add("Pitch", 0).getEntry();
-  GenericEntry currentRoll = infoTab.add("Roll", 0).getEntry();
+  ShuffleboardLayout drivetrainLayout = debugTab.getLayout("Drivetrain", BuiltInLayouts.kGrid).withSize(4, 2).withPosition(8, 0);
+  GenericEntry robot_y = drivetrainLayout.add("Swerve-Y-Axis", 0).withPosition(1, 0).getEntry();
+  GenericEntry robot_x = drivetrainLayout.add("Swerve-X-Axis", 0).withPosition(0, 0).getEntry();
 
-  ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Field").add("2023-Field", field)
-      .withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 20));
+
+  //static ShuffleboardTab infoTab = Shuffleboard.getTab("Debug");
+  //public GenericEntry gyroTurn = drivetrainLayout.add("Target Gyro Yaw", 0).getEntry();
+  GenericEntry currentGyroAngle = drivetrainLayout.add("Current Yaw", 0).withPosition(2, 0).getEntry();
+  // GenericEntry currentPitch = infoTab.add("Pitch", 0).getEntry();
+  // GenericEntry currentRoll = infoTab.add("Roll", 0).getEntry();
+
+  //ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Field").add("2023-Field", field)
+  //    .withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 20));
   public SwerveDrivePoseEstimator poseVision = new SwerveDrivePoseEstimator(m_kinematics, gyroAngle(), pos, new Pose2d());
 
   // Starting ChassisSpeed
@@ -225,8 +225,8 @@ public class Drivetrain extends SubsystemBase {
     //}
    
     currentGyroAngle.setDouble(-gyroAngle().getDegrees());
-    currentPitch.setDouble(pitch().getDegrees());
-    currentRoll.setDouble(roll().getDegrees());
+    // currentPitch.setDouble(pitch().getDegrees());
+    // currentRoll.setDouble(roll().getDegrees());
 
     m_odometry.update(gyroAngle(), new SwerveModulePosition[]{frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()});
     robotPosition = m_odometry.getPoseMeters();

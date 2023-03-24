@@ -4,18 +4,25 @@
 
 package frc.robot;
 
+import java.util.Map;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-import frc.robot.commands.Drivetrain.*;
-import frc.robot.commands.ArmLift.*;
-
 import frc.robot.commands.ArmLift.MoveArm;
-import frc.robot.subsystems.ArmLift.*;
+import frc.robot.commands.ArmLift.ResetPosition;
+import frc.robot.commands.Drivetrain.SwerveDrive;
+import frc.robot.subsystems.ArmGrab.States;
+import frc.robot.subsystems.ArmLift.ArmLiftStates;
+import frc.robot.subsystems.ArmLift.moveArmJoystick;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,24 +32,36 @@ import frc.robot.subsystems.ArmLift.*;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  GenericEntry targetRobotX = Shuffleboard.getTab("Odometry").add("Robot-X", 0).getEntry();
-  GenericEntry targetRobotY = Shuffleboard.getTab("Odometry").add("Robot-Y", 0).getEntry();
-  GenericEntry targetRobotTurn = Shuffleboard.getTab("Odometry").add("Turn Angle", 0).getEntry();
+  Field2d field = new Field2d();
 
-  // UsbCamera camera = CameraServer.startAutomaticCapture(0);
-  // ComplexWidget CameraShuffleboard = Shuffleboard.getTab("2022Robot").add("Camera", camera).withWidget(BuiltInWidgets.kCameraStream).withPosition(4, 0).withSize(4, 3);
-  // GenericEntry targetRobotX = Shuffleboard.getTab("Odometry").add("Robot-X", 0).getEntry();
-  // GenericEntry targetRobotY = Shuffleboard.getTab("Odometry").add("Robot-Y", 0).getEntry();
-  // GenericEntry targetRobotTurn = Shuffleboard.getTab("Odometry").add("Turn Angle", 0).getEntry();
+  GenericEntry timeEntry = Shuffleboard.getTab("Driver").add("Time", 0).withPosition(0, 0).withSize(2, 2).getEntry();
+  GenericEntry targetRobotX = Shuffleboard.getTab("Driver").add("Robot-X", 0).withPosition(0, 2).withSize(2, 2).getEntry();
+  GenericEntry targetRobotY = Shuffleboard.getTab("Driver").add("Robot-Y", 0).withPosition(2, 2).withSize(2, 2).getEntry();
+  GenericEntry directionToMove = Shuffleboard.getTab("Driver").add("Directions to Move", "Not Complete").withPosition(2, 0).withSize(2, 2).getEntry();
+  GenericEntry OkToDropEntry = Shuffleboard.getTab("Driver").add("Can Drop Item(T)", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 2).withSize(2, 2).getEntry();
+  GenericEntry pickupPlaceEntry = Shuffleboard.getTab("Driver").add("Pickup(T) or Place(F)", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(5, 2).withSize(2, 2).getEntry();
+  GenericEntry joystickConnectedEntry = Shuffleboard.getTab("Driver").add("Joystick Connected", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(7, 0).withSize(2, 1).getEntry();
+  GenericEntry opBoardConnectedEntry = Shuffleboard.getTab("Driver").add("OpBoard Connected", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(7, 1).withSize(2, 1).getEntry();
+  GenericEntry coneCubeEntry = Shuffleboard.getTab("Driver").add("Cone(T) or Cube(F)", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(7, 3).withSize(2, 1).getEntry();
 
-  GenericEntry time = Shuffleboard.getTab("Driver").add("Time", 0).getEntry();
-  GenericEntry dock = Shuffleboard.getTab("Driver").add("dock", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
-  GenericEntry chargeStation = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+  GenericEntry chargeStationEntry = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).withPosition(9, 2).withSize(2, 1).getEntry();
+  ComplexWidget cameraShuffleboard = Shuffleboard.getTab("Driver").addCamera("Camera", "Limelight", "http://10.26.43.17:5800/").withPosition(19, 0).withSize(5, 5);
+  ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Driver").add("2023-Field", field).withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 40)).withPosition(12, 0).withSize(7, 5);
+
+  // GenericEntry dock = Shuffleboard.getTab("Driver").add("dock", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  // GenericEntry chargeStation = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
   
-  GenericEntry aprilTagsDetection = Shuffleboard.getTab("Driver").add("Detects Apriltags", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  public static GenericEntry aprilTagsDetection = Shuffleboard.getTab("Driver").add("Detects Apriltags", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(0, 0).withSize(2, 1).getEntry();
+  //GenericEntry pickup_place = Shuffleboard.getTab("Driver").add("Pickup(T)/Place(F)", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
+  ComplexWidget autoEndLocationEntry = Shuffleboard.getTab("Driver").add("Autonomous End Location Selector", m_chooser).withWidget(BuiltInWidgets.kComboBoxChooser);
+ 
+  // public final Command m_location1 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_ONE);
+  // public final Command m_location2 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_TWO);
+  // public final Command m_location3 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_THREE);
+  // public final Command m_location4 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_FOUR);
 
-  GenericEntry pickup_place = Shuffleboard.getTab("Driver").add("Pickup or Place", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
 
   private RobotContainer m_robotContainer;
@@ -56,6 +75,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    // m_chooser.setDefaultOption("First", m_location1);
+    // m_chooser.addOption("Second", m_location2);
+    // m_chooser.addOption("Third", m_location3);
+    // m_chooser.addOption("Fourth", m_location4);
+    // m_chooser.addOption("First", m_location1);
   }
 
   /**
@@ -72,6 +96,25 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    field.setRobotPose(RobotContainer.m_drivetrain.getPose().getX(), RobotContainer.m_drivetrain.getPose().getY(), RobotContainer.m_drivetrain.getPose().getRotation().minus(new Rotation2d(Math.PI/2)));
+    timeEntry.setDouble(DriverStation.getMatchTime());
+    if(RobotContainer.swerveStick.isConnected()) {
+      joystickConnectedEntry.setBoolean(true);
+    } else {
+      joystickConnectedEntry.setBoolean(false);
+    }
+
+    if(RobotContainer.operatorBoard.isConnected()) {
+      opBoardConnectedEntry.setBoolean(true);
+    } else {
+      opBoardConnectedEntry.setBoolean(false);
+    }
+
+    if(RobotContainer.coneMode.getAsBoolean()) {
+      coneCubeEntry.setBoolean(true);
+    } else {
+      coneCubeEntry.setBoolean(false);
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -110,9 +153,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //CommandScheduler.getInstance().schedule(new Automation());
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_drivetrain, new SwerveDrive());
-    //CommandScheduler.getInstance().schedule(new Testetry(new Pose2d(new Translation2d(targetRobotX.getDouble(0), targetRobotY.getDouble(0)), new Rotation2d(targetRobotTurn.getDouble(0)))));
     if(RobotContainer.m_reset.getAsBoolean()) {
       RobotContainer.m_drivetrain.resetGyro();
     }
@@ -134,6 +175,12 @@ public class Robot extends TimedRobot {
           }
         }
       }
+    }
+
+    if(RobotContainer.m_grabber.getArmGrabState() == States.CLOSED) {
+      pickupPlaceEntry.setBoolean(true);
+    } else {
+      pickupPlaceEntry.setBoolean(false);
     }
   }
 
