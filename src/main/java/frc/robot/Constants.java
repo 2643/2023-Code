@@ -230,13 +230,13 @@ public final class Constants {
         // public final Pose2d ORIGINAL_BALL_POSITIONING_SECOND = new Pose2d(6.5, 3.4, Rotation2d.fromDegrees(0));
         // public final Pose2d ORIGINAL_BALL_POSITIONING_THIRD = new Pose2d(6.4, 2, Rotation2d.fromDegrees(0));
         // public final Pose2d ORIGINAL_BALL_POSITIONING_FOURTH = new Pose2d(6.5, 0.9, Rotation2d.fromDegrees(0));
-        public final Pose2d name = new Pose2d(14.596, 0.407, Rotation2d.fromDegrees(0));
-        public final Pose2d name2 = new Pose2d(11.172, 0.407, Rotation2d.fromDegrees(0));
-        public final Pose2d name3 = new Pose2d(14.596, 0.407, Rotation2d.fromDegrees(-90));
+        // public final Pose2d name = new Pose2d(14.596, 0.407, Rotation2d.fromDegrees(0));
+        // public final Pose2d name2 = new Pose2d(11.172, 0.407, Rotation2d.fromDegrees(0));
+        // public final Pose2d name3 = new Pose2d(14.596, 0.407, Rotation2d.fromDegrees(-90));
         
-        new Odometry(new Pose2d(new Translation2d(14.596, 0.407), new Rotation2d(-90))), 
-        new Odometry(new Pose2d(new Translation2d(14.596, 1.751), new Rotation2d(90))), 
-        new Odometry(new Pose2d(new Translation2d(12.537, 1.751), new Rotation2d(0)));
+        // new Odometry(new Pose2d(new Translation2d(14.596, 0.407), new Rotation2d(-90))), 
+        // new Odometry(new Pose2d(new Translation2d(14.596, 1.751), new Rotation2d(90))), 
+        // new Odometry(new Pose2d(new Translation2d(12.537, 1.751), new Rotation2d(0)));
     }
         
 

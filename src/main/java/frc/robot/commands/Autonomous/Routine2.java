@@ -19,14 +19,14 @@ public class Routine2 extends SequentialCommandGroup {
   /** Creates a new Routine2. */
   public Routine2() {
     
-    addCommands(new Odometry(new Pose2d(new Translation2d(14.607, 2.739), new Rotation2d(0))), 
-    new Odometry(new Pose2d(new Translation2d(14.937, 2.739), new Rotation2d(180))), 
-    new Odometry(new Pose2d(new Translation2d(15.323, 2.739), new Rotation2d(0))),
-    new Odometry(new Pose2d(new Translation2d(14.766, 2.739), new Rotation2d(-55))),
-    new Odometry(new Pose2d(new Translation2d(12.855, 5.423), new Rotation2d(165))),
-    new Odometry(new Pose2d(new Translation2d(14.766, 3.655), new Rotation2d(140))),
-    new Odometry(new Pose2d(new Translation2d(12.924, 3.655), new Rotation2d(0))), 
-    new armMove(positionStates.CUBE), new GrabberOpen(), new Odometry(Constants.Position2d.ORIGINAL_BALL_POSITIONING_ONE));
+    // addCommands(new Odometry(new Pose2d(new Translation2d(14.607, 2.739), new Rotation2d(0))), 
+    // new Odometry(new Pose2d(new Translation2d(14.937, 2.739), new Rotation2d(180))), 
+    // new Odometry(new Pose2d(new Translation2d(15.323, 2.739), new Rotation2d(0))),
+    // new Odometry(new Pose2d(new Translation2d(14.766, 2.739), new Rotation2d(-55))),
+    // new Odometry(new Pose2d(new Translation2d(12.855, 5.423), new Rotation2d(165))),
+    // new Odometry(new Pose2d(new Translation2d(14.766, 3.655), new Rotation2d(140))),
+    // new Odometry(new Pose2d(new Translation2d(12.924, 3.655), new Rotation2d(0))), 
+    // new armMove(positionStates.CUBE), new GrabberOpen(), new Odometry(Constants.Position2d.ORIGINAL_BALL_POSITIONING_ONE));
     
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
