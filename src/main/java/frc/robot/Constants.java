@@ -120,94 +120,109 @@ public final class Constants {
 
     public class Position2d{
         //RED _PICKUP 
-        public static final double RED_TEAM_PICKUP_X_VALUE = 0;
-        public static final double RED_TEAM_PICKUP_Y_VALUE = 0;
+        public static final double RED_TEAM_PICKUP_X_VALUE = 1.361;
+        public static final double RED_TEAM_PICKUP_Y_VALUE = 6.192;
         public final Rotation2d RED_TEAM_PICKUP_ROTATION = Rotation2d.fromDegrees(0);
 
         //__CUBE RED
-        public static final double FIRST_RED_TEAM_CUBE_X_VALUE = 0;
-        public static final double FIRST_RED_TEAM_CUBE_Y_VALUE = 0;
+        public static final double FIRST_RED_TEAM_CUBE_X_VALUE = 15.403;
+        public static final double FIRST_RED_TEAM_CUBE_Y_VALUE = 1.067;
         public final Rotation2d FIRST_RED_TEAM_CUBE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d FIRST_RED_TEAM_CUBE_POSE = new Pose2d(FIRST_RED_TEAM_CUBE_X_VALUE, FIRST_RED_TEAM_CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
 
-        public static final double SECOND_RED_TEAM_CUBE_X_VALUE = 0;
-        public static final double SECOND_RED_TEAM_CUBE_Y_VALUE = 0;
+        public static final double SECOND_RED_TEAM_CUBE_X_VALUE = 14.428;
+        public static final double SECOND_RED_TEAM_CUBE_Y_VALUE = 2.727;
         public final Pose2d SECOND_RED_TEAM_CUBE_POSE = new Pose2d(SECOND_RED_TEAM_CUBE_X_VALUE, SECOND_RED_TEAM_CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
 
-        public static final double THIRD_RED_TEAM_CUBE_X_VALUE = 0;
-        public static final double THIRD_RED_TEAM_CUBE_Y_VALUE = 0;
+        public static final double THIRD_RED_TEAM_CUBE_X_VALUE = 15.403;
+        public static final double THIRD_RED_TEAM_CUBE_Y_VALUE = 4.399;
         public final Pose2d THIRD_RED_TEAM_CUBE_POSE = new Pose2d(THIRD_RED_TEAM_CUBE_X_VALUE, THIRD_RED_TEAM_CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
 
-        public static final double FOURTH_RED_TEAM_CUBE_X_VALUE = 0;
-        public static final double FOURTH_RED_TEAM_CUBE_Y_VALUE = 0;
-        public final Pose2d FOURTH_RED_TEAM_CUBE_POSE = new Pose2d(FOURTH_RED_TEAM_CUBE_X_VALUE, FOURTH_RED_TEAM_CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
+        // public static final double FOURTH_RED_TEAM_CUBE_X_VALUE = 0;
+        // public static final double FOURTH_RED_TEAM_CUBE_Y_VALUE = 0;
+        // public final Pose2d FOURTH_RED_TEAM_CUBE_POSE = new Pose2d(FOURTH_RED_TEAM_CUBE_X_VALUE, FOURTH_RED_TEAM_CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
         
-        //RED _PICKUP
-        public static final double BLUE_TEAM_PICKUP_X_VALUE = 0;
-        public static final double BLUE_TEAM_PICKUP_Y_VALUE = 0;
+        //BLUE _PICKUP
+        public static final double BLUE_TEAM_PICKUP_X_VALUE = 14.332;
+        public static final double BLUE_TEAM_PICKUP_Y_VALUE = 8.008;
         public final Pose2d BLUE_TEAM_PICKUP_POSE = new Pose2d(BLUE_TEAM_PICKUP_X_VALUE, BLUE_TEAM_PICKUP_Y_VALUE, Rotation2d.fromDegrees(0));
 
         //__CUBE blue
 
-        public static final double FIRST_BLUE_TEAM__CUBE_X_VALUE = 0;
-        public static final double FIRST_BLUE_TEAM__CUBE_Y_VALUE = 0;
+        public static final double FIRST_BLUE_TEAM__CUBE_X_VALUE = 1.174;
+        public static final double FIRST_BLUE_TEAM__CUBE_Y_VALUE = 0.953;
         public final Pose2d FIRST_BLUE_TEAM__CUBE_POSE = new Pose2d(FIRST_BLUE_TEAM__CUBE_X_VALUE, FIRST_BLUE_TEAM__CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
 
-        public static final double SECOND_BLUE_TEAM__CUBE_X_VALUE = 0;
-        public static final double SECOND_BLUE_TEAM__CUBE_Y_VALUE = 0;
+        public static final double SECOND_BLUE_TEAM__CUBE_X_VALUE = 1.202;
+        public static final double SECOND_BLUE_TEAM__CUBE_Y_VALUE = 2.633;
         public final Pose2d SECOND_BLUE_TEAM__CUBE_POSE = new Pose2d(SECOND_BLUE_TEAM__CUBE_X_VALUE, SECOND_BLUE_TEAM__CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
 
-        public static final double THIRD_BLUE_TEAM__CUBE_X_VALUE = 0;
-        public static final double THIRD_BLUE_TEAM__CUBE_Y_VALUE = 0;
+        public static final double THIRD_BLUE_TEAM__CUBE_X_VALUE = 1.186;
+        public static final double THIRD_BLUE_TEAM__CUBE_Y_VALUE = 4.354;
         public final Pose2d THIRD_BLUE_TEAM__CUBE_POSE = new Pose2d(THIRD_BLUE_TEAM__CUBE_X_VALUE, THIRD_BLUE_TEAM__CUBE_Y_VALUE, Rotation2d.fromDegrees(0));
 
         //_CONE RED
-        public static final double FIRST_RED_TEAM_CONE_X_VALUE = 0;
-        public static final double FIRST_RED_TEAM_CONE_Y_VALUE = 0;
+        public static final double FIRST_RED_TEAM_CONE_X_VALUE = 15.426;
+        public static final double FIRST_RED_TEAM_CONE_Y_VALUE = 0.487;
         public final Rotation2d FIRST_RED_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d FIRST_RED_TEAM_CONE_POSE = new Pose2d(FIRST_RED_TEAM_CONE_X_VALUE, FIRST_RED_TEAM_CONE_Y_VALUE, FIRST_RED_TEAM_CONE_ROTATION);
 
-        public static final double SECOND_RED_TEAM_CONE_X_VALUE = 0;
-        public static final double SECOND_RED_TEAM_CONE_Y_VALUE = 0;
+        public static final double SECOND_RED_TEAM_CONE_X_VALUE = 15.426;
+        public static final double SECOND_RED_TEAM_CONE_Y_VALUE = 1.647;
         public final Rotation2d SECOND_RED_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d SECOND_RED_TEAM_CONE_POSE = new Pose2d(SECOND_RED_TEAM_CONE_X_VALUE, SECOND_RED_TEAM_CONE_Y_VALUE, SECOND_RED_TEAM_CONE_ROTATION);
 
-        public static final double THIRD_RED_TEAM_CONE_X_VALUE = 0;
-        public static final double THIRD_RED_TEAM_CONE_Y_VALUE = 0;
+        public static final double THIRD_RED_TEAM_CONE_X_VALUE = 14.631;//15.426;
+        public static final double THIRD_RED_TEAM_CONE_Y_VALUE = 2.204;
         public final Rotation2d THIRD_RED_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d THIRD_RED_TEAM_CONE_POSE = new Pose2d(THIRD_RED_TEAM_CONE_X_VALUE, THIRD_RED_TEAM_CONE_Y_VALUE, THIRD_RED_TEAM_CONE_ROTATION);
 
-        public static final double FOURTH_RED_TEAM_CONE_X_VALUE = 0;
-        public static final double FOURTH_RED_TEAM_CONE_Y_VALUE = 0;
+        public static final double FOURTH_RED_TEAM_CONE_X_VALUE = 15.426;
+        public static final double FOURTH_RED_TEAM_CONE_Y_VALUE = 3.249;
         public final Rotation2d FOURTH_RED_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d FOURTH_RED_TEAM_CONE_POSE = new Pose2d(FOURTH_RED_TEAM_CONE_X_VALUE, FOURTH_RED_TEAM_CONE_Y_VALUE, FOURTH_RED_TEAM_CONE_ROTATION);
 
-        public static final double FIFTH_RED_TEAM_CONE_X_VALUE = 0;
-        public static final double FIFTH_RED_TEAM_CONE_Y_VALUE = 0;
+        public static final double FIFTH_RED_TEAM_CONE_X_VALUE = 15.426;
+        public static final double FIFTH_RED_TEAM_CONE_Y_VALUE = 3.837;
         public final Rotation2d FIFTH_RED_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d FIFTH_RED_TEAM_CONE_POSE = new Pose2d(FIFTH_RED_TEAM_CONE_X_VALUE, FIFTH_RED_TEAM_CONE_Y_VALUE, FIFTH_RED_TEAM_CONE_ROTATION);
 
-        public static final double SIXTH_RED_TEAM_CONE_X_VALUE = 0;
-        public static final double SIXTH_RED_TEAM_CONE_Y_VALUE = 0;
+        public static final double SIXTH_RED_TEAM_CONE_X_VALUE = 15.426;
+        public static final double SIXTH_RED_TEAM_CONE_Y_VALUE = 4.979;
         public final Rotation2d SIXTH_RED_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d SIXTH_RED_TEAM_CONE_POSE = new Pose2d(SIXTH_RED_TEAM_CONE_X_VALUE, SIXTH_RED_TEAM_CONE_Y_VALUE, SIXTH_RED_TEAM_CONE_ROTATION);
 
         //_CONE blue
 
-        public static final double FIRST_BLUE_TEAM_CONE_X_VALUE = 0;
-        public static final double FIRST_BLUE_TEAM_CONE_Y_VALUE = 0;
+        public static final double FIRST_BLUE_TEAM_CONE_X_VALUE = 1.118;
+        public static final double FIRST_BLUE_TEAM_CONE_Y_VALUE = 0.430;
         public final Rotation2d FIRST_BLUE_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d FIRST_BLUE_TEAM_CONE_POSE = new Pose2d(FIRST_BLUE_TEAM_CONE_X_VALUE, FIRST_BLUE_TEAM_CONE_Y_VALUE, FIRST_BLUE_TEAM_CONE_ROTATION);
 
-        public static final double SECOND_BLUE_TEAM_CONE_X_VALUE = 0;
-        public static final double SECOND_BLUE_TEAM_CONE_Y_VALUE = 0;
+        public static final double SECOND_BLUE_TEAM_CONE_X_VALUE = 1.118;
+        public static final double SECOND_BLUE_TEAM_CONE_Y_VALUE = 1.579;
         public final Rotation2d SECOND_BLUE_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d SECOND_BLUE_TEAM_CONE_POSE = new Pose2d(SECOND_BLUE_TEAM_CONE_X_VALUE, SECOND_BLUE_TEAM_CONE_Y_VALUE, SECOND_BLUE_TEAM_CONE_ROTATION);
 
-        public static final double THIRD_BLUE_TEAM_CONE_X_VALUE = 0;
-        public static final double THIRD_BLUE_TEAM_CONE_Y_VALUE = 0;
+        public static final double THIRD_BLUE_TEAM_CONE_X_VALUE = 1.118;
+        public static final double THIRD_BLUE_TEAM_CONE_Y_VALUE = 2.147;
         public final Rotation2d THIRD_BLUE_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
         public final Pose2d THIRD_BLUE_TEAM_CONE_POSE = new Pose2d(THIRD_BLUE_TEAM_CONE_X_VALUE, THIRD_BLUE_TEAM_CONE_Y_VALUE, THIRD_BLUE_TEAM_CONE_ROTATION);
+
+        public static final double FOURTH_BLUE_TEAM_CONE_X_VALUE = 1.118;
+        public static final double FOURTH_BLUE_TEAM_CONE_Y_VALUE = 3.239;
+        public final Rotation2d FOURTH_BLUE_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
+        public final Pose2d FOURTH_BLUE_TEAM_CONE_POSE = new Pose2d(FOURTH_BLUE_TEAM_CONE_X_VALUE, FOURTH_BLUE_TEAM_CONE_Y_VALUE, FOURTH_BLUE_TEAM_CONE_ROTATION);
+
+        public static final double FIFTH_BLUE_TEAM_CONE_X_VALUE = 1.118;
+        public static final double FIFTH_BLUE_TEAM_CONE_Y_VALUE = 3.796;
+        public final Rotation2d FIFTH_BLUE_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
+        public final Pose2d FIFTH_BLUE_TEAM_CONE_POSE = new Pose2d(FIFTH_BLUE_TEAM_CONE_X_VALUE, FIFTH_BLUE_TEAM_CONE_Y_VALUE, FIFTH_BLUE_TEAM_CONE_ROTATION);
+
+        public static final double SIXTH_BLUE_TEAM_CONE_X_VALUE = 1.118;
+        public static final double SIXTH_BLUE_TEAM_CONE_Y_VALUE = 4.945;
+        public final Rotation2d SIXTH_BLUE_TEAM_CONE_ROTATION = Rotation2d.fromDegrees(0);
+        public final Pose2d SIXTH_BLUE_TEAM_CONE_POSE = new Pose2d(SIXTH_BLUE_TEAM_CONE_X_VALUE, SIXTH_BLUE_TEAM_CONE_Y_VALUE, SIXTH_BLUE_TEAM_CONE_ROTATION);
 
         // public final static ORIGINAL_BALL_POSITIONING_ONE_X = 6.5;
         // public final static ORIGINAL_BALL_POSITIONING_ONE_Y = 4.6; 
@@ -215,6 +230,13 @@ public final class Constants {
         // public final Pose2d ORIGINAL_BALL_POSITIONING_SECOND = new Pose2d(6.5, 3.4, Rotation2d.fromDegrees(0));
         // public final Pose2d ORIGINAL_BALL_POSITIONING_THIRD = new Pose2d(6.4, 2, Rotation2d.fromDegrees(0));
         // public final Pose2d ORIGINAL_BALL_POSITIONING_FOURTH = new Pose2d(6.5, 0.9, Rotation2d.fromDegrees(0));
+        public final Pose2d name = new Pose2d(14.596, 0.407, Rotation2d.fromDegrees(0));
+        public final Pose2d name2 = new Pose2d(11.172, 0.407, Rotation2d.fromDegrees(0));
+        public final Pose2d name3 = new Pose2d(14.596, 0.407, Rotation2d.fromDegrees(-90));
+        
+        new Odometry(new Pose2d(new Translation2d(14.596, 0.407), new Rotation2d(-90))), 
+        new Odometry(new Pose2d(new Translation2d(14.596, 1.751), new Rotation2d(90))), 
+        new Odometry(new Pose2d(new Translation2d(12.537, 1.751), new Rotation2d(0)));
     }
         
 
