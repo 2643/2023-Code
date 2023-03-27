@@ -153,15 +153,15 @@ public class ArmLift extends SubsystemBase {
     leftArmMotor.set(TalonFXControlMode.MotionMagic, pos);
   }
   
-  public void movePosFF(double pos) {
+  public void movePosFF() {
     if(MoveArm.targetPos < Constants.ArmLift.TOP_HARD_LIMIT_MOVEPOS || MoveArm.targetPos > Constants.ArmLift.BOTTOM_HARD_LIMIT_MOVEPOS) {
       destroyMotor();
-    } else if(MoveArm.targetPos < Constants.ArmLift.TOP_SOFT_LIMIT_MOVEPOS) {
-      MoveArm.targetPos = Constants.ArmLift.TOP_SOFT_LIMIT_MOVEPOS + 1000;
+    } if(MoveArm.targetPos < Constants.ArmLift.TOP_SOFT_LIMIT_MOVEPOS) {
+      MoveArm.targetPos = Constants.ArmLift.TOP_SOFT_LIMIT_MOVEPOS + 3000;
     } else if(MoveArm.targetPos > Constants.ArmLift.BOTTOM_SOFT_LIMIT_MOVEPOS) {
-      MoveArm.targetPos = Constants.ArmLift.BOTTOM_SOFT_LIMIT_MOVEPOS - 1000;
+      MoveArm.targetPos = Constants.ArmLift.BOTTOM_SOFT_LIMIT_MOVEPOS - 3000;
     }
-    leftArmMotor.set(TalonFXControlMode.MotionMagic, pos, DemandType.ArbitraryFeedForward, AuxiliaryFF);
+    leftArmMotor.set(TalonFXControlMode.MotionMagic, MoveArm.targetPos, DemandType.ArbitraryFeedForward, AuxiliaryFF);
   }
 
   public void startTimer(){
@@ -293,7 +293,7 @@ public class ArmLift extends SubsystemBase {
           currentArmEncoderPos = armPlacement(RobotContainer.operatorBoard.getRawAxis(Constants.ArmLift.ENCODER_PORT));
           break;
         case INITIALIZED:
-          movePosFF(MoveArm.targetPos);
+          movePosFF();
           if(armPlacement(RobotContainer.operatorBoard.getRawAxis(Constants.ArmLift.ENCODER_PORT)) != currentArmEncoderPos) {
             currentArmEncoderPos = armPlacement(RobotContainer.operatorBoard.getRawAxis(Constants.ArmLift.ENCODER_PORT));
             changedEncoderPlacement = true;

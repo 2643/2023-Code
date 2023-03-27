@@ -5,12 +5,10 @@
 package frc.robot.commands.ArmGrab;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.ArmGrab.States;
 
-public class GrabberOpen extends CommandBase {
-  /** Creates a new GrabberOpen. */
-  public GrabberOpen() {
+public class AutoGrabber extends CommandBase {
+  /** Creates a new AutoGrabber. */
+  public AutoGrabber() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,15 +22,11 @@ public class GrabberOpen extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-      if(RobotContainer.m_grabber.getArmGrabState() != States.OPENED && RobotContainer.m_grabber.getArmGrabState() != States.OPENING) {
-        RobotContainer.m_grabber.setArmGrabState(States.OPENING);
-      }
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

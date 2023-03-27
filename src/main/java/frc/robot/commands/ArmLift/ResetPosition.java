@@ -1,5 +1,6 @@
 package frc.robot.commands.ArmLift;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -70,7 +71,10 @@ public class ResetPosition extends CommandBase {
     //10000
     RobotContainer.m_armLift.reset();
     RobotContainer.m_armLift.changeVelocity(8533);
-    MoveArm.targetPos = Constants.ArmLift.REST;
+    if(DriverStation.isAutonomous())
+      MoveArm.targetPos = Constants.ArmLift.CUBE;
+    else
+      MoveArm.targetPos = Constants.ArmLift.REST;
     RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.INITIALIZED);
 
 

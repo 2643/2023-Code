@@ -109,11 +109,15 @@ public class ArmGrab extends SubsystemBase {
 
   public void firstCurrentPass(){
     timer.start();
-    if(timer.hasElapsed(0.5)){
+    if(timer.hasElapsed(0.15)){
       timer.stop();
       timer.reset();
       state = States.CLOSING_CURRENT;
     } 
+  }
+
+  public boolean isClosed() {
+    return state == States.CLOSED || state == States.CLOSING_CURRENT || state == States.CLOSING_STARTING_VELOCITY || state == States.CLOSING_TIME_ELAPSING;
   }
 
   @Override
@@ -177,14 +181,18 @@ public class ArmGrab extends SubsystemBase {
         case CLOSING_TIME_ELAPSING:
           stateEntry.setString("Waiting for time lapse");
           firstCurrentPass();
-          state = States.CLOSING_CURRENT;
+          //state = States.CLOSING_CURRENT;
           break;
         case CLOSING_CURRENT:
           stateEntry.setString("Closing current");
           if(RobotContainer.coneMode.getAsBoolean()) {
             if(getCurrentOutput() >= Constants.ArmGrab.TARGET_CONE_CURRENT_VALUE) {
               stopMotor();
+            if(RobotContainer.coneMode.getAsBoolean()) {
               setPercentOutput(Constants.ArmGrab.GRABBER_PERCENT_OUTPUT);
+            } else {
+              setPercentOutput(Constants.ArmGrab.GRABBER_CUBE_PERCENT_OUTPUT);
+            }
               ArmGrab.state = States.CLOSED;
             }
           } else {

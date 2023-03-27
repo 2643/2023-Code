@@ -30,7 +30,10 @@ public class GrabberClose extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     timer.reset();
-    if(RobotContainer.m_grabber.getArmGrabState() != States.CLOSED) {
+    if(RobotContainer.m_grabber.getArmGrabState() != States.CLOSED && 
+        RobotContainer.m_grabber.getArmGrabState() != States.CLOSING_CURRENT && 
+        RobotContainer.m_grabber.getArmGrabState() != States.CLOSING_STARTING_VELOCITY && 
+        RobotContainer.m_grabber.getArmGrabState() != States.CLOSING_TIME_ELAPSING) {
       RobotContainer.m_grabber.setArmGrabState(States.CLOSING_STARTING_VELOCITY);
     }
   }

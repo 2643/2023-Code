@@ -4,19 +4,25 @@
 
 package frc.robot.commands.Drivetrain;
 
+// import java.util.ArrayList;
+// import java.util.List;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+// import edu.wpi.first.math.geometry.Rotation2d;
 //import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+// import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation.Alliance;
 // import edu.wpi.first.networktables.GenericEntry;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+// import frc.robot.Constants;
 import frc.robot.RobotContainer;
-//import frc.robot.subsystems.Drivetrain;
+// import frc.robot.subsystems.ArmGrab.States;
 
 public class Odometry extends CommandBase {
     Pose2d pos;
@@ -25,12 +31,13 @@ public class Odometry extends CommandBase {
     DoubleSupplier y_vel;
     DoubleSupplier turn_vel;
     double targetTurnDegrees;
+    boolean isPickup;
 
     double kP = 1;
     double kI = 0.5;
     double kD = 0;
 
-    double rotational_kP = 0.03;
+    double rotational_kP = 0.04;
     double rotational_kI = 0;
     double rotational_kD = 0;
 
@@ -46,6 +53,8 @@ public class Odometry extends CommandBase {
     
     //GenericEntry kDE = Shuffleboard.getTab("Swerve").add("kDE", 0).getEntry();
   /** Creates a new SwerveDriveOdometry. */
+  //Used for Automation
+  
   public Odometry(Pose2d m_targetPos) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_drivetrain);
@@ -53,11 +62,21 @@ public class Odometry extends CommandBase {
     targetPos = m_targetPos;
   }
 
+  // public Odometry(Pose2d m_targetPos, boolean isPickup) {
+  //   // Use addRequirements() here to declare subsystem dependencies.
+  //   addRequirements(RobotContainer.m_drivetrain);
+  //   addRequirements(RobotContainer.m_vision);
+  //   targetPos = m_targetPos;
+  //   //this.isPickup = isPickup;
+  // }
+
+  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xPIDController.setTolerance(0.03);
-    yPIDController.setTolerance(0.03);
+    xPIDController.setTolerance(0.02);
+    yPIDController.setTolerance(0.02);
     rotationPIDController.enableContinuousInput(0, 360);
     //rotationPIDController.setTolerance(2);
   }
@@ -99,9 +118,11 @@ public class Odometry extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if((Math.round(pos.getX() * 5) == Math.round(targetPos.getX() * 5)) && ((Math.round(pos.getY() * 5) == Math.round(targetPos.getY() * 5)))) { //&& Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees() / 5)) {
-    //   return true;
-    // }
+    if((Math.round(pos.getX() * 5) == Math.round(targetPos.getX() * 5)) 
+      && ((Math.round(pos.getY() * 5) == Math.round(targetPos.getY() * 5))) 
+      && (Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees()) == Math.round(targetPos.getRotation().getDegrees()))) { //&& Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees() / 5)) {
+        return true;
+    }
     return false;
   }
 }

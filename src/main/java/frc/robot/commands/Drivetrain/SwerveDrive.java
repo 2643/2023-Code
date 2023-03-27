@@ -14,7 +14,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class SwerveDrive extends CommandBase {
-  double encoderkP = 0.2;
+  double encoderkP = 0.3;
   double encoderkI = 0;
   double encoderkD = 0;
 
@@ -82,15 +82,12 @@ public class SwerveDrive extends CommandBase {
     if(RobotContainer.turningMode.getAsBoolean()) {
       rotationalXAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS_PORT)), 0.3) * Constants.MAX_RADIANS_PER_SECOND;
     } else {
-      rotationalXAxisValue = () -> -rotational_pid.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees(), betterEncoderAngle);
-        //   if(Math.abs(betterEncoderAngle - current) < 180) {
-        //   rotationalXAxisValue = () -> Math.copySign(rotational_pid.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees(), betterEncoderAngle), betterEncoderAngle - current) * Constants.AUTONOMOUS_RADIANS_PER_SECOND;
-        // } else {
-        //   rotationalXAxisValue = () -> Math.copySign(rotational_pid.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees(), betterEncoderAngle), current - betterEncoderAngle) * Constants.AUTONOMOUS_RADIANS_PER_SECOND;
-        // }
+      rotationalXAxisValue = () -> -rotational_pid.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees()+90, betterEncoderAngle);
     }
-
-    RobotContainer.m_drivetrain.setChassisSpeed(Constants.FIELD_RELATIVE_MODE ? ChassisSpeeds.fromFieldRelativeSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble(), RobotContainer.m_drivetrain.gyroAngle()) : new ChassisSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble()));  
+    if(!RobotContainer.autoBottom.getAsBoolean() && !RobotContainer.autoMiddle.getAsBoolean()) {
+      RobotContainer.m_drivetrain.setChassisSpeed(!RobotContainer.m_robotRelativeMode.getAsBoolean() ? ChassisSpeeds.fromFieldRelativeSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble(), RobotContainer.m_drivetrain.gyroAngle()) : new ChassisSpeeds(xAxisValue.getAsDouble(), -yAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble()));
+    } else {
+      RobotContainer.m_drivetrain.setChassisSpeed(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, RobotContainer.m_drivetrain.gyroAngle()));}
   }
   // Called once the command ends or is interrupted.
   @Override
