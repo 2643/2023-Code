@@ -109,7 +109,7 @@ public class ArmGrab extends SubsystemBase {
 
   public void firstCurrentPass(){
     timer.start();
-    if(timer.hasElapsed(0.15)){
+    if(timer.hasElapsed(0.3)){
       timer.stop();
       timer.reset();
       state = States.CLOSING_CURRENT;

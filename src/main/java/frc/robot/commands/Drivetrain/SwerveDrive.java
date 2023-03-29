@@ -14,7 +14,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class SwerveDrive extends CommandBase {
-  double encoderkP = 0.3;
+  double encoderkP = 0.2;
   double encoderkI = 0;
   double encoderkD = 0;
 

@@ -37,7 +37,7 @@ public class ResetPosition extends CommandBase {
     RobotContainer.m_armLift.setPos(-20000);
     RobotContainer.m_armLift.changeVelocity(2500);//4000
     RobotContainer.m_armLift.movePos(Constants.ArmLift.COUNT_PER_DEGREES * 60);
-    System.out.println("state1");
+    //System.out.println("state1");
     // if(!RobotContainer.m_armLift.getLimitSwitchTwo()){
     //   state = states.state4;
     // }
@@ -50,7 +50,7 @@ public class ResetPosition extends CommandBase {
   @Override
   public void execute() {
       if(RobotContainer.m_armLift.getPos() >= Constants.ArmLift.COUNT_PER_DEGREES * 55) {
-        System.out.println("state2");
+        //System.out.println("state2");
         RobotContainer.m_armLift.changeVelocity(2500);//1000
         RobotContainer.m_armLift.movePos(Constants.ArmLift.COUNT_PER_DEGREES * 60);
         
@@ -58,7 +58,7 @@ public class ResetPosition extends CommandBase {
       
       if (RobotContainer.m_armLift.getLimitSwitch()) {
         resetPosition = RobotContainer.m_armLift.getPos();
-        System.out.println("state3");
+        //System.out.println("state3");
         finish = true;
         //ArmLift.ArmLiftState = ArmLiftStates.INITIALIZED;
         RobotContainer.m_armLift.movePos(resetPosition);

@@ -170,10 +170,16 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetGyro() {
+    // for (int i = 0; i < 100; i++) {
+    //   System.out.println("Gyro Resetted");
+    // }
     imu.setYaw(0);
   }
 
   public void setYaw(double yaw) {
+    // for (int i = 0; i < 100; i++) {
+    //   System.out.println("Gyro Set to " + yaw);
+    // }
     imu.setYaw(yaw);
   }
 

@@ -33,16 +33,16 @@ public class Odometry extends CommandBase {
     double targetTurnDegrees;
     boolean isPickup;
 
-    double kP = 1;
+    double kP = 1.8;
     double kI = 0.5;
     double kD = 0;
 
-    double rotational_kP = 0.04;
+    double rotational_kP = 0.15;
     double rotational_kI = 0;
     double rotational_kD = 0;
 
-    TrapezoidProfile.Constraints constraints = new Constraints(3/10, 2/10);
-    TrapezoidProfile.Constraints rotation_constraints = new TrapezoidProfile.Constraints(500, 1000000000);
+    TrapezoidProfile.Constraints constraints = new Constraints(3, 2/10);
+    TrapezoidProfile.Constraints rotation_constraints = new TrapezoidProfile.Constraints(1000, 1000000000);
 
     //TrapezoidProfile.Constraints rotation_constraints = new Constraints(10/100, 10/10);
 
@@ -118,11 +118,7 @@ public class Odometry extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((Math.round(pos.getX() * 5) == Math.round(targetPos.getX() * 5)) 
-      && ((Math.round(pos.getY() * 5) == Math.round(targetPos.getY() * 5))) 
-      && (Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees()) == Math.round(targetPos.getRotation().getDegrees()))) { //&& Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees() / 5)) {
-        return true;
-    }
-    return false;
+    //&& Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees() / 5)) {
+      return xPIDController.atGoal() && yPIDController.atGoal() && rotationPIDController.atGoal();
   }
 }

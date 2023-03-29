@@ -16,6 +16,7 @@ public class AutoBalance extends CommandBase {
   Timer time = new Timer();
   public AutoBalance() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.m_drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -36,6 +37,7 @@ public class AutoBalance extends CommandBase {
     if(firstOffset) {
       if(Math.abs(RobotContainer.m_drivetrain.pitch().getDegrees()) < 2) {
         time.start();
+        RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, 0, 0));
         if(time.get() > 1) {
           finished = true;
         }
@@ -47,7 +49,7 @@ public class AutoBalance extends CommandBase {
         RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, 0.1, 0));
       }
     } else {
-      RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, -0.1, 0));
+      RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, -0.3, 0));
     }
   }
 

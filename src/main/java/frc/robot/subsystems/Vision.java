@@ -72,7 +72,7 @@ public class Vision extends SubsystemBase {
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
     }
 
-    if(RobotContainer.m_reset.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
+    if(RobotContainer.m_resetGyro.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
       RobotContainer.m_drivetrain.setYaw(targetInfo[5]+180);
     }
   }

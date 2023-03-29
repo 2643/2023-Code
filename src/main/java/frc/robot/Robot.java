@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,23 +14,22 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+// import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ArmGrab.*;
 import frc.robot.commands.ArmLift.*;
 import frc.robot.commands.Automation.AutomationMiddle;
-import frc.robot.commands.Drivetrain.Odometry;
+// import frc.robot.commands.Drivetrain.Odometry;
 import frc.robot.commands.Drivetrain.SwerveDrive;
-import frc.robot.subsystems.ArmGrab.States;
+// import frc.robot.subsystems.ArmGrab.States;
 import frc.robot.subsystems.ArmLift.ArmLiftStates;
 import frc.robot.subsystems.ArmLift.moveArmJoystick;
-import frc.robot.subsystems.ArmLift.positionStates;
+// import frc.robot.subsystems.ArmLift.positionStates;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -45,32 +44,18 @@ public class Robot extends TimedRobot {
 
 
   GenericEntry timeEntry = Shuffleboard.getTab("Driver").add("Time", 0).withPosition(0, 0).withSize(2, 2).getEntry();
-  GenericEntry targetRobotX = Shuffleboard.getTab("Driver").add("Robot-X", 0).withPosition(0, 2).withSize(2, 2).getEntry();
-  GenericEntry targetRobotY = Shuffleboard.getTab("Driver").add("Robot-Y", 0).withPosition(2, 2).withSize(2, 2).getEntry();
-  GenericEntry directionToMove = Shuffleboard.getTab("Driver").add("Directions to Move", "Not Complete").withPosition(2, 0).withSize(2, 2).getEntry();
-  GenericEntry OkToDropEntry = Shuffleboard.getTab("Driver").add("Can Drop Item(T)", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(5, 2).withSize(2, 2).getEntry();
-  GenericEntry pickupPlaceEntry = Shuffleboard.getTab("Driver").add("Pickup(T) or Place(F)", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(5, 2).withSize(2, 2).getEntry();
-  GenericEntry joystickConnectedEntry = Shuffleboard.getTab("Driver").add("Joystick Connected", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(7, 0).withSize(2, 1).getEntry();
-  GenericEntry opBoardConnectedEntry = Shuffleboard.getTab("Driver").add("OpBoard Connected", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(7, 1).withSize(2, 1).getEntry();
-  GenericEntry coneCubeEntry = Shuffleboard.getTab("Driver").add("Cone(T) or Cube(F)", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(7, 3).withSize(2, 1).getEntry();
+  GenericEntry pickupPlaceEntry = Shuffleboard.getTab("Driver").add("Pickup(T) or Place(F)", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(0, 2).withSize(2, 2).getEntry();
+  GenericEntry joystickConnectedEntry = Shuffleboard.getTab("Driver").add("Joystick Connected", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(4, 0).withSize(2, 1).getEntry();
+  GenericEntry opBoardConnectedEntry = Shuffleboard.getTab("Driver").add("OpBoard Connected", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(4, 2).withSize(2, 1).getEntry();
+  GenericEntry coneCubeEntry = Shuffleboard.getTab("Driver").add("Cone(T) or Cube(F)", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 0).withSize(2, 2).getEntry();
+  public static GenericEntry aprilTagsDetection = Shuffleboard.getTab("Driver").add("Detects AprilTags", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 2).withSize(2, 2).getEntry();
 
-  GenericEntry chargeStationEntry = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).withPosition(9, 2).withSize(2, 1).getEntry();
-  ComplexWidget cameraShuffleboard = Shuffleboard.getTab("Driver").addCamera("Camera", "Limelight", "http://10.26.43.17:5800/").withPosition(19, 0).withSize(5, 5);
-  ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Driver").add("2023-Field", field).withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 40)).withPosition(12, 0).withSize(7, 5);
+  //GenericEntry chargeStationEntry = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).withPosition(9, 2).withSize(2, 1).getEntry();
+  //ComplexWidget cameraShuffleboard = Shuffleboard.getTab("Driver").addCamera("Camera", "Limelight", "http://10.26.43.17:5800/").withPosition(19, 0).withSize(5, 5);
+  ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Driver").add("2023-Field", field).withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 35)).withPosition(4, 0).withSize(8, 5);
 
   // GenericEntry dock = Shuffleboard.getTab("Driver").add("dock", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
   // GenericEntry chargeStation = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).getEntry();
-
-  
-  public static GenericEntry aprilTagsDetection = Shuffleboard.getTab("Driver").add("Detects Apriltags", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(0, 0).withSize(2, 1).getEntry();
-  //GenericEntry pickup_place = Shuffleboard.getTab("Driver").add("Pickup(T)/Place(F)", false).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
-  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
-  ComplexWidget autoEndLocationEntry = Shuffleboard.getTab("Driver").add("Autonomous End Location Selector", m_chooser).withWidget(BuiltInWidgets.kComboBoxChooser);
- 
-  // public final Command m_location1 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_ONE);
-  // public final Command m_location2 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_TWO);
-  // public final Command m_location3 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_THREE);
-  // public final Command m_location4 = new Routine1(Constants.AUTONOMOUS_ENDING_LOCATION_FOUR);
 
 
   private static enum AUTOMATION_STATES {
@@ -196,31 +181,31 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     CommandScheduler.getInstance().setDefaultCommand(RobotContainer.m_drivetrain, new SwerveDrive());
-    redConePoses = new ArrayList<>();
-    redConePoses.add(new Pose2d(Constants.Position2d.FIRST_RED_TEAM_CONE_X_VALUE, Constants.Position2d.FIRST_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
-    redConePoses.add(new Pose2d(Constants.Position2d.SECOND_RED_TEAM_CONE_X_VALUE, Constants.Position2d.SECOND_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
-    redConePoses.add(new Pose2d(Constants.Position2d.THIRD_RED_TEAM_CONE_X_VALUE, Constants.Position2d.THIRD_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
-    redConePoses.add(new Pose2d(Constants.Position2d.FOURTH_RED_TEAM_CONE_X_VALUE, Constants.Position2d.FOURTH_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
-    redConePoses.add(new Pose2d(Constants.Position2d.FIFTH_RED_TEAM_CONE_X_VALUE, Constants.Position2d.FIFTH_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
-    redConePoses.add(new Pose2d(Constants.Position2d.SIXTH_RED_TEAM_CONE_X_VALUE, Constants.Position2d.SIXTH_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
+    // redConePoses = new ArrayList<>();
+    // redConePoses.add(new Pose2d(Constants.Position2d.FIRST_RED_TEAM_CONE_X_VALUE, Constants.Position2d.FIRST_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
+    // redConePoses.add(new Pose2d(Constants.Position2d.SECOND_RED_TEAM_CONE_X_VALUE, Constants.Position2d.SECOND_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
+    // redConePoses.add(new Pose2d(Constants.Position2d.THIRD_RED_TEAM_CONE_X_VALUE, Constants.Position2d.THIRD_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
+    // redConePoses.add(new Pose2d(Constants.Position2d.FOURTH_RED_TEAM_CONE_X_VALUE, Constants.Position2d.FOURTH_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
+    // redConePoses.add(new Pose2d(Constants.Position2d.FIFTH_RED_TEAM_CONE_X_VALUE, Constants.Position2d.FIFTH_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
+    // redConePoses.add(new Pose2d(Constants.Position2d.SIXTH_RED_TEAM_CONE_X_VALUE, Constants.Position2d.SIXTH_RED_TEAM_CONE_Y_VALUE, new Rotation2d(-90)));
 
-    redCubePoses = new ArrayList<>();
-    redCubePoses.add(new Pose2d(Constants.Position2d.FIRST_RED_TEAM_CUBE_X_VALUE, Constants.Position2d.FIRST_RED_TEAM_CUBE_Y_VALUE, new Rotation2d(-90)));
-    redCubePoses.add(new Pose2d(Constants.Position2d.SECOND_RED_TEAM_CUBE_X_VALUE, Constants.Position2d.SECOND_RED_TEAM_CUBE_Y_VALUE, new Rotation2d(-90)));
-    redCubePoses.add(new Pose2d(Constants.Position2d.THIRD_RED_TEAM_CUBE_X_VALUE, Constants.Position2d.THIRD_RED_TEAM_CUBE_Y_VALUE, new Rotation2d(-90)));
+    // redCubePoses = new ArrayList<>();
+    // redCubePoses.add(new Pose2d(Constants.Position2d.FIRST_RED_TEAM_CUBE_X_VALUE, Constants.Position2d.FIRST_RED_TEAM_CUBE_Y_VALUE, new Rotation2d(-90)));
+    // redCubePoses.add(new Pose2d(Constants.Position2d.SECOND_RED_TEAM_CUBE_X_VALUE, Constants.Position2d.SECOND_RED_TEAM_CUBE_Y_VALUE, new Rotation2d(-90)));
+    // redCubePoses.add(new Pose2d(Constants.Position2d.THIRD_RED_TEAM_CUBE_X_VALUE, Constants.Position2d.THIRD_RED_TEAM_CUBE_Y_VALUE, new Rotation2d(-90)));
 
-    blueConePoses = new ArrayList<>();
-    blueConePoses.add(new Pose2d(Constants.Position2d.FIRST_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.FIRST_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
-    blueConePoses.add(new Pose2d(Constants.Position2d.SECOND_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.SECOND_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
-    blueConePoses.add(new Pose2d(Constants.Position2d.THIRD_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.THIRD_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
-    blueConePoses.add(new Pose2d(Constants.Position2d.FOURTH_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.FOURTH_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
-    blueConePoses.add(new Pose2d(Constants.Position2d.FIFTH_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.FIFTH_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
-    blueConePoses.add(new Pose2d(Constants.Position2d.SIXTH_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.SIXTH_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
+    // blueConePoses = new ArrayList<>();
+    // blueConePoses.add(new Pose2d(Constants.Position2d.FIRST_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.FIRST_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
+    // blueConePoses.add(new Pose2d(Constants.Position2d.SECOND_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.SECOND_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
+    // blueConePoses.add(new Pose2d(Constants.Position2d.THIRD_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.THIRD_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
+    // blueConePoses.add(new Pose2d(Constants.Position2d.FOURTH_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.FOURTH_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
+    // blueConePoses.add(new Pose2d(Constants.Position2d.FIFTH_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.FIFTH_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
+    // blueConePoses.add(new Pose2d(Constants.Position2d.SIXTH_BLUE_TEAM_CONE_X_VALUE, Constants.Position2d.SIXTH_BLUE_TEAM_CONE_Y_VALUE, new Rotation2d(90)));
 
-    blueCubePoses = new ArrayList<>();
-    blueCubePoses.add(new Pose2d(Constants.Position2d.FIRST_BLUE_TEAM_CUBE_X_VALUE, Constants.Position2d.FIRST_BLUE_TEAM_CUBE_Y_VALUE, new Rotation2d(90)));
-    blueCubePoses.add(new Pose2d(Constants.Position2d.SECOND_BLUE_TEAM_CUBE_X_VALUE, Constants.Position2d.SECOND_BLUE_TEAM_CUBE_Y_VALUE, new Rotation2d(90)));
-    blueCubePoses.add(new Pose2d(Constants.Position2d.THIRD_BLUE_TEAM_CUBE_X_VALUE, Constants.Position2d.THIRD_BLUE_TEAM_CUBE_Y_VALUE, new Rotation2d(90)));
+    // blueCubePoses = new ArrayList<>();
+    // blueCubePoses.add(new Pose2d(Constants.Position2d.FIRST_BLUE_TEAM_CUBE_X_VALUE, Constants.Position2d.FIRST_BLUE_TEAM_CUBE_Y_VALUE, new Rotation2d(90)));
+    // blueCubePoses.add(new Pose2d(Constants.Position2d.SECOND_BLUE_TEAM_CUBE_X_VALUE, Constants.Position2d.SECOND_BLUE_TEAM_CUBE_Y_VALUE, new Rotation2d(90)));
+    // blueCubePoses.add(new Pose2d(Constants.Position2d.THIRD_BLUE_TEAM_CUBE_X_VALUE, Constants.Position2d.THIRD_BLUE_TEAM_CUBE_Y_VALUE, new Rotation2d(90)));
 
   }
 
@@ -234,10 +219,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(RobotContainer.m_reset.getAsBoolean()) {
-      RobotContainer.m_drivetrain.resetGyro();
-    }
-
     if(!RobotContainer.autoBottom.getAsBoolean() && !RobotContainer.autoMiddle.getAsBoolean()) {
       // RobotContainer.autoMiddle.whileTrue(new AutomationMiddle());
       // RobotContainer.autoBottom.whileTrue(new AutomationBottom());
@@ -260,10 +241,10 @@ public class Robot extends TimedRobot {
         }
       }
    
-      if(RobotContainer.m_grabber.getArmGrabState() == States.CLOSED) {
-        pickupPlaceEntry.setBoolean(true);
-      } else {
+      if(RobotContainer.m_grabber.isClosed()) {
         pickupPlaceEntry.setBoolean(false);
+      } else {
+        pickupPlaceEntry.setBoolean(true);
       }
 
       if(RobotContainer.manualGrabClose.getAsBoolean()) {
@@ -273,204 +254,204 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if(RobotContainer.autoMiddle.getAsBoolean() && !autoMiddleMode) {
-      CommandScheduler.getInstance().schedule(new AutomationMiddle());
-      autoMiddleMode = true;
-    } 
+    // if(RobotContainer.autoMiddle.getAsBoolean() && !autoMiddleMode) {
+    //   CommandScheduler.getInstance().schedule(new AutomationMiddle());
+    //   autoMiddleMode = true;
+    // } 
     
-    if(!RobotContainer.autoMiddle.getAsBoolean() && autoMiddleMode) {
-      CommandScheduler.getInstance().cancelAll();
-      autoMiddleMode = false;
-    }
+    // if(!RobotContainer.autoMiddle.getAsBoolean() && autoMiddleMode) {
+    //   CommandScheduler.getInstance().cancelAll();
+    //   autoMiddleMode = false;
+    // }
 
-    if(!RobotContainer.autoMiddle.getAsBoolean() && currentAutoState != AUTOMATION_STATES.NOT_INITIALIZED) {
-      firstMoveCommand.cancel();
-      moveCommand.cancel();
-      moveArmCommand.cancel();
-      moveGrabber.cancel();
-    }
+    // if(!RobotContainer.autoMiddle.getAsBoolean() && currentAutoState != AUTOMATION_STATES.NOT_INITIALIZED) {
+    //   firstMoveCommand.cancel();
+    //   moveCommand.cancel();
+    //   moveArmCommand.cancel();
+    //   moveGrabber.cancel();
+    // }
 
-    if(!RobotContainer.autoMiddle.getAsBoolean()) {
-      currentAutoState = AUTOMATION_STATES.NOT_INITIALIZED;
-    }
+    // if(!RobotContainer.autoMiddle.getAsBoolean()) {
+    //   currentAutoState = AUTOMATION_STATES.NOT_INITIALIZED;
+    // }
 
-    switch(currentAutoState) {
-      case RESET:
-        if(!RobotContainer.autoMiddle.getAsBoolean())
-          currentAutoState = AUTOMATION_STATES.NOT_INITIALIZED;
-        break;
-      case NOT_INITIALIZED:
-        if(RobotContainer.autoMiddle.getAsBoolean())
-          currentAutoState = AUTOMATION_STATES.INITIALIZING;
-        break;
-      case INITIALIZING:
-        redNearestConePose = RobotContainer.m_drivetrain.getPose();
-        redNearestCubePose = RobotContainer.m_drivetrain.getPose();
-        blueNearestConePose = RobotContainer.m_drivetrain.getPose();
-        blueNearestCubePose = RobotContainer.m_drivetrain.getPose();
-
-        redNearestConePose.nearest(redConePoses);
-        redNearestCubePose.nearest(redCubePoses);
-        blueNearestConePose.nearest(blueConePoses);
-        blueNearestCubePose.nearest(blueCubePoses);
-        if(RobotContainer.m_grabber.isClosed()) {
-          moveCommand = new Odometry(new Pose2d());
-          currentAutoState = AUTOMATION_STATES.DROP_MOVE;
-        } else {
-          firstMoveCommand = new Odometry(new Pose2d());
-          moveCommand = new Odometry(new Pose2d());
-          currentAutoState = AUTOMATION_STATES.FIRST_PICKUP_MOVE;
-        }
-        break;
-      case DROP_MOVE:
-      if(moveCommand.isFinished()) {
-        moveArmCommand = new armMove(positionStates.REST);
-        currentAutoState = AUTOMATION_STATES.DROP_LOWER;
-      }
-        if(DriverStation.getAlliance() == Alliance.Blue) {
-          if(!moveCommand.isScheduled()) {
-            if(RobotContainer.coneMode.getAsBoolean()) {
-              moveCommand = new Odometry(blueNearestConePose);
-            } else {
-              moveCommand = new Odometry(blueNearestCubePose);
-            }
-            CommandScheduler.getInstance().schedule(moveCommand);
-          }
-        } else {
-          if(!moveCommand.isScheduled()) {
-            if(RobotContainer.coneMode.getAsBoolean()) {
-              moveCommand = new Odometry(redNearestConePose);
-            } else {
-              moveCommand = new Odometry(redNearestCubePose);
-            }
-              CommandScheduler.getInstance().schedule(moveCommand);
-          }
-        }
-        break;
-      case DROP_LOWER:
-        if(moveArmCommand.isFinished()) {
-          moveGrabber = new GrabberOpen();
-          currentAutoState = AUTOMATION_STATES.DROP_OPEN;
-        }
-
-        if(!moveArmCommand.isScheduled()) {
-          if(RobotContainer.coneMode.getAsBoolean()) {
-            moveArmCommand = new armMove(positionStates.CONE);
-          } else {
-            moveArmCommand = new armMove(positionStates.CUBE);
-          }
-          CommandScheduler.getInstance().schedule(moveArmCommand);
-        }
-        break;
-      case DROP_OPEN:
-        if(moveGrabber.isFinished() && RobotContainer.m_grabber.getArmGrabState()== States.OPENED) {
-          currentAutoState = AUTOMATION_STATES.DROP_END;
-        }
-        if(!moveGrabber.isScheduled() && RobotContainer.m_grabber.getArmGrabState() != States.OPENED) {
-          CommandScheduler.getInstance().schedule(moveGrabber);
-        }
-        break;
-      case DROP_END:
-        moveArmCommand = new armMove(positionStates.REST);
-        CommandScheduler.getInstance().schedule(moveArmCommand);
-        currentAutoState = AUTOMATION_STATES.RESET;
-        break;
-      case FIRST_PICKUP_MOVE:
-        if(firstMoveCommand.isFinished()) {
-          moveArmCommand = new armMove(positionStates.REST);
-          currentAutoState = AUTOMATION_STATES.ARM_MOVE_PICKUP;
-        }
-
-        if(!firstMoveCommand.isScheduled()) {
-          if(DriverStation.getAlliance() == Alliance.Blue) {
-            firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_BLUE_PICKUP_X_VALUE, Constants.Position2d.STARTING_BLUE_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
-            CommandScheduler.getInstance().schedule(firstMoveCommand);
-          } else {
-            firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_RED_PICKUP_X_VALUE, Constants.Position2d.STARTING_RED_PICKUP_Y_VALUE, Rotation2d.fromDegrees(90)));
-          }
-        }
-        break;
-      case ARM_MOVE_PICKUP:
-      if(moveArmCommand.isFinished()) {
-        moveGrabber = new GrabberOpen();
-        moveArmCommand = new armMove(positionStates.REST);
-        currentAutoState = AUTOMATION_STATES.SECOND_PICKUP_MOVE;
-      }
-
-      if(!moveArmCommand.isScheduled()) {
-        if(RobotContainer.coneMode.getAsBoolean()) {
-          moveArmCommand = new armMove(positionStates.CONE);
-        } else {
-          moveArmCommand = new armMove(positionStates.CUBE);
-        }
-        CommandScheduler.getInstance().schedule(moveArmCommand);
-      }
-        break;
-      case SECOND_PICKUP_MOVE:
-        if(moveCommand.isFinished()) {
-          moveGrabber = new GrabberClose();
-          currentAutoState = AUTOMATION_STATES.PICKUP_END;
-        }
-
-        if(!moveCommand.isScheduled()) {
-          CommandScheduler.getInstance().schedule(moveGrabber);
-          if(DriverStation.getAlliance() == Alliance.Blue) {
-            moveCommand = new Odometry(new Pose2d(Constants.Position2d.BLUE_TEAM_PICKUP_X_VALUE, Constants.Position2d.BLUE_TEAM_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
-            CommandScheduler.getInstance().schedule(moveCommand);
-          } else {
-            moveCommand = new Odometry(new Pose2d(Constants.Position2d.RED_TEAM_PICKUP_X_VALUE, Constants.Position2d.RED_TEAM_PICKUP_Y_VALUE, Rotation2d.fromDegrees(90)));
-            CommandScheduler.getInstance().schedule(moveCommand);
-          }
-        }
-        break;
-      case PICKUP_END:
-        if(!moveGrabber.isScheduled()) {
-          moveGrabber = new GrabberClose();
-          CommandScheduler.getInstance().schedule(moveGrabber);
-        }
-        if(RobotContainer.m_grabber.getArmGrabState() == States.CLOSED) {
-          if(DriverStation.getAlliance() == Alliance.Blue)
-            firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_BLUE_PICKUP_X_VALUE, Constants.Position2d.STARTING_BLUE_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
-          else
-            firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_RED_PICKUP_X_VALUE, Constants.Position2d.STARTING_RED_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
-          CommandScheduler.getInstance().schedule(firstMoveCommand);
-          CommandScheduler.getInstance().schedule(new armMove(positionStates.REST));
-          currentAutoState = AUTOMATION_STATES.RESET;
-        }
-        break;
-      default:
-        System.out.println("Code is trash");
-        break;
-    }
-
-    if(RobotContainer.autoMiddle.getAsBoolean()) {
-      //secondSolution = 
-    }
-
-    // switch (currentSecondAutoState) {
+    // switch(currentAutoState) {
     //   case RESET:
-    //     secondSolution.cancel();
-    //     currentSecondAutoState = SECOND_AUTO_SOLUTION.NOT_INITIALIZED;
+    //     if(!RobotContainer.autoMiddle.getAsBoolean())
+    //       currentAutoState = AUTOMATION_STATES.NOT_INITIALIZED;
     //     break;
     //   case NOT_INITIALIZED:
-    //     if(RobotContainer.autoMiddle.getAsBoolean()) {
-    //       currentSecondAutoState = SECOND_AUTO_SOLUTION.CALLED;
+    //     if(RobotContainer.autoMiddle.getAsBoolean())
+    //       currentAutoState = AUTOMATION_STATES.INITIALIZING;
+    //     break;
+    //   case INITIALIZING:
+    //     redNearestConePose = RobotContainer.m_drivetrain.getPose();
+    //     redNearestCubePose = RobotContainer.m_drivetrain.getPose();
+    //     blueNearestConePose = RobotContainer.m_drivetrain.getPose();
+    //     blueNearestCubePose = RobotContainer.m_drivetrain.getPose();
+
+    //     redNearestConePose.nearest(redConePoses);
+    //     redNearestCubePose.nearest(redCubePoses);
+    //     blueNearestConePose.nearest(blueConePoses);
+    //     blueNearestCubePose.nearest(blueCubePoses);
+    //     if(RobotContainer.m_grabber.isClosed()) {
+    //       moveCommand = new Odometry(new Pose2d());
+    //       currentAutoState = AUTOMATION_STATES.DROP_MOVE;
+    //     } else {
+    //       firstMoveCommand = new Odometry(new Pose2d());
+    //       moveCommand = new Odometry(new Pose2d());
+    //       currentAutoState = AUTOMATION_STATES.FIRST_PICKUP_MOVE;
     //     }
     //     break;
-    //   case CALLED:
-    //     secondSolution = new AutomationMiddle();
-    //     CommandScheduler.getInstance().schedule(secondSolution);
-    //     currentSecondAutoState = SECOND_AUTO_SOLUTION.RUNNING;
+    //   case DROP_MOVE:
+    //   if(moveCommand.isFinished()) {
+    //     moveArmCommand = new armMove(positionStates.REST);
+    //     currentAutoState = AUTOMATION_STATES.DROP_LOWER;
+    //   }
+    //     if(DriverStation.getAlliance() == Alliance.Blue) {
+    //       if(!moveCommand.isScheduled()) {
+    //         if(RobotContainer.coneMode.getAsBoolean()) {
+    //           moveCommand = new Odometry(blueNearestConePose);
+    //         } else {
+    //           moveCommand = new Odometry(blueNearestCubePose);
+    //         }
+    //         CommandScheduler.getInstance().schedule(moveCommand);
+    //       }
+    //     } else {
+    //       if(!moveCommand.isScheduled()) {
+    //         if(RobotContainer.coneMode.getAsBoolean()) {
+    //           moveCommand = new Odometry(redNearestConePose);
+    //         } else {
+    //           moveCommand = new Odometry(redNearestCubePose);
+    //         }
+    //           CommandScheduler.getInstance().schedule(moveCommand);
+    //       }
+    //     }
     //     break;
-    //   case RUNNING:
-    //     if(!RobotContainer.autoMiddle.getAsBoolean()) {
-    //       currentSecondAutoState =  SECOND_AUTO_SOLUTION.RESET;
+    //   case DROP_LOWER:
+    //     if(moveArmCommand.isFinished()) {
+    //       moveGrabber = new GrabberOpen();
+    //       currentAutoState = AUTOMATION_STATES.DROP_OPEN;
+    //     }
+
+    //     if(!moveArmCommand.isScheduled()) {
+    //       if(RobotContainer.coneMode.getAsBoolean()) {
+    //         moveArmCommand = new armMove(positionStates.CONE);
+    //       } else {
+    //         moveArmCommand = new armMove(positionStates.CUBE);
+    //       }
+    //       CommandScheduler.getInstance().schedule(moveArmCommand);
+    //     }
+    //     break;
+    //   case DROP_OPEN:
+    //     if(moveGrabber.isFinished() && RobotContainer.m_grabber.getArmGrabState()== States.OPENED) {
+    //       currentAutoState = AUTOMATION_STATES.DROP_END;
+    //     }
+    //     if(!moveGrabber.isScheduled() && RobotContainer.m_grabber.getArmGrabState() != States.OPENED) {
+    //       CommandScheduler.getInstance().schedule(moveGrabber);
+    //     }
+    //     break;
+    //   case DROP_END:
+    //     moveArmCommand = new armMove(positionStates.REST);
+    //     CommandScheduler.getInstance().schedule(moveArmCommand);
+    //     currentAutoState = AUTOMATION_STATES.RESET;
+    //     break;
+    //   case FIRST_PICKUP_MOVE:
+    //     if(firstMoveCommand.isFinished()) {
+    //       moveArmCommand = new armMove(positionStates.REST);
+    //       currentAutoState = AUTOMATION_STATES.ARM_MOVE_PICKUP;
+    //     }
+
+    //     if(!firstMoveCommand.isScheduled()) {
+    //       if(DriverStation.getAlliance() == Alliance.Blue) {
+    //         firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_BLUE_PICKUP_X_VALUE, Constants.Position2d.STARTING_BLUE_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
+    //         CommandScheduler.getInstance().schedule(firstMoveCommand);
+    //       } else {
+    //         firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_RED_PICKUP_X_VALUE, Constants.Position2d.STARTING_RED_PICKUP_Y_VALUE, Rotation2d.fromDegrees(90)));
+    //       }
+    //     }
+    //     break;
+    //   case ARM_MOVE_PICKUP:
+    //   if(moveArmCommand.isFinished()) {
+    //     moveGrabber = new GrabberOpen();
+    //     moveArmCommand = new armMove(positionStates.REST);
+    //     currentAutoState = AUTOMATION_STATES.SECOND_PICKUP_MOVE;
+    //   }
+
+    //   if(!moveArmCommand.isScheduled()) {
+    //     if(RobotContainer.coneMode.getAsBoolean()) {
+    //       moveArmCommand = new armMove(positionStates.CONE);
+    //     } else {
+    //       moveArmCommand = new armMove(positionStates.CUBE);
+    //     }
+    //     CommandScheduler.getInstance().schedule(moveArmCommand);
+    //   }
+    //     break;
+    //   case SECOND_PICKUP_MOVE:
+    //     if(moveCommand.isFinished()) {
+    //       moveGrabber = new GrabberClose();
+    //       currentAutoState = AUTOMATION_STATES.PICKUP_END;
+    //     }
+
+    //     if(!moveCommand.isScheduled()) {
+    //       CommandScheduler.getInstance().schedule(moveGrabber);
+    //       if(DriverStation.getAlliance() == Alliance.Blue) {
+    //         moveCommand = new Odometry(new Pose2d(Constants.Position2d.BLUE_TEAM_PICKUP_X_VALUE, Constants.Position2d.BLUE_TEAM_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
+    //         CommandScheduler.getInstance().schedule(moveCommand);
+    //       } else {
+    //         moveCommand = new Odometry(new Pose2d(Constants.Position2d.RED_TEAM_PICKUP_X_VALUE, Constants.Position2d.RED_TEAM_PICKUP_Y_VALUE, Rotation2d.fromDegrees(90)));
+    //         CommandScheduler.getInstance().schedule(moveCommand);
+    //       }
+    //     }
+    //     break;
+    //   case PICKUP_END:
+    //     if(!moveGrabber.isScheduled()) {
+    //       moveGrabber = new GrabberClose();
+    //       CommandScheduler.getInstance().schedule(moveGrabber);
+    //     }
+    //     if(RobotContainer.m_grabber.getArmGrabState() == States.CLOSED) {
+    //       if(DriverStation.getAlliance() == Alliance.Blue)
+    //         firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_BLUE_PICKUP_X_VALUE, Constants.Position2d.STARTING_BLUE_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
+    //       else
+    //         firstMoveCommand = new Odometry(new Pose2d(Constants.Position2d.STARTING_RED_PICKUP_X_VALUE, Constants.Position2d.STARTING_RED_PICKUP_Y_VALUE, Rotation2d.fromDegrees(-90)));
+    //       CommandScheduler.getInstance().schedule(firstMoveCommand);
+    //       CommandScheduler.getInstance().schedule(new armMove(positionStates.REST));
+    //       currentAutoState = AUTOMATION_STATES.RESET;
     //     }
     //     break;
     //   default:
-    //     System.out.println("Failure");
+    //     System.out.println("Code is trash");
     //     break;
     // }
+
+    // if(RobotContainer.autoMiddle.getAsBoolean()) {
+    //   //secondSolution = 
+    // }
+
+    switch (currentSecondAutoState) {
+      case RESET:
+        secondSolution.cancel();
+        currentSecondAutoState = SECOND_AUTO_SOLUTION.NOT_INITIALIZED;
+        break;
+      case NOT_INITIALIZED:
+        if(RobotContainer.autoMiddle.getAsBoolean()) {
+          currentSecondAutoState = SECOND_AUTO_SOLUTION.CALLED;
+        }
+        break;
+      case CALLED:
+        secondSolution = new AutomationMiddle();
+        secondSolution.schedule();
+        currentSecondAutoState = SECOND_AUTO_SOLUTION.RUNNING;
+        break;
+      case RUNNING:
+        if(!RobotContainer.autoMiddle.getAsBoolean()) {
+          currentSecondAutoState =  SECOND_AUTO_SOLUTION.RESET;
+        }
+        break;
+      default:
+        System.out.println("Failure");
+        break;
+    }
   } 
 
   @Override
