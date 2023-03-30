@@ -8,6 +8,7 @@ package frc.robot.commands.Drivetrain;
 // import java.util.List;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 // import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 // import edu.wpi.first.networktables.GenericEntry;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 // import frc.robot.Constants;
 import frc.robot.RobotContainer;
 // import frc.robot.subsystems.ArmGrab.States;
@@ -33,21 +35,21 @@ public class Odometry extends CommandBase {
     double targetTurnDegrees;
     boolean isPickup;
 
-    double kP = 1.8;
-    double kI = 0.5;
+    double kP = 1.3;
+    double kI = 0.2;
     double kD = 0;
 
-    double rotational_kP = 0.15;
+    double rotational_kP = 0.2;
     double rotational_kI = 0;
     double rotational_kD = 0;
 
-    TrapezoidProfile.Constraints constraints = new Constraints(3, 2/10);
+    TrapezoidProfile.Constraints constraints = new Constraints(3, 2);
     TrapezoidProfile.Constraints rotation_constraints = new TrapezoidProfile.Constraints(1000, 1000000000);
 
     //TrapezoidProfile.Constraints rotation_constraints = new Constraints(10/100, 10/10);
 
-    ProfiledPIDController xPIDController = new ProfiledPIDController(kP, kI, kD, constraints);
-    ProfiledPIDController yPIDController = new ProfiledPIDController(kP, kI, kD, constraints);
+    PIDController xPIDController = new PIDController(kP, kI, kD);
+    PIDController yPIDController = new PIDController(kP, kI, kD);
     ProfiledPIDController rotationPIDController = new ProfiledPIDController(rotational_kP, rotational_kI, rotational_kD, rotation_constraints);
 
     
@@ -75,10 +77,10 @@ public class Odometry extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xPIDController.setTolerance(0.02);
-    yPIDController.setTolerance(0.02);
+    xPIDController.setTolerance(0.04);
+    yPIDController.setTolerance(0.04);
     rotationPIDController.enableContinuousInput(0, 360);
-    //rotationPIDController.setTolerance(2);
+    rotationPIDController.setTolerance(2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -90,12 +92,12 @@ public class Odometry extends CommandBase {
     // xPIDController.setPID(Drivetrain.kPE.getDouble(0), Drivetrain.kIE.getDouble(0), Drivetrain.kDE.getDouble(0));
     // yPIDController.setPID(Drivetrain.kPE.getDouble(0), Drivetrain.kIE.getDouble(0), Drivetrain.kDE.getDouble(0));
 
-    x_vel = () -> xPIDController.calculate(pos.getX(), targetPos.getX());
-    if(xPIDController.atGoal()) {
+    x_vel = () -> xPIDController.calculate(pos.getX(), targetPos.getX()) * Constants.MAX_METERS_PER_SECOND;
+    if(xPIDController.atSetpoint()) {
       x_vel = () -> 0;
     }
-    y_vel = () -> yPIDController.calculate(pos.getY(), targetPos.getY());
-    if(yPIDController.atGoal()) {
+    y_vel = () -> yPIDController.calculate(pos.getY(), targetPos.getY()) * Constants.MAX_METERS_PER_SECOND;
+    if(yPIDController.atSetpoint()) {
       y_vel = () -> 0;
     }
     turn_vel = () -> rotationPIDController.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees(), targetPos.getRotation().getDegrees());
@@ -119,6 +121,6 @@ public class Odometry extends CommandBase {
   @Override
   public boolean isFinished() {
     //&& Math.round(targetTurnDegrees / 5) == Math.round(RobotContainer.m_drivetrain.gyroAngle().getDegrees() / 5)) {
-      return xPIDController.atGoal() && yPIDController.atGoal() && rotationPIDController.atGoal();
+      return xPIDController.atSetpoint() && yPIDController.atSetpoint() && rotationPIDController.atGoal();
   }
 }

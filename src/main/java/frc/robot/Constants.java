@@ -85,7 +85,7 @@ public final class Constants {
         public static final double TARGET_CONE_CURRENT_VALUE = 15;
         public static final double GRABBER_CONE_HARD_LIMIT = 0;
         public static final double GRABBER_CUBE_HARD_LIMIT = 0;
-        public static final double GRABBER_MAX_OPEN_POS = -10;
+        public static final double GRABBER_MAX_OPEN_POS = -11.5;
     }
 
     public class ArmLift {

@@ -89,6 +89,7 @@ public class AutomationMiddle extends SequentialCommandGroup {
                       new armMove(positionStates.CONE), 
                       new WaitCommand(1), 
                       new GrabberOpen(),
+                      new WaitCommand(0.3),
                       new armMove(positionStates.REST));
         } else {
           // for (int i = 0; i < 100; i++) {
@@ -99,6 +100,7 @@ public class AutomationMiddle extends SequentialCommandGroup {
                       new armMove(positionStates.CUBE), 
                       new WaitCommand(1), 
                       new GrabberOpen(),
+                      new WaitCommand(0.3),
                       new armMove(positionStates.REST));
         }
       }
@@ -118,12 +120,14 @@ public class AutomationMiddle extends SequentialCommandGroup {
                       new armMove(positionStates.CONE), 
                       new WaitCommand(0), 
                       new GrabberOpen(),
+                      new WaitCommand(0.3),
                       new armMove(positionStates.REST));
         } else {
           addCommands(new Odometry(blueNearestCubePose), 
                       new armMove(positionStates.CUBE), 
                       new WaitCommand(0), 
                       new GrabberOpen(),
+                      new WaitCommand(0.3),
                       new armMove(positionStates.REST));
         }
       }

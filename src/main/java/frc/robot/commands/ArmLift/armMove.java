@@ -57,7 +57,7 @@ public class armMove extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(MoveArm.targetPos == stateToPosition(state) && Math.abs(stateToPosition(state) - RobotContainer.m_armLift.getPos()) < 1000)
+    if(MoveArm.targetPos == stateToPosition(state) && Math.abs(stateToPosition(state) - RobotContainer.m_armLift.getPos()) < 2000)
       return true;
     return false;
   }

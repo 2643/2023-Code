@@ -47,12 +47,12 @@ public class RobotContainer {
   public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 11);
 
   public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 12);
+  public static final JoystickButton autoBalance = new JoystickButton(operatorBoard, 13);
   public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 14);
 
-  public static JoystickButton turningMode = new JoystickButton(operatorBoard, 15);
+  public static final JoystickButton turningMode = new JoystickButton(operatorBoard, 15);
 
   //TODO: Change port number
-  public static JoystickButton autoBalance = new JoystickButton(operatorBoard, 16);
 
 
 
@@ -82,7 +82,7 @@ public class RobotContainer {
     // cancelling on release.
     // autoMiddle.whenHeld(new AutomationMiddle());
     // autoBottom.whenHeld(new AutomationBottom());
-    autoBalance.whileTrue(new AutoBalance());
+    autoBalance.whileFalse(new AutoBalance());
    
   }
 
