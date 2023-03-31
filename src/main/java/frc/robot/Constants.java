@@ -7,6 +7,7 @@ package frc.robot;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
 
+
 /**
  * The Constants class provides a convenient place for _TEAMs to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declaRED
@@ -76,16 +77,16 @@ public final class Constants {
 
     public class ArmGrab {
         public static final int GRABBER_MOTOR_PORT = 17;
-        public static final double GRABBER_TARGET_RPM = 5000; 
+        public static final double GRABBER_TARGET_RPM = 7500; 
         public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
-        public static final double GRABBER_PERCENT_OUTPUT = 0.1;//0.143 //0.12
-        public static final double GRABBER_CUBE_PERCENT_OUTPUT = 0.05;
-        public static final double TARGET_CUBE_CURRENT_VALUE = 8;
+        public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
+        public static final double GRABBER_CUBE_PERCENT_OUTPUT = 0.05/3;
+        public static final double TARGET_CUBE_CURRENT_VALUE = 10;
         //TODO: Find the actual values
-        public static final double TARGET_CONE_CURRENT_VALUE = 15;
+        public static final double TARGET_CONE_CURRENT_VALUE = 16;
         public static final double GRABBER_CONE_HARD_LIMIT = 0;
         public static final double GRABBER_CUBE_HARD_LIMIT = 0;
-        public static final double GRABBER_MAX_OPEN_POS = -11.5;
+        public static final double GRABBER_MAX_OPEN_POS = -11.5*3;
     }
 
     public class ArmLift {
@@ -120,76 +121,76 @@ public final class Constants {
         //RED _PICKUP 
         public static final double STARTING_RED_PICKUP_X_VALUE = 2.161;
         public static final double STARTING_RED_PICKUP_Y_VALUE = 6.13;
-        public static final double RED_TEAM_PICKUP_X_VALUE = 1.159;
+        public static final double RED_TEAM_PICKUP_X_VALUE = 1.22;
         public static final double RED_TEAM_PICKUP_Y_VALUE = 6.21;
 
         //CUBE RED APRIL TAG ID 1
-        public static final double FIRST_RED_TEAM_CUBE_X_VALUE = 14.49;
-        public static final double FIRST_RED_TEAM_CUBE_Y_VALUE = 2.74 - 1.6764;
+        public static final double FIRST_RED_TEAM_CUBE_X_VALUE = 14.4359;
+        public static final double FIRST_RED_TEAM_CUBE_Y_VALUE = 0.9726;
        
         //CUBE RED APRIL TAG ID 2
-        public static final double SECOND_RED_TEAM_CUBE_X_VALUE = 14.49;
-        public static final double SECOND_RED_TEAM_CUBE_Y_VALUE = 2.74;
+        public static final double SECOND_RED_TEAM_CUBE_X_VALUE = 14.4359;
+        public static final double SECOND_RED_TEAM_CUBE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588 * 3;
 
         //CUBE RED APRIL TAG ID 3
-        public static final double THIRD_RED_TEAM_CUBE_X_VALUE = 14.49;
-        public static final double THIRD_RED_TEAM_CUBE_Y_VALUE = 2.74 + 1.6764;
+        public static final double THIRD_RED_TEAM_CUBE_X_VALUE = 14.4359;
+        public static final double THIRD_RED_TEAM_CUBE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588 * 6;
        
         //BLUE_PICKUP
-        public static final double STARTING_BLUE_PICKUP_X_VALUE = 13.37;
+        public static final double STARTING_BLUE_PICKUP_X_VALUE = 13.45;
         public static final double STARTING_BLUE_PICKUP_Y_VALUE = 6.182;
         public static final double BLUE_TEAM_PICKUP_X_VALUE = 14.37;
         public static final double BLUE_TEAM_PICKUP_Y_VALUE = 6.182;
 
         //BLUE_CUBE APRIL TAG ID 6
-        public static final double FIRST_BLUE_TEAM_CUBE_X_VALUE = 2.062;
-        public static final double FIRST_BLUE_TEAM_CUBE_Y_VALUE = 2.74 + 1.6764;
+        public static final double FIRST_BLUE_TEAM_CUBE_X_VALUE = 2.115;
+        public static final double FIRST_BLUE_TEAM_CUBE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE;
  
         //BLUE_CUBE APRIL TAG ID 7
-        public static final double SECOND_BLUE_TEAM_CUBE_X_VALUE = 2.062;
-        public static final double SECOND_BLUE_TEAM_CUBE_Y_VALUE = 2.74;
+        public static final double SECOND_BLUE_TEAM_CUBE_X_VALUE = 2.115;
+        public static final double SECOND_BLUE_TEAM_CUBE_Y_VALUE = SECOND_RED_TEAM_CUBE_Y_VALUE;
  
         //BLUE_CUBE APRIL TAG ID 8
-        public static final double THIRD_BLUE_TEAM_CUBE_X_VALUE = 2.062;
-        public static final double THIRD_BLUE_TEAM_CUBE_Y_VALUE = 2.74 - 1.6764;
+        public static final double THIRD_BLUE_TEAM_CUBE_X_VALUE = 2.115;
+        public static final double THIRD_BLUE_TEAM_CUBE_Y_VALUE = THIRD_RED_TEAM_CUBE_Y_VALUE;
  
         //CONE RED
-        public static final double FIRST_RED_TEAM_CONE_X_VALUE = 14.631;
-        public static final double FIRST_RED_TEAM_CONE_Y_VALUE = 0.498;
+        public static final double FIRST_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
+        public static final double FIRST_RED_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE - 0.5588;
 
-        public static final double SECOND_RED_TEAM_CONE_X_VALUE = 14.631;
-        public static final double SECOND_RED_TEAM_CONE_Y_VALUE = 1.615;
+        public static final double SECOND_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
+        public static final double SECOND_RED_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588;
  
-        public static final double THIRD_RED_TEAM_CONE_X_VALUE = 14.631;
-        public static final double THIRD_RED_TEAM_CONE_Y_VALUE = 2.173;
+        public static final double THIRD_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
+        public static final double THIRD_RED_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588 * 2;
 
-        public static final double FOURTH_RED_TEAM_CONE_X_VALUE = 14.631;
-        public static final double FOURTH_RED_TEAM_CONE_Y_VALUE = 3.28;
+        public static final double FOURTH_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
+        public static final double FOURTH_RED_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588 * 4;
 
-        public static final double FIFTH_RED_TEAM_CONE_X_VALUE = 14.631;
-        public static final double FIFTH_RED_TEAM_CONE_Y_VALUE = 3.86;
+        public static final double FIFTH_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
+        public static final double FIFTH_RED_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588 * 5;
 
-        public static final double SIXTH_RED_TEAM_CONE_X_VALUE = 14.631;
-        public static final double SIXTH_RED_TEAM_CONE_Y_VALUE = 4.97;
+        public static final double SIXTH_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
+        public static final double SIXTH_RED_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE + 0.5588 * 7;
 
         //CONE_BLUE
-        public static final double FIRST_BLUE_TEAM_CONE_X_VALUE = 1.93;
-        public static final double FIRST_BLUE_TEAM_CONE_Y_VALUE = 0.498;
+        public static final double FIRST_BLUE_TEAM_CONE_X_VALUE = 1.96;
+        public static final double FIRST_BLUE_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CONE_Y_VALUE;
 
-        public static final double SECOND_BLUE_TEAM_CONE_X_VALUE = 1.93;
-        public static final double SECOND_BLUE_TEAM_CONE_Y_VALUE = 1.615;
+        public static final double SECOND_BLUE_TEAM_CONE_X_VALUE = 1.96;
+        public static final double SECOND_BLUE_TEAM_CONE_Y_VALUE = SECOND_RED_TEAM_CONE_Y_VALUE;
 
-        public static final double THIRD_BLUE_TEAM_CONE_X_VALUE = 1.93;
-        public static final double THIRD_BLUE_TEAM_CONE_Y_VALUE = 2.173;
+        public static final double THIRD_BLUE_TEAM_CONE_X_VALUE = 1.96;
+        public static final double THIRD_BLUE_TEAM_CONE_Y_VALUE = THIRD_RED_TEAM_CONE_Y_VALUE;
 
-        public static final double FOURTH_BLUE_TEAM_CONE_X_VALUE = 1.93;
-        public static final double FOURTH_BLUE_TEAM_CONE_Y_VALUE = 3.28;
+        public static final double FOURTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
+        public static final double FOURTH_BLUE_TEAM_CONE_Y_VALUE = FOURTH_RED_TEAM_CONE_Y_VALUE;
 
-        public static final double FIFTH_BLUE_TEAM_CONE_X_VALUE = 1.93;
-        public static final double FIFTH_BLUE_TEAM_CONE_Y_VALUE = 3.86;
+        public static final double FIFTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
+        public static final double FIFTH_BLUE_TEAM_CONE_Y_VALUE = FIFTH_RED_TEAM_CONE_Y_VALUE;
 
-        public static final double SIXTH_BLUE_TEAM_CONE_X_VALUE = 1.93;
-        public static final double SIXTH_BLUE_TEAM_CONE_Y_VALUE = 4.97;
+        public static final double SIXTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
+        public static final double SIXTH_BLUE_TEAM_CONE_Y_VALUE = SIXTH_RED_TEAM_CONE_Y_VALUE;
         
     }
         

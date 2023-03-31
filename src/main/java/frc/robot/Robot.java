@@ -5,10 +5,8 @@
 package frc.robot;
 
 // import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -160,16 +158,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {}
 
-  List<Pose2d> redConePoses;
-  List<Pose2d> redCubePoses;
-  List<Pose2d> blueConePoses;
-  List<Pose2d> blueCubePoses;
-
-  Pose2d redNearestConePose;
-  Pose2d redNearestCubePose;
-
-  Pose2d blueNearestConePose;
-  Pose2d blueNearestCubePose;
 
   @Override
   public void teleopInit() {
@@ -219,7 +207,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(!RobotContainer.autoBottom.getAsBoolean() && !RobotContainer.autoMiddle.getAsBoolean()) {
+    if(!RobotContainer.autoMiddle.getAsBoolean()) {
       // RobotContainer.autoMiddle.whileTrue(new AutomationMiddle());
       // RobotContainer.autoBottom.whileTrue(new AutomationBottom());
       if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZING_CALLED) {

@@ -7,6 +7,7 @@ package frc.robot.commands.Automation;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class AutoBalance extends CommandBase {
@@ -30,26 +31,26 @@ public class AutoBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(RobotContainer.m_drivetrain.pitch().getDegrees()) > 3 && !firstOffset) {
+    if(Math.abs(RobotContainer.m_drivetrain.roll().getDegrees()) > 3 && !firstOffset) {
       firstOffset = true;
     }
 
     if(firstOffset) {
-      if(Math.abs(RobotContainer.m_drivetrain.pitch().getDegrees()) < 2) {
+      if(Math.abs(RobotContainer.m_drivetrain.roll().getDegrees()) < 5) {
         time.start();
         RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, 0, 0));
         if(time.get() > 1) {
           finished = true;
         }
-      } else if(RobotContainer.m_drivetrain.pitch().getDegrees() > 0) {
+      } else if(RobotContainer.m_drivetrain.roll().getDegrees() > 0) {
         time.reset();
-        RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, -0.1, 0));
+        RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, -0.12*Constants.MAX_METERS_PER_SECOND, 0));
       } else {
         time.reset();
-        RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, 0.1, 0));
+        RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, 0.12*Constants.MAX_METERS_PER_SECOND, 0));
       }
     } else {
-      RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, -0.3, 0));
+      RobotContainer.m_drivetrain.setChassisSpeed(new ChassisSpeeds(0, -0.5*Constants.MAX_METERS_PER_SECOND, 0));
     }
   }
 

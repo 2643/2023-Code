@@ -24,6 +24,7 @@ public final class Auto {
     return Commands.sequence(new ResetPosition(), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(), 
+                            new WaitCommand(0.4),
                             new armMove(positionStates.REST),
                             new Odometry(new Pose2d(11, 0.6, Rotation2d.fromDegrees(-90))));
   }
@@ -31,7 +32,9 @@ public final class Auto {
   public static CommandBase Red2() {
     return Commands.sequence(new ResetPosition(), 
                             new WaitCommand(0.2), 
-                            new GrabberOpen(), new armMove(positionStates.REST), 
+                            new GrabberOpen(),
+                            new WaitCommand(0.4), 
+                            new armMove(positionStates.REST), 
                             new Odometry(new Pose2d(14.3, 
                                                     Constants.Position2d.SECOND_RED_TEAM_CUBE_Y_VALUE, 
                                                     Rotation2d.fromDegrees(90))),
@@ -43,7 +46,8 @@ public final class Auto {
   public static CommandBase Red3() {
     return Commands.sequence(new ResetPosition(), 
                             new WaitCommand(0.2), 
-                            new GrabberOpen(), 
+                            new GrabberOpen(),
+                            new WaitCommand(0.4),
                             new armMove(positionStates.REST), 
                             new Odometry(new Pose2d(11, 4.65, Rotation2d.fromDegrees(-90)))); 
   }
@@ -52,6 +56,7 @@ public final class Auto {
     return Commands.sequence(new ResetPosition(), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(), 
+                            new WaitCommand(0.4),
                             new armMove(positionStates.REST), 
                             new Odometry(new Pose2d(5.895, 4.604, Rotation2d.fromDegrees(90))));
   }
@@ -60,6 +65,7 @@ public final class Auto {
     return Commands.sequence(new ResetPosition(), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(), 
+                            new WaitCommand(0.4),
                             new armMove(positionStates.REST),
                             new Odometry(new Pose2d(2.198, Constants.Position2d.SECOND_BLUE_TEAM_CUBE_Y_VALUE, Rotation2d.fromDegrees(-90))),
                             new armMove(positionStates.CHARGING_STATION),
@@ -70,7 +76,9 @@ public final class Auto {
   public static CommandBase Blue3() {
     return Commands.sequence(new ResetPosition(), 
                             new WaitCommand(0.2), 
-                            new GrabberOpen(), new armMove(positionStates.REST), 
+                            new GrabberOpen(),
+                            new WaitCommand(0.4),
+                            new armMove(positionStates.REST), 
                             new Odometry(new Pose2d(5.895, 0.794, Rotation2d.fromDegrees(90))));
   }
 

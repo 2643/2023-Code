@@ -283,9 +283,7 @@ public class ArmLift extends SubsystemBase {
       switch(ArmLiftState) {
         case NOT_INITIALIZED:
           //movePosFF(MoveArm.targetPos);
-          if(getLimitSwitchTwo()) {
             ArmLiftState = ArmLiftStates.INITIALIZING_CALLED;
-          }
           break;
         case INITIALIZING_CALLED:
           break;
