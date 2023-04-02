@@ -144,9 +144,9 @@ public class Robot extends TimedRobot {
   double autoAprilTag;
   @Override
   public void autonomousInit() {
-    autoAprilTag = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(0);
+    autoAprilTag = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(-1);
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand(autoAprilTag);
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

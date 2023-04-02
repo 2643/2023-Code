@@ -6,7 +6,7 @@ package frc.robot.commands.ArmGrab;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ArmGrab.States;
+import frc.robot.subsystems.ArmGrabOG.States;
 
 public class GrabberOpen extends CommandBase {
   /** Creates a new GrabberOpen. */

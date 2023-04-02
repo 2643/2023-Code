@@ -82,6 +82,14 @@ public final class Auto {
                             new Odometry(new Pose2d(5.895, 0.794, Rotation2d.fromDegrees(90))));
   }
 
+  public static CommandBase defaultCommand() {
+    return Commands.sequence(new ResetPosition(), 
+                            new WaitCommand(0.2), 
+                            new GrabberOpen(), 
+                            new WaitCommand(0.4), 
+                            new armMove(positionStates.REST));
+  }
+
   private Auto() {
 
     throw new UnsupportedOperationException("This is a utility class!");

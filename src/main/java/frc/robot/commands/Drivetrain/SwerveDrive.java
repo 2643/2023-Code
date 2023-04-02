@@ -79,10 +79,10 @@ public class SwerveDrive extends CommandBase {
     xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
     yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
 
-    if(RobotContainer.turningMode.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
-      rotationalXAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS_PORT)), 0.3) * Constants.MAX_RADIANS_PER_SECOND / 4;
-    } else {
+    if(!RobotContainer.turningMode.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
       rotationalXAxisValue = () -> -rotational_pid.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees()+90, betterEncoderAngle);
+    } else {
+      rotationalXAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.ROTATIONAL_AXIS_PORT)), 0.3) * Constants.MAX_RADIANS_PER_SECOND / 4;
     }
     if(!RobotContainer.autoMiddle.getAsBoolean()) {
       RobotContainer.m_drivetrain.setChassisSpeed(!RobotContainer.m_robotRelativeMode.getAsBoolean() ? ChassisSpeeds.fromFieldRelativeSpeeds(yAxisValue.getAsDouble(), xAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble(), RobotContainer.m_drivetrain.gyroAngle()) : new ChassisSpeeds(xAxisValue.getAsDouble(), -yAxisValue.getAsDouble(), rotationalXAxisValue.getAsDouble()));

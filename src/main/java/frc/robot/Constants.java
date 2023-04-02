@@ -77,13 +77,13 @@ public final class Constants {
 
     public class ArmGrab {
         public static final int GRABBER_MOTOR_PORT = 17;
-        public static final double GRABBER_TARGET_RPM = 7500; 
+        public static final double GRABBER_TARGET_RPM = 6000; 
         public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
         public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
         public static final double GRABBER_CUBE_PERCENT_OUTPUT = 0.05/3;
-        public static final double TARGET_CUBE_CURRENT_VALUE = 10;
+        public static final double TARGET_CUBE_CURRENT_VALUE = 5;
         //TODO: Find the actual values
-        public static final double TARGET_CONE_CURRENT_VALUE = 16;
+        public static final double TARGET_CONE_CURRENT_VALUE = 8.5;
         public static final double GRABBER_CONE_HARD_LIMIT = 0;
         public static final double GRABBER_CUBE_HARD_LIMIT = 0;
         public static final double GRABBER_MAX_OPEN_POS = -11.5*3;

@@ -276,8 +276,9 @@ public class ArmLift extends SubsystemBase {
     targetPosEntry.setDouble(MoveArm.targetPos);
     percentOutputEntry.setDouble(leftArmMotor.getMotorOutputPercent());
 
-
-    AuxiliaryFF = -0.019 * Math.sin(Math.toRadians((getPos()/Constants.ArmLift.COUNT_PER_DEGREES) + 47));
+    //TODO: Change it back when full weight is back on
+    AuxiliaryFF = 0;
+    //AuxiliaryFF = -0.019 * Math.sin(Math.toRadians((getPos()/Constants.ArmLift.COUNT_PER_DEGREES) + 47));
 
     if(DriverStation.isEnabled()) {
       switch(ArmLiftState) {

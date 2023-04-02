@@ -9,8 +9,11 @@ import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
 //import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -30,7 +33,7 @@ public class RobotContainer {
   
   public static final Drivetrain m_drivetrain = new Drivetrain();
   public static final Vision m_vision = new Vision();
-  public static final ArmGrab m_grabber = new ArmGrab();
+  public static final ArmGrabOG m_grabber = new ArmGrabOG();
   public static final ArmLift m_armLift = new ArmLift();
 
   public static final Joystick swerveStick = new Joystick(0);
@@ -64,6 +67,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+      m_chooser.setDefaultOption("Default", Auto.defaultCommand());
+      m_chooser.addOption("Red1(ID 1)",  Red1);
+      m_chooser.addOption("Red2(ID 2)", Red2);
+      m_chooser.addOption("Red3(ID 3)", Red3);
+      m_chooser.addOption("Blue1(ID 6)", Blue1);
+      m_chooser.addOption("Blue2(ID 7) ", Blue2);
+      m_chooser.addOption("Blue3(ID 8)", Blue3);
   }
 
   /**
@@ -91,22 +101,17 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand(double aprilTagID) {
-    switch ((int) aprilTagID) {
-      case 1:
-        return Auto.Red1();
-      case 2:
-        return Auto.Red2();
-      case 3:
-        return Auto.Red3();
-      case 6:
-        return Auto.Blue1();
-      case 7:
-        return Auto.Blue2();
-      case 8:
-        return Auto.Blue3();
-      default:
-        return new WaitCommand(0);
-    }
+  public static SendableChooser<Command> m_chooser = new SendableChooser<>();
+  ComplexWidget ShuffleBoardAutonomousRoutines = Shuffleboard.getTab("Prematch").add("Autonoumous Routines Selector", m_chooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 2).withPosition(0, 2);
+
+  public final Command Red1 = Auto.Red1();
+  public final Command Red2 = Auto.Red2();
+  public final Command Red3 = Auto.Red3();
+  public final Command Blue1 = Auto.Blue1();
+  public final Command Blue2 = Auto.Blue2();
+  public final Command Blue3 = Auto.Blue3();
+
+  public Command getAutonomousCommand() {
+    return m_chooser.getSelected();
   }
 }

@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
-public class ArmGrab extends SubsystemBase {
+public class ArmGrab1 extends SubsystemBase {
   static boolean armGrabInitialized = false;
   Timer timer = new Timer();
   DigitalInput limitSwitchInput = new DigitalInput(Constants.ArmGrab.GRABBER_LIMIT_SWITCH_PORT);
@@ -44,10 +44,9 @@ public class ArmGrab extends SubsystemBase {
   GenericEntry currentCURRENTEntry = armGrabLayout.add("Current CURRENT", currentCURRENT).withPosition(0, 1).getEntry();
   GenericEntry stateEntry = armGrabLayout.add("Current state", "NOT_INITIALIZED").withPosition(1, 1).getEntry();
 
-  public ArmGrab() {
+  public ArmGrab1() {
     WinchMotor.setInverted(true);
-    WinchMotor.getPIDController().setFF(kF, 0);
-    WinchMotor.getPIDController().setP(0.03, 1);
+    WinchMotor.getPIDController().setFF(kF);
     resetPosition();
   }
 
@@ -69,11 +68,11 @@ public class ArmGrab extends SubsystemBase {
   static States state = States.CLOSING_STARTING_VELOCITY;
 
   public void setRPM(double rpm){
-    WinchMotor.getPIDController().setReference(rpm, ControlType.kVelocity, 0);
+    WinchMotor.getPIDController().setReference(rpm, ControlType.kVelocity);
   }
 
   public void setPercentOutput(double percent){
-    WinchMotor.getPIDController().setReference(percent, ControlType.kDutyCycle, 0);
+    WinchMotor.getPIDController().setReference(percent, ControlType.kDutyCycle);
   }
 
   public void stopMotor(){
@@ -97,7 +96,7 @@ public class ArmGrab extends SubsystemBase {
   }
 
   public void setArmGrabState(States state){
-    ArmGrab.state = state;
+    ArmGrab1.state = state;
   }
 
   public States getArmGrabState(){
@@ -110,27 +109,22 @@ public class ArmGrab extends SubsystemBase {
 
   public void firstCurrentPass(){
     timer.start();
-    if(timer.hasElapsed(0.2)) {
+    if(timer.hasElapsed(0.4)){
       timer.stop();
       timer.reset();
       state = States.CLOSING_CURRENT;
-      timer.start();
     } 
   }
 
   
   public void firstCurrentPassCone(){
     timer.start();
-    if(timer.hasElapsed(0.35)){
+    if(timer.hasElapsed(0.7)){
       timer.stop();
       timer.reset();
       state = States.CLOSING_CURRENT;
     } 
   }
-
-public void setPos(double pos){
-  WinchMotor.getPIDController().setReference(pos, ControlType.kPosition, 1);
-}
 
   public boolean isClosed() {
     return state == States.CLOSED || state == States.CLOSING_CURRENT || state == States.CLOSING_STARTING_VELOCITY || state == States.CLOSING_TIME_ELAPSING;
@@ -152,7 +146,7 @@ public void setPos(double pos){
 
         case INITIALIZING_OPENING:
           targetRPM = -Constants.ArmGrab.GRABBER_TARGET_RPM;
-          setRPM(targetRPM*0.7);
+          setRPM(targetRPM);
           if(limitSwitchInput.get()){
             state = States.INITIALIZING_STOPPING;
           }
@@ -173,7 +167,7 @@ public void setPos(double pos){
           break;
         case OPENING:
           if(!armGrabInitialized) {
-            ArmGrab.state = States.NOT_INITIALIZED;
+            ArmGrab1.state = States.NOT_INITIALIZED;
             break;
           }
           targetRPM = -Constants.ArmGrab.GRABBER_TARGET_RPM;
@@ -198,27 +192,32 @@ public void setPos(double pos){
           stateEntry.setString("Waiting for time lapse");
           if(RobotContainer.coneMode.getAsBoolean()) {
             firstCurrentPassCone();
-            // timer.reset();
-            // timer.start();
+            timer.reset();
+            timer.start();
           } else {
             firstCurrentPass();
           }
+          //state = States.CLOSING_CURRENT;
           break;
         case CLOSING_CURRENT:
           stateEntry.setString("Closing current");
           if(RobotContainer.coneMode.getAsBoolean()) {
             if(getCurrentOutput() >= Constants.ArmGrab.TARGET_CONE_CURRENT_VALUE) {
-              // if(timer.hasElapsed(0.3))
-              ArmGrab.state = States.CLOSED;         
+              stopMotor();
+              setPercentOutput(Constants.ArmGrab.GRABBER_PERCENT_OUTPUT*1.3);
+              if(timer.get() > 0.4)
+                ArmGrab1.state = States.CLOSED;
+              
             }
           } else {
             if(getCurrentOutput() >= Constants.ArmGrab.TARGET_CUBE_CURRENT_VALUE) {
-              ArmGrab.state = States.CLOSED;
+              stopMotor();
+              setPercentOutput(Constants.ArmGrab.GRABBER_CUBE_PERCENT_OUTPUT);
+              ArmGrab1.state = States.CLOSED;
             }
           }
           break;
         case CLOSED:
-          setPos(getCurrentPosition());
           currentCURRENT = WinchMotor.getOutputCurrent();
           currentCURRENTEntry.setDouble(currentCURRENT);
           targetVelEntry.setDouble(targetRPM);
