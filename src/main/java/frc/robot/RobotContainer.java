@@ -47,11 +47,11 @@ public class RobotContainer {
   public static JoystickButton downArmButton = new JoystickButton(operatorBoard, 9);
   public static JoystickButton upArmButton = new JoystickButton(operatorBoard, 10);
 
-  public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 11);
+  public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 3);
 
-  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 12);
+  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 1);
   public static final JoystickButton autoBalance = new JoystickButton(operatorBoard, 13);
-  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 14);
+  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 4);
 
   public static final JoystickButton turningMode = new JoystickButton(operatorBoard, 15);
 

@@ -7,9 +7,14 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMax.ControlType;
+
+//import java.time.Duration;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -22,7 +27,7 @@ public class ArmGrab extends SubsystemBase {
   static boolean armGrabInitialized = false;
   Timer timer = new Timer();
   DigitalInput limitSwitchInput = new DigitalInput(Constants.ArmGrab.GRABBER_LIMIT_SWITCH_PORT);
-  CANSparkMax WinchMotor = new CANSparkMax(Constants.ArmGrab.GRABBER_MOTOR_PORT, MotorType.kBrushless);
+  TalonFX WinchMotor = new TalonFX(Constants.ArmGrab.GRABBER_MOTOR_PORT);
    
   double kP = 0;
   double kF = 0.0000844;
@@ -45,9 +50,14 @@ public class ArmGrab extends SubsystemBase {
   GenericEntry stateEntry = armGrabLayout.add("Current state", "NOT_INITIALIZED").withPosition(1, 1).getEntry();
 
   public ArmGrab() {
+    WinchMotor.configFactoryDefault();
+    WinchMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
     WinchMotor.setInverted(true);
-    WinchMotor.getPIDController().setFF(kF, 0);
-    WinchMotor.getPIDController().setP(0.03, 1);
+    WinchMotor.setNeutralMode(NeutralMode.Brake);
+    WinchMotor.config_kF(0, kF);
+    WinchMotor.config_kP(0, kP);
+    WinchMotor.config_kI(0, kI);
+    WinchMotor.config_kD(0, kD);
     resetPosition();
   }
 
@@ -68,79 +78,78 @@ public class ArmGrab extends SubsystemBase {
 
   static States state = States.CLOSING_STARTING_VELOCITY;
 
-  public void setRPM(double rpm){
-    WinchMotor.getPIDController().setReference(rpm, ControlType.kVelocity, 0);
-  }
-
-  public void setPercentOutput(double percent){
-    WinchMotor.getPIDController().setReference(percent, ControlType.kDutyCycle, 0);
-  }
-
-  public void stopMotor(){
-    targetVelEntry.setDouble(0);
-  }
-
-  public double getCurrentOutput(){
-    return WinchMotor.getOutputCurrent();
-  }
-
-  public void resetPosition(){
-    WinchMotor.getEncoder().setPosition(0);
-  }
-
-  public double getCurrentPosition(){
-    return WinchMotor.getEncoder().getPosition();
-  }
-
-  public double getMotorVelocity(){
-    return WinchMotor.getEncoder().getVelocity();
-  }
-
-  public void setArmGrabState(States state){
-    ArmGrab.state = state;
-  }
-
-  public States getArmGrabState(){
-    return state;
-  }
-
-  public boolean getArmGrabInitialized() {
-    return armGrabInitialized;
-  }
-
-  public void firstCurrentPass(){
-    timer.start();
-    if(timer.hasElapsed(0.2)) {
-      timer.stop();
-      timer.reset();
-      state = States.CLOSING_CURRENT;
-      timer.start();
-    } 
-  }
-
-  
-  public void firstCurrentPassCone(){
-    timer.start();
-    if(timer.hasElapsed(0.35)){
-      timer.stop();
-      timer.reset();
-      state = States.CLOSING_CURRENT;
-    } 
-  }
-
-public void setPos(double pos){
-  WinchMotor.getPIDController().setReference(pos, ControlType.kPosition, 1);
+  public void setRPM(double rpm) {
+    WinchMotor.set(ControlMode.Velocity, rpm);
 }
 
-  public boolean isClosed() {
+public void setPercentOutput(double percent) {
+    WinchMotor.set(ControlMode.PercentOutput, percent);
+}
+
+public void stopMotor() {
+    WinchMotor.set(ControlMode.PercentOutput, 0);
+}
+
+public double getCurrentOutput() {
+    return WinchMotor.getStatorCurrent();
+}
+
+public void resetPosition() {
+    WinchMotor.setSelectedSensorPosition(0);
+}
+
+public double getCurrentPosition() {
+    return WinchMotor.getSelectedSensorPosition();
+}
+
+public double getMotorVelocity() {
+    return WinchMotor.getSelectedSensorVelocity();
+}
+
+public void setArmGrabState(States state) {
+    ArmGrab.state = state;
+}
+
+public States getArmGrabState() {
+    return state;
+}
+
+public boolean getArmGrabInitialized() {
+    return armGrabInitialized;
+}
+
+public void firstCurrentPass() {
+    timer.start();
+    if (timer.hasElapsed(2)) {
+        timer.stop();
+        timer.reset();
+        state = States.CLOSING_CURRENT;
+        timer.start();
+    }
+}
+
+public void firstCurrentPassCone() {
+    timer.start();
+    if (timer.hasElapsed(2)) {
+        timer.stop();
+        timer.reset();
+        state = States.CLOSING_CURRENT;
+    }
+}
+
+public void setPos(double pos) {
+    WinchMotor.set(ControlMode.Position, pos);
+}
+
+public boolean isClosed() {
     return state == States.CLOSED || state == States.CLOSING_CURRENT || state == States.CLOSING_STARTING_VELOCITY || state == States.CLOSING_TIME_ELAPSING;
-  }
+}
 
   @Override
   public void periodic(){
-    currentCURRENT = WinchMotor.getOutputCurrent();
+    currentCURRENT = getCurrentOutput();
     currentCURRENTEntry.setDouble(currentCURRENT);
-    currentVel = WinchMotor.getEncoder().getVelocity();
+    currentVel = WinchMotor.getSelectedSensorVelocity();
     currentVelEntry.setDouble(currentVel);
 
     if(DriverStation.isEnabled()) {
@@ -149,7 +158,6 @@ public void setPos(double pos){
           stateEntry.setString("Not Initialized");
           state = States.INITIALIZING_OPENING;
           break;
-
         case INITIALIZING_OPENING:
           targetRPM = -Constants.ArmGrab.GRABBER_TARGET_RPM;
           setRPM(targetRPM*0.7);
@@ -219,7 +227,7 @@ public void setPos(double pos){
           break;
         case CLOSED:
           setPos(getCurrentPosition());
-          currentCURRENT = WinchMotor.getOutputCurrent();
+          currentCURRENT = getCurrentOutput();
           currentCURRENTEntry.setDouble(currentCURRENT);
           targetVelEntry.setDouble(targetRPM);
           stateEntry.setString("Closed");

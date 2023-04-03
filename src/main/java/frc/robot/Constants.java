@@ -76,7 +76,7 @@ public final class Constants {
     // public static final GenericEntry currentAngle = Shuffleboard.getTab("EncoderE").add("Current Angle(Gyro)", 0).getEntry();
 
     public class ArmGrab {
-        public static final int GRABBER_MOTOR_PORT = 17;
+        public static final int GRABBER_MOTOR_PORT = 0;
         public static final double GRABBER_TARGET_RPM = 6000; 
         public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
         public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
