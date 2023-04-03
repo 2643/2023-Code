@@ -33,7 +33,7 @@ public class RobotContainer {
   
   public static final Drivetrain m_drivetrain = new Drivetrain();
   public static final Vision m_vision = new Vision();
-  public static final ArmGrabOG m_grabber = new ArmGrabOG();
+  public static final ArmGrab m_grabber = new ArmGrab();
   public static final ArmLift m_armLift = new ArmLift();
 
   public static final Joystick swerveStick = new Joystick(0);
