@@ -40,18 +40,18 @@ public class RobotContainer {
   public static final JoystickButton m_robotRelativeMode = new JoystickButton(swerveStick, 1);
 
   public static final Joystick operatorBoard = new Joystick(1);
-  public static JoystickButton autoBottom = new JoystickButton(operatorBoard, 1);
+  //public static JoystickButton autoBottom = new JoystickButton(operatorBoard, 1);
   public static JoystickButton autoMiddle = new JoystickButton(operatorBoard, 5);
   public static final JoystickButton m_resetGyro = new JoystickButton(operatorBoard, 7);
 
   public static JoystickButton downArmButton = new JoystickButton(operatorBoard, 9);
   public static JoystickButton upArmButton = new JoystickButton(operatorBoard, 10);
 
-  public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 3);
+  public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 11);
 
-  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 1);
+  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 12);
   public static final JoystickButton autoBalance = new JoystickButton(operatorBoard, 13);
-  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 4);
+  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 14);
 
   public static final JoystickButton turningMode = new JoystickButton(operatorBoard, 15);
 
@@ -68,12 +68,12 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
       m_chooser.setDefaultOption("Default", Auto.defaultCommand());
-      m_chooser.addOption("Red1(ID 1)",  Red1);
-      m_chooser.addOption("Red2(ID 2)", Red2);
-      m_chooser.addOption("Red3(ID 3)", Red3);
-      m_chooser.addOption("Blue1(ID 6)", Blue1);
-      m_chooser.addOption("Blue2(ID 7) ", Blue2);
-      m_chooser.addOption("Blue3(ID 8)", Blue3);
+      m_chooser.addOption("Red1(ID 1)",  Auto.Red1());
+      m_chooser.addOption("Red2(ID 2)", Auto.Red2());
+      m_chooser.addOption("Red3(ID 3)", Auto.Red3());
+      m_chooser.addOption("Blue1(ID 6)", Auto.Blue1());
+      m_chooser.addOption("Blue2(ID 7) ", Auto.Blue2());
+      m_chooser.addOption("Blue3(ID 8)", Auto.Blue3());
   }
 
   /**
@@ -103,13 +103,6 @@ public class RobotContainer {
    */
   public static SendableChooser<Command> m_chooser = new SendableChooser<>();
   ComplexWidget ShuffleBoardAutonomousRoutines = Shuffleboard.getTab("Prematch").add("Autonoumous Routines Selector", m_chooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 2).withPosition(0, 2);
-
-  public final Command Red1 = Auto.Red1();
-  public final Command Red2 = Auto.Red2();
-  public final Command Red3 = Auto.Red3();
-  public final Command Blue1 = Auto.Blue1();
-  public final Command Blue2 = Auto.Blue2();
-  public final Command Blue3 = Auto.Blue3();
 
   public Command getAutonomousCommand() {
     return m_chooser.getSelected();

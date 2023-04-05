@@ -45,15 +45,16 @@ public class MoveArm extends CommandBase {
         if(targetPos < Constants.ArmLift.BOTTOM_SOFT_LIMIT_MOVEPOS)
           targetPos = RobotContainer.m_armLift.getPos() - 2000;
       }
-  } else if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.NOT_INITIALIZED){
-      if (moveDirection == moveArmJoystick.Up) {
-        if(targetPos > Constants.ArmLift.TOP_SOFT_LIMIT_MOVEPOS)
-          targetPos = RobotContainer.m_armLift.getPos() + 500;
-      } else if (moveDirection == moveArmJoystick.Down) {
-        if(targetPos < Constants.ArmLift.BOTTOM_SOFT_LIMIT_MOVEPOS)
-          targetPos = RobotContainer.m_armLift.getPos() - 500;
-      }
     }
+  // } else if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.NOT_INITIALIZED){
+  //     if (moveDirection == moveArmJoystick.Up) {
+  //       if(targetPos > Constants.ArmLift.TOP_SOFT_LIMIT_MOVEPOS)
+  //         targetPos = RobotContainer.m_armLift.getPos() + 500;
+  //     } else if (moveDirection == moveArmJoystick.Down) {
+  //       if(targetPos < Constants.ArmLift.BOTTOM_SOFT_LIMIT_MOVEPOS)
+  //         targetPos = RobotContainer.m_armLift.getPos() - 500;
+  //     }
+  //   }
     finish = true;
   }
     // Called once the command ends or is interrupted.

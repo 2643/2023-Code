@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
@@ -30,7 +26,8 @@ public class ArmGrab extends SubsystemBase {
   TalonFX WinchMotor = new TalonFX(Constants.ArmGrab.GRABBER_MOTOR_PORT);
    
   double kP = 0;
-  double kF = 0.0000844;
+  double posKP = 0.2;
+  double kF = 0.045;
   double kI;
   double kD;
   double rpm;
@@ -58,6 +55,7 @@ public class ArmGrab extends SubsystemBase {
     WinchMotor.config_kP(0, kP);
     WinchMotor.config_kI(0, kI);
     WinchMotor.config_kD(0, kD);
+    WinchMotor.config_kP(1, posKP);
     resetPosition();
   }
 
@@ -79,12 +77,13 @@ public class ArmGrab extends SubsystemBase {
   static States state = States.CLOSING_STARTING_VELOCITY;
 
   public void setRPM(double rpm) {
+    WinchMotor.selectProfileSlot(0, 0);
     WinchMotor.set(ControlMode.Velocity, rpm);
 }
 
-public void setPercentOutput(double percent) {
-    WinchMotor.set(ControlMode.PercentOutput, percent);
-}
+// public void setPercentOutput(double percent) {
+//     WinchMotor.set(ControlMode.PercentOutput, percent);
+// }
 
 public void stopMotor() {
     WinchMotor.set(ControlMode.PercentOutput, 0);
@@ -120,7 +119,7 @@ public boolean getArmGrabInitialized() {
 
 public void firstCurrentPass() {
     timer.start();
-    if (timer.hasElapsed(2)) {
+    if (timer.hasElapsed(0.2)) {
         timer.stop();
         timer.reset();
         state = States.CLOSING_CURRENT;
@@ -130,14 +129,16 @@ public void firstCurrentPass() {
 
 public void firstCurrentPassCone() {
     timer.start();
-    if (timer.hasElapsed(2)) {
+    
+    if (timer.hasElapsed(0.2)) {
         timer.stop();
         timer.reset();
         state = States.CLOSING_CURRENT;
     }
 }
 
-public void setPos(double pos) {
+public void movePos(double pos) {
+    WinchMotor.selectProfileSlot(1, 0);
     WinchMotor.set(ControlMode.Position, pos);
 }
 
@@ -147,6 +148,8 @@ public boolean isClosed() {
 
   @Override
   public void periodic(){
+    targetVelEntry.setDouble(targetRPM);
+    //System.out.println("Current: " + getCurrentOutput() + " Velocity: " + getMotorVelocity() + " Limit Switch: " + limitSwitchInput.get());
     currentCURRENT = getCurrentOutput();
     currentCURRENTEntry.setDouble(currentCURRENT);
     currentVel = WinchMotor.getSelectedSensorVelocity();
@@ -180,6 +183,7 @@ public boolean isClosed() {
           state = States.OPENING;
           break;
         case OPENING:
+        stateEntry.setString("Opening");
           if(!armGrabInitialized) {
             ArmGrab.state = States.NOT_INITIALIZED;
             break;
@@ -212,21 +216,23 @@ public boolean isClosed() {
             firstCurrentPass();
           }
           break;
-        case CLOSING_CURRENT:
+        case CLOSING_CURRENT: 
           stateEntry.setString("Closing current");
           if(RobotContainer.coneMode.getAsBoolean()) {
             if(getCurrentOutput() >= Constants.ArmGrab.TARGET_CONE_CURRENT_VALUE) {
               // if(timer.hasElapsed(0.3))
-              ArmGrab.state = States.CLOSED;         
+              movePos(getCurrentPosition());  
+              ArmGrab.state = States.CLOSED; 
             }
           } else {
             if(getCurrentOutput() >= Constants.ArmGrab.TARGET_CUBE_CURRENT_VALUE) {
+              movePos(getCurrentPosition());
               ArmGrab.state = States.CLOSED;
             }
           }
           break;
         case CLOSED:
-          setPos(getCurrentPosition());
+          
           currentCURRENT = getCurrentOutput();
           currentCURRENTEntry.setDouble(currentCURRENT);
           targetVelEntry.setDouble(targetRPM);

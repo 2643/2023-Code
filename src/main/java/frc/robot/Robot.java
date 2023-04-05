@@ -207,14 +207,15 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    // if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZING_CALLED) {
+      
+    //   //RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.INITIALIZING);
+    // }
+
     if(!RobotContainer.autoMiddle.getAsBoolean()) {
       // RobotContainer.autoMiddle.whileTrue(new AutomationMiddle());
       // RobotContainer.autoBottom.whileTrue(new AutomationBottom());
-      if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZING_CALLED) {
-        CommandScheduler.getInstance().schedule(new ResetPosition());
-      }
-
-      if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.NOT_INITIALIZED || RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZED) {
+      if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZED) {
         if(RobotContainer.upArmButton.getAsBoolean()) {
           CommandScheduler.getInstance().schedule(new MoveArm(moveArmJoystick.Up));
         } else if (RobotContainer.downArmButton.getAsBoolean()) {
@@ -227,6 +228,7 @@ public class Robot extends TimedRobot {
             }
           }
         }
+
       }
    
       if(RobotContainer.m_grabber.isClosed()) {
@@ -239,6 +241,33 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(new GrabberClose());
       } else if(RobotContainer.manualGrabOpen.getAsBoolean()) {
         CommandScheduler.getInstance().schedule(new GrabberOpen());
+      }
+    }
+
+    if(RobotContainer.m_armLift.getArmLiftState() == ArmLiftStates.INITIALIZED) {
+      switch (currentSecondAutoState) {
+        case RESET:
+          secondSolution.cancel();
+          currentSecondAutoState = SECOND_AUTO_SOLUTION.NOT_INITIALIZED;
+          break;
+        case NOT_INITIALIZED:
+          if(RobotContainer.autoMiddle.getAsBoolean() && RobotContainer.m_vision.hasTarget.getDouble(0) == 1) {
+            currentSecondAutoState = SECOND_AUTO_SOLUTION.CALLED;
+          }
+          break;
+        case CALLED:
+          secondSolution = new AutomationMiddle();
+          secondSolution.schedule();
+          currentSecondAutoState = SECOND_AUTO_SOLUTION.RUNNING;
+          break;
+        case RUNNING:
+          if(!RobotContainer.autoMiddle.getAsBoolean()) {
+            currentSecondAutoState =  SECOND_AUTO_SOLUTION.RESET;
+          }
+          break;
+        default:
+          System.out.println("Failure");
+          break;
       }
     }
 
@@ -416,30 +445,7 @@ public class Robot extends TimedRobot {
     //   //secondSolution = 
     // }
 
-    switch (currentSecondAutoState) {
-      case RESET:
-        secondSolution.cancel();
-        currentSecondAutoState = SECOND_AUTO_SOLUTION.NOT_INITIALIZED;
-        break;
-      case NOT_INITIALIZED:
-        if(RobotContainer.autoMiddle.getAsBoolean()) {
-          currentSecondAutoState = SECOND_AUTO_SOLUTION.CALLED;
-        }
-        break;
-      case CALLED:
-        secondSolution = new AutomationMiddle();
-        secondSolution.schedule();
-        currentSecondAutoState = SECOND_AUTO_SOLUTION.RUNNING;
-        break;
-      case RUNNING:
-        if(!RobotContainer.autoMiddle.getAsBoolean()) {
-          currentSecondAutoState =  SECOND_AUTO_SOLUTION.RESET;
-        }
-        break;
-      default:
-        System.out.println("Failure");
-        break;
-    }
+    
   } 
 
   @Override

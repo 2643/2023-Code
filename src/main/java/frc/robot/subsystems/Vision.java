@@ -4,10 +4,15 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
+
 //import java.util.Map;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -21,11 +26,13 @@ import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase {
   double[] targetInfo = new double[6];
+
   //Field2d field = new Field2d();
   public Pose2d visionPos = new Pose2d();
-  NetworkTableEntry hasTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv");
+  public NetworkTableEntry hasTarget = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv");
   NetworkTableEntry targetInfoEntry = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_wpiblue");
   NetworkTableEntry cl = NetworkTableInstance.getDefault().getTable("limelight").getEntry("cl");
+  //NetworkTableEntry ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("cl");
   NetworkTableEntry tl = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tl");
   public double visionLatency;
   //ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Field-New").add("2023-Field", field).withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 20));
@@ -33,6 +40,8 @@ public class Vision extends SubsystemBase {
   GenericEntry targetYEntry = RobotContainer.m_drivetrain.drivetrainLayout.add("Vision-Y", 0).withPosition(1, 1).getEntry();
   GenericEntry usingVision = RobotContainer.m_drivetrain.drivetrainLayout.add("Using Vision", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 1).getEntry();
   boolean firstAutoCorrect = false;
+
+  Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.3, 0.3, Units.degreesToRadians(5));
 
 
 
@@ -53,7 +62,12 @@ public class Vision extends SubsystemBase {
       visionPos = new Pose2d(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5])));
       //field.setRobotPose(targetInfo[0], targetInfo[1], new Rotation2d(Math.toRadians(targetInfo[5] - 90)));
       visionLatency = cl.getDouble(0) + tl.getDouble(0);
-      RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp() - (tl.getDouble(0)/1000.0) - (cl.getDouble(0)/1000.0));
+      if(RobotContainer.m_resetGyro.getAsBoolean()) {
+        RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp() - (tl.getDouble(0)/1000.0) - (cl.getDouble(0)/1000.0));
+
+      } else {
+        RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp() - (tl.getDouble(0)/1000.0) - (cl.getDouble(0)/1000.0), visionMeasurementStdDevs);
+      }
       //RobotContainer.m_drivetrain.poseVision.addVisionMeasurement(visionPos, Timer.getFPGATimestamp() - (tl.getDouble(0)/1000.0) - (cl.getDouble(0)/1000.0), null);
 
       targetXEntry.setDouble(targetInfo[0]);

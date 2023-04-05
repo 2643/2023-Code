@@ -9,6 +9,8 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -75,10 +77,14 @@ public class SwerveDrive extends CommandBase {
     betterEncoderAngle = (RobotContainer.operatorBoard.getRawAxis(3) + 1) * 180;
     // Constants.targetEncoderAngle.setDouble(betterEncoderAngle);
     // Constants.currentAngle.setDouble(RobotContainer.m_drivetrain.gyroAngle().getDegrees());
-
-    xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
-    yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
-
+    if(DriverStation.getAlliance() == Alliance.Blue) {
+      xAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
+      yAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
+    } else {
+      xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
+      yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.MAX_METERS_PER_SECOND;
+    }
+    
     if(!RobotContainer.turningMode.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
       rotationalXAxisValue = () -> -rotational_pid.calculate(RobotContainer.m_drivetrain.gyroAngle().getDegrees()+90, betterEncoderAngle);
     } else {

@@ -76,17 +76,20 @@ public final class Constants {
     // public static final GenericEntry currentAngle = Shuffleboard.getTab("EncoderE").add("Current Angle(Gyro)", 0).getEntry();
 
     public class ArmGrab {
-        public static final int GRABBER_MOTOR_PORT = 0;
-        public static final double GRABBER_TARGET_RPM = 6000; 
+        //Change back when ready to test
+        public static final int GRABBER_MOTOR_PORT = 18;
+        public static final double GRABBER_TARGET_RPM = 700; 
         public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
-        public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
+        //public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
         public static final double GRABBER_CUBE_PERCENT_OUTPUT = 0.05/3;
-        public static final double TARGET_CUBE_CURRENT_VALUE = 5;
+        public static final double TARGET_CUBE_CURRENT_VALUE = 1.5;
         //TODO: Find the actual values
-        public static final double TARGET_CONE_CURRENT_VALUE = 8.5;
-        public static final double GRABBER_CONE_HARD_LIMIT = 0;
-        public static final double GRABBER_CUBE_HARD_LIMIT = 0;
-        public static final double GRABBER_MAX_OPEN_POS = -11.5*3;
+        public static final double TARGET_CONE_CURRENT_VALUE = 3;
+        // public static final double GRABBER_CONE_HARD_LIMIT = 0;
+        // public static final double GRABBER_CUBE_HARD_LIMIT = 0;
+        public static final double GRABBER_MAX_OPEN_POS = 0;
+
+        
     }
 
     public class ArmLift {
@@ -144,15 +147,15 @@ public final class Constants {
 
         //BLUE_CUBE APRIL TAG ID 6
         public static final double FIRST_BLUE_TEAM_CUBE_X_VALUE = 2.115;
-        public static final double FIRST_BLUE_TEAM_CUBE_Y_VALUE = FIRST_RED_TEAM_CUBE_Y_VALUE;
+        public static final double FIRST_BLUE_TEAM_CUBE_Y_VALUE = 1.0716;
  
         //BLUE_CUBE APRIL TAG ID 7
         public static final double SECOND_BLUE_TEAM_CUBE_X_VALUE = 2.115;
-        public static final double SECOND_BLUE_TEAM_CUBE_Y_VALUE = SECOND_RED_TEAM_CUBE_Y_VALUE;
+        public static final double SECOND_BLUE_TEAM_CUBE_Y_VALUE = 2.748;
  
         //BLUE_CUBE APRIL TAG ID 8
         public static final double THIRD_BLUE_TEAM_CUBE_X_VALUE = 2.115;
-        public static final double THIRD_BLUE_TEAM_CUBE_Y_VALUE = THIRD_RED_TEAM_CUBE_Y_VALUE;
+        public static final double THIRD_BLUE_TEAM_CUBE_Y_VALUE = 4.4244;
  
         //CONE RED
         public static final double FIRST_RED_TEAM_CONE_X_VALUE = FIRST_RED_TEAM_CUBE_X_VALUE + 0.1524;
@@ -175,22 +178,22 @@ public final class Constants {
 
         //CONE_BLUE
         public static final double FIRST_BLUE_TEAM_CONE_X_VALUE = 1.96;
-        public static final double FIRST_BLUE_TEAM_CONE_Y_VALUE = FIRST_RED_TEAM_CONE_Y_VALUE;
+        public static final double FIRST_BLUE_TEAM_CONE_Y_VALUE = 0.5128;
 
         public static final double SECOND_BLUE_TEAM_CONE_X_VALUE = 1.96;
-        public static final double SECOND_BLUE_TEAM_CONE_Y_VALUE = SECOND_RED_TEAM_CONE_Y_VALUE;
+        public static final double SECOND_BLUE_TEAM_CONE_Y_VALUE = 1.6304;
 
         public static final double THIRD_BLUE_TEAM_CONE_X_VALUE = 1.96;
-        public static final double THIRD_BLUE_TEAM_CONE_Y_VALUE = THIRD_RED_TEAM_CONE_Y_VALUE;
+        public static final double THIRD_BLUE_TEAM_CONE_Y_VALUE = 2.1892;
 
         public static final double FOURTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
-        public static final double FOURTH_BLUE_TEAM_CONE_Y_VALUE = FOURTH_RED_TEAM_CONE_Y_VALUE;
+        public static final double FOURTH_BLUE_TEAM_CONE_Y_VALUE = 3.3068;
 
         public static final double FIFTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
-        public static final double FIFTH_BLUE_TEAM_CONE_Y_VALUE = FIFTH_RED_TEAM_CONE_Y_VALUE;
+        public static final double FIFTH_BLUE_TEAM_CONE_Y_VALUE = 3.8656;
 
         public static final double SIXTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
-        public static final double SIXTH_BLUE_TEAM_CONE_Y_VALUE = SIXTH_RED_TEAM_CONE_Y_VALUE;
+        public static final double SIXTH_BLUE_TEAM_CONE_Y_VALUE = 4.9832;
         
     }
         

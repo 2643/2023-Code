@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
@@ -178,6 +179,8 @@ public class ArmLift extends SubsystemBase {
   public void destroyMotor() {
     leftArmMotor.DestroyObject();
     leftArmMotor.configFactoryDefault();
+    leftArmMotor.setNeutralMode(NeutralMode.Brake);
+    rightArmMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public ArmLiftStates getArmLiftState() {
@@ -263,8 +266,19 @@ public class ArmLift extends SubsystemBase {
     }
   }
   
+  //boolean temp = false;
   @Override
   public void periodic() {
+    // System.out.println("Sensor:" + getLimitSwitch());
+    // if(getLimitSwitch()) {
+    //   temp = true;
+    // }
+    // if(temp) {
+    //  System.out.println(temp);
+    // } else {
+    //   System.out.println(temp);
+    // }
+    // System.out.println(getLimitSwitch());
     if(coastMode.getEntry().getBoolean(false)) {
       leftArmMotor.setNeutralMode(NeutralMode.Coast);
       rightArmMotor.setNeutralMode(NeutralMode.Coast);
@@ -283,10 +297,11 @@ public class ArmLift extends SubsystemBase {
     if(DriverStation.isEnabled()) {
       switch(ArmLiftState) {
         case NOT_INITIALIZED:
-          //movePosFF(MoveArm.targetPos);
-            ArmLiftState = ArmLiftStates.INITIALIZING_CALLED;
+            if(!getLimitSwitch())
+              ArmLiftState = ArmLiftStates.INITIALIZING_CALLED;
           break;
         case INITIALIZING_CALLED:
+          CommandScheduler.getInstance().schedule(new ResetPosition());
           break;
         case INITIALIZING:
           currentArmEncoderPos = armPlacement(RobotContainer.operatorBoard.getRawAxis(Constants.ArmLift.ENCODER_PORT));

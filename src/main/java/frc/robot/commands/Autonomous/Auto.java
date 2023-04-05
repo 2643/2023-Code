@@ -21,16 +21,16 @@ public final class Auto {
   /** Example static factory for an autonomous command. */
   public static CommandBase Red1() {
     //return Commands.sequence(new Odometry(new Pose2d(new Translation2d(14.664, 0.5), new Rotation2d(0))), new Odometry(new Pose2d(new Translation2d(14.664, 2.159), new Rotation2d(0))));
-    return Commands.sequence(new ResetPosition(), 
+    return Commands.sequence(new ResetPosition().raceWith(new WaitCommand(5)), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(), 
                             new WaitCommand(0.4),
-                            new armMove(positionStates.REST),
+                            new armMove(positionStates.REST).raceWith(new WaitCommand(3)),
                             new Odometry(new Pose2d(11, 0.6, Rotation2d.fromDegrees(-90))));
   }
 
   public static CommandBase Red2() {
-    return Commands.sequence(new ResetPosition(), 
+    return Commands.sequence(new ResetPosition().raceWith(new WaitCommand(5)), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(),
                             new WaitCommand(0.4), 
@@ -44,25 +44,25 @@ public final class Auto {
   }
 
   public static CommandBase Red3() {
-    return Commands.sequence(new ResetPosition(), 
+    return Commands.sequence(new ResetPosition().raceWith(new WaitCommand(5)), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(),
                             new WaitCommand(0.4),
-                            new armMove(positionStates.REST), 
+                            new armMove(positionStates.REST).raceWith(new WaitCommand(3)), 
                             new Odometry(new Pose2d(11, 4.65, Rotation2d.fromDegrees(-90)))); 
   }
 
   public static CommandBase Blue1() {
-    return Commands.sequence(new ResetPosition(), 
+    return Commands.sequence(new ResetPosition().raceWith(new WaitCommand(5)), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(), 
                             new WaitCommand(0.4),
-                            new armMove(positionStates.REST), 
+                            new armMove(positionStates.REST).raceWith(new WaitCommand(3)), 
                             new Odometry(new Pose2d(5.895, 4.604, Rotation2d.fromDegrees(90))));
   }
 
   public static CommandBase Blue2() {
-    return Commands.sequence(new ResetPosition(), 
+    return Commands.sequence(new ResetPosition().raceWith(new WaitCommand(5)), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(), 
                             new WaitCommand(0.4),
@@ -74,11 +74,11 @@ public final class Auto {
   }
 
   public static CommandBase Blue3() {
-    return Commands.sequence(new ResetPosition(), 
+    return Commands.sequence(new ResetPosition().raceWith(new WaitCommand(5)), 
                             new WaitCommand(0.2), 
                             new GrabberOpen(),
                             new WaitCommand(0.4),
-                            new armMove(positionStates.REST), 
+                            new armMove(positionStates.REST).raceWith(new WaitCommand(3)), 
                             new Odometry(new Pose2d(5.895, 0.794, Rotation2d.fromDegrees(90))));
   }
 

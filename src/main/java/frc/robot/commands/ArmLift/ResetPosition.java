@@ -33,6 +33,9 @@ public class ResetPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(RobotContainer.m_armLift.getLimitSwitch()) {
+      RobotContainer.m_armLift.destroyMotor();
+    }
     RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.INITIALIZING);
     RobotContainer.m_armLift.setPos(-20000);
     RobotContainer.m_armLift.changeVelocity(2500);//4000
@@ -67,16 +70,17 @@ public class ResetPosition extends CommandBase {
       
   @Override
   public void end(boolean interrupted) {
-    
-    //10000
-    RobotContainer.m_armLift.reset();
-    RobotContainer.m_armLift.changeVelocity(8533);
-    if(DriverStation.isAutonomous())
-      MoveArm.targetPos = Constants.ArmLift.CUBE;
-    else
-      MoveArm.targetPos = Constants.ArmLift.REST;
-    RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.INITIALIZED);
-
+    if(!finish) {
+      RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.NOT_INITIALIZED);
+    } else {
+      RobotContainer.m_armLift.reset();
+      RobotContainer.m_armLift.changeVelocity(8533);
+      if(DriverStation.isAutonomous())
+        MoveArm.targetPos = Constants.ArmLift.CUBE;
+      else
+        MoveArm.targetPos = Constants.ArmLift.REST;
+      RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.INITIALIZED);
+      }
 
   }
 
