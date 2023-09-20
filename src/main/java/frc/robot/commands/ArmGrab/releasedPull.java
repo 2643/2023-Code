@@ -6,17 +6,22 @@ package frc.robot.commands.ArmGrab;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ArmGrab.States;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Grabber.States;
 
-public class GrabberOpen extends CommandBase {
-  /** Creates a new GrabberOpen. */
-  public GrabberOpen() {
+public class releasedPull extends CommandBase {
+  /** Creates a new releasedPull. */
+  public releasedPull() {
+    addRequirements(RobotContainer.m_grabber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
+  boolean end = false;
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Grabber.state = States.STOP_MOTOR_PULL;
+    end = true;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -25,14 +30,12 @@ public class GrabberOpen extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      if(RobotContainer.m_grabber.getArmGrabState() != States.OPENED && RobotContainer.m_grabber.getArmGrabState() != States.OPENING) {
-        RobotContainer.m_grabber.setArmGrabState(States.OPENING);
-      }
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return end;
   }
 }

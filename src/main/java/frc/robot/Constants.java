@@ -58,7 +58,7 @@ public final class Constants {
 
 
     //MAX SPEEDS 
-    public static double MAX_METERS_PER_SECOND = 19800 / 60 * SdsModuleConfigurations.MK4I_L1.getDriveReduction() * SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI;//Change based on max speed
+    public static double MAX_METERS_PER_SECOND = 19800 / 120 * SdsModuleConfigurations.MK4I_L1.getDriveReduction() * SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI;//Change based on max speed
     // FIXME: Make sure to take other factors into account such as radius from the center of the robot
     public static double MAX_RADIANS_PER_SECOND = MAX_METERS_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS); //12.773732
     
@@ -77,17 +77,39 @@ public final class Constants {
 
     public class ArmGrab {
         //Change back when ready to test
-        public static final int GRABBER_MOTOR_PORT = 18;
-        public static final double GRABBER_TARGET_RPM = 700; 
-        public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
-        //public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
-        public static final double GRABBER_CUBE_PERCENT_OUTPUT = 0.05/3;
-        public static final double TARGET_CUBE_CURRENT_VALUE = 1.5;
-        //TODO: Find the actual values
-        public static final double TARGET_CONE_CURRENT_VALUE = 3;
-        // public static final double GRABBER_CONE_HARD_LIMIT = 0;
-        // public static final double GRABBER_CUBE_HARD_LIMIT = 0;
-        public static final double GRABBER_MAX_OPEN_POS = 0;
+        // public static final int GRABBER_MOTOR_PORT = 18;
+        // public static final double GRABBER_TARGET_RPM = 700; 
+        // public static final int GRABBER_LIMIT_SWITCH_PORT = 0;
+        // //public static final double GRABBER_PERCENT_OUTPUT = 0.08;//0.143 //0.12
+        // public static final double GRABBER_CUBE_PERCENT_OUTPUT = 0.05/3;
+        // public static final double TARGET_CUBE_CURRENT_VALUE = 1.5;
+        // //TODO: Find the actual values
+        // public static final double TARGET_CONE_CURRENT_VALUE = 3;
+        // // public static final double GRABBER_CONE_HARD_LIMIT = 0;
+        // // public static final double GRABBER_CUBE_HARD_LIMIT = 0;
+        // public static final double GRABBER_MAX_OPEN_POS = 0;
+        public final static int GRABBER_PORT_ONE = 17;
+        public final static int GRABBER_PORT_TWO = 18;
+
+        public final static double CUBE_OUTPUT_CURRENT_MAX = 10;
+  
+        public final static double GRABBER_EMPTY_OUTPUT_MAX = 10;
+        public final static double CONE_OUTPUT_CURRENT_MAX = 10;
+
+        //percent output
+        public final static double GRABBBER_CONSTANT_PERCENT_OUTPUT = 0.125;
+        public final static double GRABBER_MOVE_GAME_PIECE_SPEED = 0.3;
+
+  
+
+  //Output current 
+  //needs testing
+
+  //Amps
+  
+
+
+  
 
         
     }

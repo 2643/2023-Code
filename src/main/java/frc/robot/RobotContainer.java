@@ -4,8 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.commands.ArmGrab.grabberPull;
+import frc.robot.commands.ArmGrab.grabberPush;
+import frc.robot.commands.ArmGrab.releasedPull;
+import frc.robot.commands.ArmGrab.releasedPush;
 import frc.robot.commands.Automation.AutoBalance;
-import frc.robot.commands.Autonomous.*;
+// import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
 //import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,13 +37,14 @@ public class RobotContainer {
   
   public static final Drivetrain m_drivetrain = new Drivetrain();
   public static final Vision m_vision = new Vision();
-  public static final ArmGrab m_grabber = new ArmGrab();
+  public static final Grabber m_grabber = new Grabber();
   public static final ArmLift m_armLift = new ArmLift();
 
-  public static final Joystick swerveStick = new Joystick(0);
+  public static final Joystick swerveStick = new Joystick(1);
   public static final JoystickButton m_robotRelativeMode = new JoystickButton(swerveStick, 1);
+  
 
-  public static final Joystick operatorBoard = new Joystick(1);
+  public static final Joystick operatorBoard = new Joystick(0);
   //public static JoystickButton autoBottom = new JoystickButton(operatorBoard, 1);
   public static JoystickButton autoMiddle = new JoystickButton(operatorBoard, 5);
   public static final JoystickButton m_resetGyro = new JoystickButton(operatorBoard, 7);
@@ -47,12 +52,12 @@ public class RobotContainer {
   public static JoystickButton downArmButton = new JoystickButton(operatorBoard, 9);
   public static JoystickButton upArmButton = new JoystickButton(operatorBoard, 10);
 
+  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 12);
+  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 14);
   public static final JoystickButton coneMode = new JoystickButton(operatorBoard, 11);
 
-  public static final JoystickButton manualGrabClose = new JoystickButton(operatorBoard, 12);
   public static final JoystickButton autoBalance = new JoystickButton(operatorBoard, 13);
-  public static final JoystickButton manualGrabOpen = new JoystickButton(operatorBoard, 14);
-
+ 
   public static final JoystickButton turningMode = new JoystickButton(operatorBoard, 15);
 
   //TODO: Change port number
@@ -66,14 +71,21 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
-      m_chooser.setDefaultOption("Default", Auto.defaultCommand());
-      m_chooser.addOption("Red1(ID 1)",  Auto.Red1());
-      m_chooser.addOption("Red2(ID 2)", Auto.Red2());
-      m_chooser.addOption("Red3(ID 3)", Auto.Red3());
-      m_chooser.addOption("Blue1(ID 6)", Auto.Blue1());
-      m_chooser.addOption("Blue2(ID 7) ", Auto.Blue2());
-      m_chooser.addOption("Blue3(ID 8)", Auto.Blue3());
+    manualGrabOpen.onTrue(new grabberPull());
+    manualGrabClose.onTrue(new grabberPush());
+  
+ 
+
+    manualGrabOpen.onFalse(new releasedPull());
+    manualGrabClose.onFalse(new releasedPush());
+
+      // m_chooser.setDefaultOption("Default", Auto.defaultCommand());
+      // m_chooser.addOption("Red1(ID 1)",  Auto.Red1());
+      // m_chooser.addOption("Red2(ID 2)", Auto.Red2());
+      // m_chooser.addOption("Red3(ID 3)", Auto.Red3());
+      // m_chooser.addOption("Blue1(ID 6)", Auto.Blue1());
+      // m_chooser.addOption("Blue2(ID 7) ", Auto.Blue2());
+      // m_chooser.addOption("Blue3(ID 8)", Auto.Blue3());
   }
 
   /**

@@ -4,24 +4,27 @@
 
 package frc.robot.commands.ArmGrab;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ArmGrab.States;
-import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Grabber.States;
 
-public class GrabberClose extends CommandBase {
-  public GrabberClose() {
-    addRequirements(RobotContainer.m_grabber);
+public class grabberPull extends CommandBase {
+  /** Creates a new grabberPull. */
+  public grabberPull() {
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(RobotContainer.m_grabber);
   }
-
-  Timer timer = new Timer();
-  //boolean firstCurrent = true;
+  boolean end = false;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.reset();
+    System.out.println("Pulling");
+    Grabber.state = States.PULL_START;
+    end = true;
   }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {}
@@ -29,18 +32,15 @@ public class GrabberClose extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.reset();
-    if(RobotContainer.m_grabber.getArmGrabState() != States.CLOSED && 
-        RobotContainer.m_grabber.getArmGrabState() != States.CLOSING_CURRENT && 
-        RobotContainer.m_grabber.getArmGrabState() != States.CLOSING_STARTING_VELOCITY && 
-        RobotContainer.m_grabber.getArmGrabState() != States.CLOSING_TIME_ELAPSING) {
-      RobotContainer.m_grabber.setArmGrabState(States.CLOSING_STARTING_VELOCITY);
-    }
+    
+      // System.out.println("Pulling");
+      // Grabber.state = States.PULL_START;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    
+    return end;
   }
 }

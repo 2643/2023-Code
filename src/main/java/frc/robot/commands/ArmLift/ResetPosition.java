@@ -12,22 +12,10 @@ public class ResetPosition extends CommandBase {
   
   /** Creates a new ResetPosition. */
   boolean finish = false;
-  // public static enum states{
-  //   state1,
-  //   state2,
-  //   state3,
-  //   state4
-  //  }
-
-  // states state = states.state1;
-
-
   
   public ResetPosition() {
-
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_armLift);
-
   }
 
   // Called when the command is initially scheduled.
@@ -40,13 +28,6 @@ public class ResetPosition extends CommandBase {
     RobotContainer.m_armLift.setPos(-20000);
     RobotContainer.m_armLift.changeVelocity(2500);//4000
     RobotContainer.m_armLift.movePos(Constants.ArmLift.COUNT_PER_DEGREES * 60);
-    //System.out.println("state1");
-    // if(!RobotContainer.m_armLift.getLimitSwitchTwo()){
-    //   state = states.state4;
-    // }
-    // state = states.state1;
-    // RobotContainer.m_armLift.movePos(-2048*100);
-    
   }
 
 
@@ -81,7 +62,6 @@ public class ResetPosition extends CommandBase {
         MoveArm.targetPos = Constants.ArmLift.REST;
       RobotContainer.m_armLift.setArmLiftState(ArmLiftStates.INITIALIZED);
       }
-
   }
 
   // Returns true when the command should end.

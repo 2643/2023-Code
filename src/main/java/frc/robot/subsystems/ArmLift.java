@@ -112,7 +112,7 @@ public class ArmLift extends SubsystemBase {
   // GenericEntry secondPosEntry = Shuffleboard.getTab("PID").add("second position", 0).getEntry();
   GenericEntry percentOutputEntry = armLiftLayout.add("Percent Output current", 0).withPosition(1, 1).withSize(1, 1).getEntry();
 
-  double kP = 0.12;
+  double kP = 0.6;
   double kI = 0;
   double kD = 0;
   double maxPercentOutput = 0.7;
@@ -269,16 +269,6 @@ public class ArmLift extends SubsystemBase {
   //boolean temp = false;
   @Override
   public void periodic() {
-    // System.out.println("Sensor:" + getLimitSwitch());
-    // if(getLimitSwitch()) {
-    //   temp = true;
-    // }
-    // if(temp) {
-    //  System.out.println(temp);
-    // } else {
-    //   System.out.println(temp);
-    // }
-    // System.out.println(getLimitSwitch());
     if(coastMode.getEntry().getBoolean(false)) {
       leftArmMotor.setNeutralMode(NeutralMode.Coast);
       rightArmMotor.setNeutralMode(NeutralMode.Coast);
@@ -292,7 +282,7 @@ public class ArmLift extends SubsystemBase {
 
     //TODO: Change it back when full weight is back on
     AuxiliaryFF = 0;
-    //AuxiliaryFF = -0.019 * Math.sin(Math.toRadians((getPos()/Constants.ArmLift.COUNT_PER_DEGREES) + 47));
+    AuxiliaryFF = -0.09 * Math.sin(Math.toRadians((getPos()/Constants.ArmLift.COUNT_PER_DEGREES) + 47));
 
     if(DriverStation.isEnabled()) {
       switch(ArmLiftState) {
