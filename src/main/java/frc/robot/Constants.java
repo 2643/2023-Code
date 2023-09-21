@@ -58,7 +58,7 @@ public final class Constants {
 
 
     //MAX SPEEDS 
-    public static double MAX_METERS_PER_SECOND = 19800 / 120 * SdsModuleConfigurations.MK4I_L1.getDriveReduction() * SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI;//Change based on max speed
+    public static double MAX_METERS_PER_SECOND = 19800 / 60 * SdsModuleConfigurations.MK4I_L1.getDriveReduction() * SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI;//Change based on max speed
     // FIXME: Make sure to take other factors into account such as radius from the center of the robot
     public static double MAX_RADIANS_PER_SECOND = MAX_METERS_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS); //12.773732
     
@@ -67,6 +67,11 @@ public final class Constants {
     public static final double AUTONOMOUS_RADIANS_PER_SECOND = AUTONOMOUS_VELOCITY_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS);
 
     public static final double MAX_VOLTAGE = 12.5;
+
+    public static final boolean SLOW_MODE_ON = true;
+
+    public static final double SLOW_MODE_MULTIPLIER = SLOW_MODE_ON ? 0.1 : 1;
+    
 
     // public static final GenericEntry kP = Shuffleboard.getTab("EncoderE").add("kP", 0.2).getEntry();
     // public static final GenericEntry kI = Shuffleboard.getTab("EncoderE").add("kI", 0).getEntry();
