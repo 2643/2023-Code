@@ -14,7 +14,7 @@ public class Routine2 extends SequentialCommandGroup {
   /** Creates a new Routine2. */
   public Routine2() {
     
-    // addCommands(new armMove(positionStates.CUBE), new GrabberOpen(), new Odometry(Constants.Position2d.ORIGINAL_BALL_POSITIONING_ONE));
+    // addCommands(new armMove(positionStates.CUBE), new grabberPush(), new Odometry(Constants.Position2d.ORIGINAL_BALL_POSITIONING_ONE));
     
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

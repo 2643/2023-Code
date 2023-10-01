@@ -9,6 +9,8 @@ import frc.robot.commands.ArmGrab.grabberPush;
 import frc.robot.commands.ArmGrab.releasedPull;
 import frc.robot.commands.ArmGrab.releasedPush;
 import frc.robot.commands.Automation.AutoBalance;
+import frc.robot.commands.Automation.AutomationMiddle;
+import frc.robot.commands.Autonomous.Auto;
 // import frc.robot.commands.Autonomous.*;
 import frc.robot.subsystems.*;
 //import frc.robot.subsystems.Vision;
@@ -79,13 +81,13 @@ public class RobotContainer {
     manualGrabOpen.onFalse(new releasedPull());
     manualGrabClose.onFalse(new releasedPush());
 
-      // m_chooser.setDefaultOption("Default", Auto.defaultCommand());
-      // m_chooser.addOption("Red1(ID 1)",  Auto.Red1());
-      // m_chooser.addOption("Red2(ID 2)", Auto.Red2());
-      // m_chooser.addOption("Red3(ID 3)", Auto.Red3());
-      // m_chooser.addOption("Blue1(ID 6)", Auto.Blue1());
-      // m_chooser.addOption("Blue2(ID 7) ", Auto.Blue2());
-      // m_chooser.addOption("Blue3(ID 8)", Auto.Blue3());
+          m_chooser.setDefaultOption("Default", Auto.defaultCommand());
+          m_chooser.addOption("Red1(ID 1)",  Auto.Red1());
+          m_chooser.addOption("Red2(ID 2)", Auto.Red2());
+          m_chooser.addOption("Red3(ID 3)", Auto.Red3());
+          m_chooser.addOption("Blue1(ID 6)", Auto.Blue1());
+          m_chooser.addOption("Blue2(ID 7) ", Auto.Blue2());
+          m_chooser.addOption("Blue3(ID 8)", Auto.Blue3());
   }
 
   /**
@@ -102,7 +104,7 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    // autoMiddle.whenHeld(new AutomationMiddle());
+    autoMiddle.onFalse(new AutomationMiddle());
     // autoBottom.whenHeld(new AutomationBottom());
     autoBalance.whileFalse(new AutoBalance());
    

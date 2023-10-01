@@ -206,9 +206,9 @@ public class Robot extends TimedRobot {
       // }
 
       // if(RobotContainer.manualGrabClose.getAsBoolean()) {
-      //   CommandScheduler.getInstance().schedule(new GrabberClose());
+      //   CommandScheduler.getInstance().schedule(new grabberPull());
       // } else if(RobotContainer.manualGrabOpen.getAsBoolean()) {
-      //   CommandScheduler.getInstance().schedule(new GrabberOpen());
+      //   CommandScheduler.getInstance().schedule(new grabberPush());
       // }
     }
 

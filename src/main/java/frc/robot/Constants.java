@@ -68,9 +68,9 @@ public final class Constants {
 
     public static final double MAX_VOLTAGE = 12.5;
 
-    public static final boolean SLOW_MODE_ON = true;
+    // public static final boolean SLOW_MODE_ON = true;
 
-    public static final double SLOW_MODE_MULTIPLIER = SLOW_MODE_ON ? 0.1 : 1;
+    // public static final double SLOW_MODE_MULTIPLIER = SLOW_MODE_ON ? 0.1 : 1;
     
 
     // public static final GenericEntry kP = Shuffleboard.getTab("EncoderE").add("kP", 0.2).getEntry();

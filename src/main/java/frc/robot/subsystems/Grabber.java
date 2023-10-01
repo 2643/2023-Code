@@ -24,6 +24,7 @@ public class Grabber extends SubsystemBase {
   static CANSparkMax grabberMotor1 = new CANSparkMax(Constants.ArmGrab.GRABBER_PORT_ONE, MotorType.kBrushless);
   static CANSparkMax grabberMotor2 = new CANSparkMax(Constants.ArmGrab.GRABBER_PORT_TWO, MotorType.kBrushless);
 
+  static boolean isClosed = false;
   double outputCurrent = 0;
   GenericEntry OutputCurrentEntry = Shuffleboard.getTab("Grabber").add("Output Current", outputCurrent).getEntry();
   static Timer timer = new Timer(); 
@@ -60,10 +61,16 @@ public class Grabber extends SubsystemBase {
     return grabberMotor1.getOutputCurrent();
   }
 
+  public boolean isClosed(){
+    return isClosed;
+  }
   public static void stopMotor(){
     grabberMotor1.getPIDController().setReference(0, ControlType.kDutyCycle);
   }
 
+  public States getArmGrabState() {
+    return state;
+}
 
   public static void firstCurrentPassPulling(){
     timer.start();
@@ -158,6 +165,7 @@ public class Grabber extends SubsystemBase {
         case STOP_MOTOR_PULL:
           StateEntry.setString("Stop Motor");
           stopMotor();
+          isClosed=true;
           break;
         case STOP_MOTOR_PUSH:
           StateEntry.setString("Stop Motor");

@@ -78,11 +78,11 @@ public class SwerveDrive extends CommandBase {
     // Constants.targetEncoderAngle.setDouble(betterEncoderAngle);
     // Constants.currentAngle.setDouble(RobotContainer.m_drivetrain.gyroAngle().getDegrees());
     if(DriverStation.getAlliance() == Alliance.Blue) {
-      xAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.SLOW_MODE_MULTIPLIER;
-      yAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.SLOW_MODE_MULTIPLIER;
+      xAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05);
+      yAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05);
     } else {
-      xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05) * Constants.SLOW_MODE_MULTIPLIER;
-      yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05) * Constants.SLOW_MODE_MULTIPLIER;
+      xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05);
+      yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05);
     }
     
     if(!RobotContainer.turningMode.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
