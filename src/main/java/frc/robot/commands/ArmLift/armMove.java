@@ -23,7 +23,12 @@ public class armMove extends CommandBase {
       return Constants.ArmLift.REST;
     }
     else if(s == ArmLift.positionStates.FLOOR){
-      return Constants.ArmLift.FLOOR;
+      if(RobotContainer.coneMode.getAsBoolean()){
+        return Constants.ArmLift.CONE_FLOOR;
+      }
+      else{
+        return Constants.ArmLift.FLOOR;
+      }
     }
     else if(s == ArmLift.positionStates.CUBE){
       return Constants.ArmLift.CUBE;

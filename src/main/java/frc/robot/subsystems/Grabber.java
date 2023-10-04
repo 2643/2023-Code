@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -64,6 +63,7 @@ public class Grabber extends SubsystemBase {
   public boolean isClosed(){
     return isClosed;
   }
+
   public static void stopMotor(){
     grabberMotor1.getPIDController().setReference(0, ControlType.kDutyCycle);
   }
@@ -141,7 +141,13 @@ public class Grabber extends SubsystemBase {
         //   break;
         case PUSH_START:
           StateEntry.setString("Push Start");
-          percentOutput(-Constants.ArmGrab.GRABBER_MOVE_GAME_PIECE_SPEED);
+          if(RobotContainer.coneMode.getAsBoolean()){
+            percentOutput(-Constants.ArmGrab.GRABBER_MOVE_CONE_PUSH_SPEED);
+          }
+          else{
+            percentOutput(Constants.ArmGrab.GRABBER_MOVE_GAME_PIECE_SPEED);
+          }
+          
           state = States.PUSHING_TIME_ELAPSING;
           break;
         case PUSHING_TIME_ELAPSING:
@@ -154,14 +160,6 @@ public class Grabber extends SubsystemBase {
             state = States.STOP_MOTOR_PUSH;
           }
           break;
-        // case PUSHED:
-        //   System.out.println("Pushed");
-
-        //   StateEntry.setDouble(8);
-        //   grabberMotor1.setIdleMode(IdleMode.kBrake);
-        //   stopMotor();
-        //   break
-        
         case STOP_MOTOR_PULL:
           StateEntry.setString("Stop Motor");
           stopMotor();
@@ -170,6 +168,7 @@ public class Grabber extends SubsystemBase {
         case STOP_MOTOR_PUSH:
           StateEntry.setString("Stop Motor");
           stopMotor();
+          isClosed=false;
           break;
         default:
           StateEntry.setDouble(9);
