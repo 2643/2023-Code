@@ -6,6 +6,9 @@ package frc.robot;
 
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 
 
 /**
@@ -20,7 +23,7 @@ public final class Constants {
 
     public static final int PIGEON_CAN = 2;
 
-    //FRONT LEFT MODULE
+    //FRONT LEFT MODULEkkkkk
     public static final int FRONT_LEFT_CANCODER = 14;  //was 5
     public static final int FRONT_LEFT_DRIVE_MOTOR = 6; // was 4
     public static final int FRONT_LEFT_TURN_MOTOR = 7;  //was 3
@@ -58,7 +61,7 @@ public final class Constants {
 
 
     //MAX SPEEDS 
-    public static double MAX_METERS_PER_SECOND = 19800 / 60 * SdsModuleConfigurations.MK4I_L1.getDriveReduction() * SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI;//Change based on max speed
+    public static double MAX_METERS_PER_SECOND = 19800 / 120 * SdsModuleConfigurations.MK4I_L1.getDriveReduction() * SdsModuleConfigurations.MK4I_L1.getWheelDiameter() * Math.PI;//Change based on max speed
     // FIXME: Make sure to take other factors into account such as radius from the center of the robot
     public static double MAX_RADIANS_PER_SECOND = MAX_METERS_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS); //12.773732
     
@@ -67,6 +70,9 @@ public final class Constants {
     public static final double AUTONOMOUS_RADIANS_PER_SECOND = AUTONOMOUS_VELOCITY_PER_SECOND / Math.hypot(TRANSLATION_2D_METERS, TRANSLATION_2D_METERS);
 
     public static final double MAX_VOLTAGE = 12.5;
+
+    public static GenericEntry checkEntry = Shuffleboard.getTab("kk").add("check","ok").getEntry();
+
 
     // public static final boolean SLOW_MODE_ON = true;
 
@@ -99,11 +105,14 @@ public final class Constants {
         public final static double CUBE_OUTPUT_CURRENT_MAX = 10;
   
         public final static double GRABBER_EMPTY_OUTPUT_MAX = 10;
-        public final static double CONE_OUTPUT_CURRENT_MAX = 10;
+        public final static double CONE_OUTPUT_CURRENT_MAX = 15;
 
         //percent output
         public final static double GRABBBER_CONSTANT_PERCENT_OUTPUT = 0.125;
         public final static double GRABBER_MOVE_GAME_PIECE_SPEED = 0.3;
+        public final static double GRABBER_MOVE_CONE_PUSH_SPEED = 0.5;
+
+        // REMOVE
 
   
 
@@ -144,6 +153,7 @@ public final class Constants {
         public static final double CUBE = 14586;
         public static final double CHARGING_STATION = 50000;
         public static final double FLOOR = 57000;
+        public static final double CONE_FLOOR = 55000;
         
     }
 
@@ -221,9 +231,5 @@ public final class Constants {
 
         public static final double SIXTH_BLUE_TEAM_CONE_X_VALUE = 1.96;
         public static final double SIXTH_BLUE_TEAM_CONE_Y_VALUE = 4.9832;
-        
     }
-        
-
-
 }
