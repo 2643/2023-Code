@@ -84,6 +84,7 @@ public final class Auto {
 
   public static CommandBase defaultCommand() {
     return Commands.sequence(new ResetPosition(), 
+                            new armMove(positionStates.PICKUP),
                             new WaitCommand(0.2), 
                             new grabberPush(), 
                             new WaitCommand(0.4), 
