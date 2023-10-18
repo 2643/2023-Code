@@ -42,11 +42,11 @@ public class RobotContainer {
   public static final Grabber m_grabber = new Grabber();
   public static final ArmLift m_armLift = new ArmLift();
 
-  public static final Joystick swerveStick = new Joystick(1);
+  public static final Joystick swerveStick = new Joystick(0);
   public static final JoystickButton m_robotRelativeMode = new JoystickButton(swerveStick, 1);
   
 
-  public static final Joystick operatorBoard = new Joystick(0);
+  public static final Joystick operatorBoard = new Joystick(1);
   //public static JoystickButton autoBottom = new JoystickButton(operatorBoard, 1);
   public static JoystickButton autoMiddle = new JoystickButton(operatorBoard, 5);
   public static final JoystickButton m_resetGyro = new JoystickButton(operatorBoard, 7);

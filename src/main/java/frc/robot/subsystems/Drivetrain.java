@@ -26,11 +26,16 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 //import frc.robot.RobotContainer;
+import frc.robot.commands.Drivetrain.Odometry;
 
 public class Drivetrain extends SubsystemBase {
   Pigeon2 imu = new Pigeon2(Constants.PIGEON_CAN);
 
+  static boolean isFinishedOdometry = false;
+  GenericEntry commandFinished = Shuffleboard.getTab("Testing").add("Is finished",isFinishedOdometry ).getEntry();
+  
   public Pose2d robotPosition = new Pose2d(new Translation2d(0, 0), new Rotation2d(Math.toRadians(0)));
   // GenericEntry joystick_x = Shuffleboard.getTab("Joystick").add("Joystick X-Axis", 0).getEntry();
   // GenericEntry joystick_y = Shuffleboard.getTab("Joystick").add("Joystick Y-Axis", 0).getEntry();
@@ -62,6 +67,7 @@ public class Drivetrain extends SubsystemBase {
   ShuffleboardLayout drivetrainLayout = debugTab.getLayout("Drivetrain", BuiltInLayouts.kGrid).withSize(4, 2).withPosition(8, 0);
   GenericEntry robot_y = drivetrainLayout.add("Swerve-Y-Axis", 0).withPosition(1, 0).getEntry();
   GenericEntry robot_x = drivetrainLayout.add("Swerve-X-Axis", 0).withPosition(0, 0).getEntry();
+
 
 
   //static ShuffleboardTab infoTab = Shuffleboard.getTab("Debug");
@@ -153,6 +159,9 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+  public static void changeIsFinished(){
+    isFinishedOdometry = true;
+  }
   public void setChassisSpeed(ChassisSpeeds speed) {
     speeds = speed;
   }
@@ -217,6 +226,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+    commandFinished.setBoolean(isFinishedOdometry);
     // This method will be called once per scheduler run
     moduleStates = m_kinematics.toSwerveModuleStates(speeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.MAX_METERS_PER_SECOND);

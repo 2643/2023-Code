@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   public static GenericEntry aprilTagsDetection = Shuffleboard.getTab("Driver").add("Detects AprilTags", false).withWidget(BuiltInWidgets.kBooleanBox).withPosition(2, 2).withSize(2, 2).getEntry();
 
   //GenericEntry chargeStationEntry = Shuffleboard.getTab("Driver").add("Charge Station", true).withWidget(BuiltInWidgets.kToggleButton).withPosition(9, 2).withSize(2, 1).getEntry();
-  //ComplexWidget cameraShuffleboard = Shuffleboard.getTab("Driver").addCamera("Camera", "Limelight", "http://10.26.43.17:5800/").withPosition(19, 0).withSize(5, 5);
+  ComplexWidget cameraShuffleboard = Shuffleboard.getTab("Driver").addCamera("Camera", "Limelight", "limelight.local:5801").withPosition(19, 0).withSize(5, 5);
   ComplexWidget fieldShuffleboard = Shuffleboard.getTab("Driver").add("2023-Field", field).withWidget(BuiltInWidgets.kField).withProperties(Map.of("robot icon size", 35)).withPosition(4, 0).withSize(8, 5);
 
   // GenericEntry dock = Shuffleboard.getTab("Driver").add("dock", true).withWidget(BuiltInWidgets.kBooleanBox).getEntry();

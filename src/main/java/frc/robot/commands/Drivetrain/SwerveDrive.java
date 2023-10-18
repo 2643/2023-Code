@@ -81,9 +81,9 @@ public class SwerveDrive extends CommandBase {
       xAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05)*5;
       yAxisValue = () -> squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05)*5;
     } else {
-      xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05)*4;
+      xAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.X_AXIS_PORT)), 0.05)*5;
       
-      yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05)*4;
+      yAxisValue = () -> -squareAxis(logAxis(RobotContainer.swerveStick.getRawAxis(Constants.Y_AXIS_PORT)), 0.05)*5;
     }
     
     if(!RobotContainer.turningMode.getAsBoolean() && RobotContainer.operatorBoard.isConnected()) {
