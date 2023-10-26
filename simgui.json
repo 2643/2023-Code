@@ -18,7 +18,8 @@
       "/Shuffleboard/Driver/2023-Field": "Field2d",
       "/Shuffleboard/Driver/Autonomous End Location Selector": "String Chooser",
       "/Shuffleboard/Field/2022-Field": "Field2d",
-      "/Shuffleboard/Field/2023-Field": "Field2d"
+      "/Shuffleboard/Field/2023-Field": "Field2d",
+      "/Shuffleboard/Prematch/Autonoumous Routines Selector": "String Chooser"
     }
   }
 }

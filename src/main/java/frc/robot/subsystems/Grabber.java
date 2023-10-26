@@ -74,7 +74,7 @@ public class Grabber extends SubsystemBase {
 
   public static void firstCurrentPassPulling(){
     timer.start();
-    if(timer.hasElapsed(0.5)){
+    if(timer.hasElapsed(1)){
       timer.stop();
       timer.reset();
       state = States.PULLING;
@@ -85,7 +85,7 @@ public class Grabber extends SubsystemBase {
 
   public static void firstCurrentPassPushing(){
     timer.start();
-    if(timer.hasElapsed(0.5)){
+    if(timer.hasElapsed(1)){
       timer.stop();
       timer.reset();
       state = States.PUSHING;
@@ -145,7 +145,7 @@ public class Grabber extends SubsystemBase {
             percentOutput(-Constants.ArmGrab.GRABBER_MOVE_CONE_PUSH_SPEED);
           }
           else{
-            percentOutput(Constants.ArmGrab.GRABBER_MOVE_GAME_PIECE_SPEED);
+            percentOutput(-Constants.ArmGrab.GRABBER_MOVE_GAME_PIECE_SPEED);
           }
           
           state = States.PUSHING_TIME_ELAPSING;

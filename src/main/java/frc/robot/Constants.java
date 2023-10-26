@@ -105,7 +105,7 @@ public final class Constants {
         public final static double CUBE_OUTPUT_CURRENT_MAX = 10;
   
         public final static double GRABBER_EMPTY_OUTPUT_MAX = 10;
-        public final static double CONE_OUTPUT_CURRENT_MAX = 15;
+        public final static double CONE_OUTPUT_CURRENT_MAX = 25;
 
         //percent output
         public final static double GRABBBER_CONSTANT_PERCENT_OUTPUT = 0.125;
